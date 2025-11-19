@@ -1,31 +1,41 @@
-import { AppShell, Group, Burger, Text } from "@mantine/core"
+import { AppShell, UnstyledButton } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
+import { HeaderMenu } from "./HeaderMenu"
+import classes from "./MainLayout.module.css"
 
-export default function MainLayout() {
+export default function MainLayout({
+  children,
+}: {
+  children?: React.ReactNode
+}) {
   const [opened, { toggle }] = useDisclosure()
 
   return (
     <AppShell
       header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
+      navbar={{
+        width: 300,
+        breakpoint: "sm",
+        collapsed: { desktop: true, mobile: !opened },
+      }}
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          Header has a burger icon below sm breakpoint
-        </Group>
+        <HeaderMenu opened={opened} toggle={toggle} />
       </AppShell.Header>
-      <AppShell.Navbar p="md">
-        Navbar is collapsed on mobile at sm breakpoint. At that point it is no
-        longer offset by padding in the main element and it takes the full width
-        of the screen when opened.
+
+      <AppShell.Navbar py="md" px={4}>
+        <UnstyledButton className={classes.control}>Home</UnstyledButton>
+        <UnstyledButton className={classes.control}>Blog</UnstyledButton>
+        <UnstyledButton className={classes.control}>Contacts</UnstyledButton>
+        <UnstyledButton className={classes.control}>Support</UnstyledButton>
       </AppShell.Navbar>
+
       <AppShell.Main>
-        <Text>This is the main section, your app content here.</Text>
-        <Text>
-          Layout used in most cases – Navbar and Header with fixed position
-        </Text>
+        Navbar is only visible on mobile, links that are rendered in the header
+        on desktop are hidden on mobile in header and rendered in navbar
+        instead.
+        {children}
       </AppShell.Main>
     </AppShell>
   )
