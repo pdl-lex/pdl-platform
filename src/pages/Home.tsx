@@ -19,14 +19,14 @@ export default function Home() {
   )
   return (
     <Container miw="100%" p="0">
-      <BackgroundImage src="/background2.jpg" mih="50vh" p="xl">
-        <Title style={{ color: "white", lineHeight: 1.5 }}>
+      <BackgroundImage src="/background.jpg" mih="50vh" p="xl">
+        <Title style={{ color: "white", lineHeight: 1.2 }} py="sm">
           Akademien&shy;zentrum
           <br />
           digitale Lexikographie des Deutschen
         </Title>
-        <Text fw="800" style={{ color: "white" }} pb="3em">
-          Forschen • Entwickeln • Verstehen
+        <Text fw="800" style={{ color: "white" }} pb="xl">
+          Forschen • Entwickeln • Vernetzen
         </Text>
         <Group gap="xs" maw="24em">
           <TextInput
