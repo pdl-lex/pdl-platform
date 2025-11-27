@@ -7,6 +7,12 @@ export default ({ mode }: { mode: string }) => {
     plugins: [react()],
     server: {
       allowedHosts: [env.VITE_VM_URL],
+      proxy: {
+        "/api": {
+          target: env.VITE_API_URL,
+          changeOrigin: true,
+        },
+      },
     },
   })
 }
