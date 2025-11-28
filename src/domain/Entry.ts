@@ -1,6 +1,6 @@
 export interface Entry {
   id: string
-  form?: Form
+  form?: Form[]
   gramGrp?: GrammarGroup
   sense?: Sense[]
 }
@@ -10,7 +10,7 @@ export interface Form {
   orth: string
   hyph: string[]
   pron: string
-  form?: Form
+  form?: Form[]
 }
 
 export type GrammarType =
