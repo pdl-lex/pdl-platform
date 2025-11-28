@@ -1,22 +1,8 @@
-import {
-  BackgroundImage,
-  Box,
-  Container,
-  Title,
-  Text,
-  TextInput,
-  Group,
-  ActionIcon,
-} from "@mantine/core"
-import { IconSearch } from "@tabler/icons-react"
+import { BackgroundImage, Box, Container, Title, Text } from "@mantine/core"
 import { Link } from "react-router-dom"
+import LemmaSearchForm from "../ui/LemmaSearchForm"
 
 export default function Home() {
-  const SearchButton = (
-    <ActionIcon variant="white" size="lg">
-      <IconSearch size={16} />
-    </ActionIcon>
-  )
   return (
     <Container miw="100%" p="0">
       <BackgroundImage src="/background.jpg" mih="50vh" p="xl">
@@ -28,13 +14,7 @@ export default function Home() {
         <Text fw="800" style={{ color: "white" }} pb="xl">
           Forschen • Entwickeln • Vernetzen
         </Text>
-        <Group gap="xs" maw="24em">
-          <TextInput
-            rightSection={SearchButton}
-            flex={1}
-            placeholder="Wörterbücher durchsuchen..."
-          />
-        </Group>
+        <LemmaSearchForm gap="xs" maw="24em" />
       </BackgroundImage>
       <Box maw="800px" mx="auto" py="xl" px="md">
         <Title order={2} pb="lg">
