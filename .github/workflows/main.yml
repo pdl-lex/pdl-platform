@@ -1,0 +1,24 @@
+name: Build and Deploy to Github Container Registry
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Log in to GHCR
+      run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    - name: Build Docker image
+      run: |
+        docker build -t ghcr.io/${{ github.repository_owner }}/adl-platform:latest .
+
+    - name: Push image
+      run: |
+        docker push ghcr.io/${{ github.repository_owner }}/adl-platform:latest
