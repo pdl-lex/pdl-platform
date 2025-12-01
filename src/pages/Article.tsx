@@ -19,7 +19,7 @@ const searchLemma = async (query?: string): Promise<any> => {
 export default function SearchDisplay() {
   const { id } = useParams<{ id: string }>()
 
-  const { data, isLoading, error } = useQuery<Entry>({
+  const { data, isLoading } = useQuery<Entry>({
     queryKey: ["search", id],
     queryFn: () => searchLemma(id),
     enabled: !!id,
