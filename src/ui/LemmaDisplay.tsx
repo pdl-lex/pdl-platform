@@ -34,7 +34,6 @@ export function LemmaNotFound(): JSX.Element {
 
   return (
     <section>
-      <Title size={"h2"}>404</Title>
       <Text>Lemma "{id}" nicht gefunden.</Text>
     </section>
   )

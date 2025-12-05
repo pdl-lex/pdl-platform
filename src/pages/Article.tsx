@@ -26,14 +26,14 @@ export default function SearchDisplay() {
     refetchOnWindowFocus: false,
   })
 
+  const isEmpty = _.isEmpty(data) || _.has(data, "error")
+
   return (
     <Box maw="800px" mx="auto" py="xl" px="md">
       {isLoading ? (
         <Loader />
       ) : (
-        <>
-          {_.isEmpty(data) ? <LemmaNotFound /> : <LemmaDisplay entry={data} />}{" "}
-        </>
+        <>{isEmpty ? <LemmaNotFound /> : <LemmaDisplay entry={data} />} </>
       )}
     </Box>
   )
