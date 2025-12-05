@@ -1,7 +1,9 @@
+import MainText from "../layout/MainText"
+
 export default function Dictionaries() {
   return (
-    <>
-      <h1>Dictionaries Page</h1>
-    </>
+    <MainText>
+      <h1>Wörterbücher</h1>
+    </MainText>
   )
 }

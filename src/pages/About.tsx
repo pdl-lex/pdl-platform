@@ -1,7 +1,9 @@
+import MainText from "../layout/MainText"
+
 export default function About() {
   return (
-    <>
-      <h1>About Page</h1>
-    </>
+    <MainText>
+      <h1>Über LexoTerm</h1>
+    </MainText>
   )
 }

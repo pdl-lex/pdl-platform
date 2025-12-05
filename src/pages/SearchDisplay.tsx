@@ -1,12 +1,12 @@
-import { Box } from "@mantine/core"
 import LemmaSearchForm from "../ui/LemmaSearchForm"
+import MainText from "../layout/MainText"
 
 export default function SearchDisplay() {
   return (
-    <Box maw="800px" mx="auto" py="xl" px="md">
+    <MainText>
       <h1>Stichwortsuche</h1>
 
       <LemmaSearchForm />
-    </Box>
+    </MainText>
   )
 }

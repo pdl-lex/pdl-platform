@@ -1,7 +1,9 @@
+import MainText from "../layout/MainText"
+
 export default function Lab() {
   return (
-    <>
-      <h1>Lab Page</h1>
-    </>
+    <MainText>
+      <h1>LexoTerm Lab</h1>
+    </MainText>
   )
 }
