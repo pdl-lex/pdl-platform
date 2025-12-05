@@ -11,6 +11,7 @@ import Dictionaries from "./pages/Dictionaries"
 import Lab from "./pages/Lab"
 import SearchDisplay from "./pages/SearchDisplay"
 import Article from "./pages/Article"
+import NotFound from "./pages/NotFound"
 
 const queryClient = new QueryClient()
 
@@ -44,6 +45,7 @@ export default function App() {
             {routes.map(({ path, Component }) => (
               <Route key={path} path={path} element={<Component />} />
             ))}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </MainLayout>
       </MantineProvider>
