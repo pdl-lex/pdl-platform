@@ -15,3 +15,7 @@
     text-decoration: underline;
   }
 }
+
+main {
+  min-height: 120vh !important;
+}
