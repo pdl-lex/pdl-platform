@@ -1,6 +1,6 @@
 import { Box, Loader } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
-import { Entry } from "../domain/Entry"
+import Entry from "../domain/Entry"
 import _ from "lodash"
 import LemmaDisplay, { LemmaNotFound } from "../ui/LemmaDisplay"
 import { useParams } from "react-router-dom"
@@ -13,7 +13,8 @@ const searchLemma = async (query?: string): Promise<any> => {
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
   }
-  return response.json()
+  const data = await response.json()
+  return new Entry(data)
 }
 
 export default function SearchDisplay() {

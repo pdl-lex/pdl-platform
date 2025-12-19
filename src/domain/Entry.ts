@@ -1,19 +1,33 @@
-export interface Entry {
-  id: string
+export default class Entry {
+  xmlId: string
   form?: Form[]
-  gramGrp?: GrammarGroup
+  gramGrp?: GrammarGroup[]
   sense?: Sense[]
+
+  constructor(data: any) {
+    this.xmlId = data["xml:id"] || ""
+    this.form = data.form
+    this.gramGrp = data.gramGrp
+    this.sense = data.sense
+  }
+
+  getFeature(type: Feature): string | null {
+    return this.gramGrp?.[0].gram?.find((g) => g.type === type)?.text || null
+  }
+
+  getVariants(): Form[] {
+    return this.form?.[0].form?.filter((f) => f.type === "variant") || []
+  }
 }
 
 export interface Form {
   type: string
   orth: string
-  hyph: string[]
   pron: string
   form?: Form[]
 }
 
-export type GrammarType =
+export type Feature =
   | "pos"
   | "case"
   | "gender"
@@ -28,8 +42,13 @@ export type GrammarType =
   | "government"
   | "degree"
 
+export interface GrammaticalFeature {
+  text: string
+  type: Feature
+}
+
 export interface GrammarGroup {
-  gram: Record<GrammarType, string>
+  gram: GrammaticalFeature[]
 }
 
 export interface Sense {

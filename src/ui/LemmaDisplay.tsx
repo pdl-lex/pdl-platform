@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { JSX } from "react"
-import { Sense, Entry } from "../domain/Entry"
+import Entry, { Form, Sense } from "../domain/Entry"
 import { Title, Text, List } from "@mantine/core"
 import { useParams } from "react-router-dom"
 import classes from "./LemmaDisplay.module.css"
@@ -48,10 +48,26 @@ function DisplayGender({ gender }: { gender: Gender }): JSX.Element {
   return <span className={classes.gender}>{`, ${articles[gender]}`}</span>
 }
 
+function DisplayVariants({ variants }: { variants: Form[] }): JSX.Element {
+  return (
+    <>
+      <Title order={2} size={"h4"} pb=".5em">
+        Varianten
+      </Title>
+      <List>
+        {variants.map((variant, index) => (
+          <List.Item key={index}>{variant.orth}</List.Item>
+        ))}
+      </List>
+    </>
+  )
+}
+
 export default function DisplayEntry({ entry }: { entry: Entry }): JSX.Element {
   const headword = _.first(entry.form)?.orth
-  const pos = entry.gramGrp?.gram.pos ?? "-"
-  const gender = entry.gramGrp?.gram.gender
+  const pos = entry.getFeature("pos") || "-"
+  const gender = entry.getFeature("gender") || ""
+  const variants = entry.getVariants()
 
   return (
     <section>
@@ -62,6 +78,7 @@ export default function DisplayEntry({ entry }: { entry: Entry }): JSX.Element {
       <Text pb="1.5em">
         <span>{pos}</span>
       </Text>
+      {variants.length > 0 && <DisplayVariants variants={variants} />}
       <Title order={2} size={"h4"} pb=".5em">
         Bedeutungen
       </Title>
