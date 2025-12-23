@@ -18,6 +18,7 @@ import { ResourceKey, resources } from "../domain/Resource"
 import classes from "./SearchResult.module.css"
 import { IconExternalLink } from "@tabler/icons-react"
 import DisplaySense from "./DisplaySense"
+import React from "react"
 
 const search = async (query?: string): Promise<any> => {
   if (!query) {
@@ -59,14 +60,19 @@ function DisplayGrammarInfo({ entry }: { entry: DisplayEntry }) {
   )
 }
 
-function DisplayVariants({ variants }: { variants: string[] }) {
+export function DisplayVariants({ variants }: { variants: string[] }) {
   return (
     variants.length > 0 && (
       <Text mb="md">
         Varianten:{" "}
-        <Text className={classes.variants} span>
-          {variants.join("; ")}
-        </Text>
+        {variants.map((variant, index) => (
+          <React.Fragment key={index}>
+            <Text className={classes.variants} span>
+              {variant}
+            </Text>
+            {index < variants.length - 1 ? "; " : ""}
+          </React.Fragment>
+        ))}
       </Text>
     )
   )
@@ -84,23 +90,33 @@ function EntryLink({ id }: { id: string }) {
   )
 }
 
-function EntryHeader({ entry }: { entry: DisplayEntry }) {
+export function EntryHeader({
+  entry,
+  children,
+}: {
+  entry: DisplayEntry
+  children?: React.ReactNode
+}) {
   return (
-    <Group gap={5} mb="xs">
-      <Title mt={0} mb={0} order={2}>
-        {entry.headword}
-      </Title>
-      <EntryLink id={entry["xml:id"]} />
-    </Group>
+    <Stack gap={0}>
+      <DisplayResource name={entry.source} />
+      <Group gap={5} mb="xs">
+        <Title mt={0} mb={0} order={2}>
+          {entry.headword}
+        </Title>
+        {children}
+      </Group>
+      <DisplayGrammarInfo entry={entry} />
+    </Stack>
   )
 }
 
 function ResultItem({ entry }: { entry: DisplayEntry }) {
   return (
     <Card shadow="md" className={classes["result-item"]}>
-      <DisplayResource name={entry.source} />
-      <EntryHeader entry={entry} />
-      <DisplayGrammarInfo entry={entry} />
+      <EntryHeader entry={entry}>
+        <EntryLink id={entry["xml:id"]} />
+      </EntryHeader>
       <DisplayVariants variants={entry.variants} />
       <PreviewSenses senses={entry.sense} />
     </Card>
