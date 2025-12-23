@@ -9,7 +9,7 @@ import About from "./pages/About"
 import Corpora from "./pages/Corpora"
 import Dictionaries from "./pages/Dictionaries"
 import Lab from "./pages/Lab"
-import SearchDisplay from "./pages/SearchDisplay"
+import SearchView from "./pages/SearchView"
 import Article from "./pages/Article"
 import NotFound from "./pages/NotFound"
 import SearchResult from "./pages/SearchResult"
@@ -24,7 +24,7 @@ export type AppRoute = {
 
 const toplevelRoutes: AppRoute[] = [
   { path: "/", Component: Home, title: "Startseite" },
-  { path: "/search", Component: SearchDisplay, title: "Suche" },
+  { path: "/search", Component: SearchView, title: "Suche" },
   { path: "/dictionaries", Component: Dictionaries, title: "Wörterbücher" },
   { path: "/corpora", Component: Corpora, title: "Korpora" },
   { path: "/lab", Component: Lab, title: "Lab" },
