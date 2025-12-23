@@ -1,11 +1,12 @@
 import MainText from "../layout/MainText"
 import FreeSearchForm from "../ui/FreeSearchForm"
+import SearchResult from "../ui/SearchResult"
 
-export default function SearchDisplay() {
+export default function SearchView() {
   return (
     <MainText>
-      <h1>Freie Suche</h1>
       <FreeSearchForm />
+      <SearchResult />
     </MainText>
   )
 }
