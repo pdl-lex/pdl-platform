@@ -9,7 +9,7 @@ import classNames from "classnames"
 type Gender = "M" | "W" | "N"
 
 export function DisplaySense({ senses }: { senses?: Sense[] }): JSX.Element {
-  return senses ? (
+  return senses && senses.length > 0 ? (
     <List>
       {senses.map((sense, index) => (
         <List.Item
