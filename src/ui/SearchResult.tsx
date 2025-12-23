@@ -113,7 +113,7 @@ export function EntryHeader({
 
 function ResultItem({ entry }: { entry: DisplayEntry }) {
   return (
-    <Card shadow="md" className={classes["result-item"]}>
+    <Card shadow="md" padding="xl" className={classes["result-item"]}>
       <EntryHeader entry={entry}>
         <EntryLink id={entry["xml:id"]} />
       </EntryHeader>
