@@ -1,11 +1,3 @@
 .gender {
   font-weight: normal;
 }
-.numbered_sense_item {
-  padding-left: 0.5em;
-
-  &::marker {
-    content: attr(data-sense-n);
-    font-weight: 600;
-  }
-}

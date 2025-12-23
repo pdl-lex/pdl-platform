@@ -1,3 +1,5 @@
+import { ResourceKey } from "./Resource"
+
 export default class Entry {
   xmlId: string
   form?: Form[]
@@ -18,6 +20,17 @@ export default class Entry {
   getVariants(): Form[] {
     return this.form?.[0].form?.filter((f) => f.type === "variant") || []
   }
+}
+
+export interface DisplayEntry {
+  ['xml:id']: string
+  source: ResourceKey
+  headword: string
+  variants: string[]
+  sense?: Sense[]
+  gender: string | null
+  pos: string | null
+  number: string | null
 }
 
 export interface Form {
