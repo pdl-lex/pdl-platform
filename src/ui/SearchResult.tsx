@@ -9,6 +9,7 @@ import {
   Text,
   Group,
   Center,
+  Pagination,
 } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import _ from "lodash"
@@ -146,6 +147,21 @@ export default function SearchResult() {
   })
 
   const isEmpty = _.isEmpty(data) || _.has(data, "error")
+  const pageCount = Math.ceil((data?.total || 0) / (data?.itemsPerPage || 0))
+
+  const pagination = (
+    <Center>
+      <Box>
+        <Pagination
+          total={pageCount}
+          value={1}
+          // onChange={setPage}
+          mt="sm"
+          w="100%"
+        />
+      </Box>
+    </Center>
+  )
 
   return (
     currentQuery && (
@@ -157,10 +173,12 @@ export default function SearchResult() {
             {isEmpty ? (
               <LemmaNotFound />
             ) : (
-              <>
+              <Stack>
                 <Center>{data?.total} Treffer</Center>
+                {pagination}
                 <ResultList entries={data?.items || []} />
-              </>
+                {pagination}
+              </Stack>
             )}{" "}
           </>
         )}
