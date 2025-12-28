@@ -23,13 +23,14 @@ export default class Entry {
 }
 
 export interface DisplayEntry {
-  ['xml:id']: string
+  ["xml:id"]: string
   source: ResourceKey
   headword: string
   variants: string[]
   sense?: Sense[]
   gender: string | null
   pos: string | null
+  nPos: string | null
   number: string | null
 }
 
@@ -70,4 +71,11 @@ export interface Sense {
   gloss: string
   def: string
   sense?: Sense[]
+}
+
+export interface DisplayEntryList {
+  items: DisplayEntry[]
+  total: number
+  page: number
+  itemsPerPage: number
 }

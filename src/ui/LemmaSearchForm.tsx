@@ -8,7 +8,7 @@ export default function LemmaSearchForm({ ...props }: GroupProps) {
   const [searchValue, setSearchValue] = useState("")
 
   const SearchButton = (
-    <ActionIcon variant="white" size="lg" type="submit">
+    <ActionIcon variant="transparent" size="lg" type="submit">
       <IconSearch size={16} />
     </ActionIcon>
   )
