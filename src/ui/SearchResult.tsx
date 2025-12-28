@@ -8,19 +8,20 @@ import {
   Tooltip,
   Text,
   Group,
+  Center,
 } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import _ from "lodash"
 import { LemmaNotFound } from "./LemmaDisplay"
 import { NavLink, useSearchParams } from "react-router-dom"
-import { DisplayEntry } from "../domain/Entry"
+import { DisplayEntry, DisplayEntryList } from "../domain/Entry"
 import { ResourceKey, resources } from "../domain/Resource"
 import classes from "./SearchResult.module.css"
 import { IconExternalLink } from "@tabler/icons-react"
 import DisplaySense from "./DisplaySense"
 import React from "react"
 
-const search = async (query?: string): Promise<any> => {
+const search = async (query?: string): Promise<DisplayEntryList> => {
   if (!query) {
     throw new Error(`HTTP error status: 400`)
   }
@@ -28,7 +29,7 @@ const search = async (query?: string): Promise<any> => {
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
   }
-  const data = await response.json()
+  const data = (await response.json()) as DisplayEntryList
   return data
 }
 
@@ -137,7 +138,7 @@ export default function SearchResult() {
   const [searchParams] = useSearchParams()
   const currentQuery = searchParams.get("q")
 
-  const { data, isLoading } = useQuery<DisplayEntry[]>({
+  const { data, isLoading } = useQuery<DisplayEntryList>({
     queryKey: ["search", currentQuery],
     queryFn: () => search(currentQuery ?? undefined),
     enabled: !!currentQuery,
@@ -153,7 +154,14 @@ export default function SearchResult() {
           <Loader />
         ) : (
           <>
-            {isEmpty ? <LemmaNotFound /> : <ResultList entries={data || []} />}{" "}
+            {isEmpty ? (
+              <LemmaNotFound />
+            ) : (
+              <>
+                <Center>{data?.total} Treffer</Center>
+                <ResultList entries={data?.items || []} />
+              </>
+            )}{" "}
           </>
         )}
       </Box>
