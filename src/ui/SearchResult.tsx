@@ -20,7 +20,7 @@ import { ResourceKey, resources } from "../domain/Resource"
 import classes from "./SearchResult.module.css"
 import { IconExternalLink } from "@tabler/icons-react"
 import DisplaySense from "./DisplaySense"
-import React, { useEffect, useState } from "react"
+import React from "react"
 
 const search = async (
   query?: string,
