@@ -20,13 +20,18 @@ import { ResourceKey, resources } from "../domain/Resource"
 import classes from "./SearchResult.module.css"
 import { IconExternalLink } from "@tabler/icons-react"
 import DisplaySense from "./DisplaySense"
-import React from "react"
+import React, { useEffect, useState } from "react"
 
-const search = async (query?: string): Promise<DisplayEntryList> => {
+const search = async (
+  query?: string,
+  page: number = 1
+): Promise<DisplayEntryList> => {
   if (!query) {
     throw new Error(`HTTP error status: 400`)
   }
-  const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`)
+  const response = await fetch(
+    `/api/search?q=${encodeURIComponent(query)}&page=${page}`
+  )
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
   }
@@ -136,15 +141,27 @@ function ResultList({ entries }: { entries: DisplayEntry[] }) {
 }
 
 export default function SearchResult() {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const currentQuery = searchParams.get("q")
+  const currentPage = parseInt(searchParams.get("p") || "1", 10)
 
   const { data, isLoading } = useQuery<DisplayEntryList>({
-    queryKey: ["search", currentQuery],
-    queryFn: () => search(currentQuery ?? undefined),
+    queryKey: ["search", currentQuery, currentPage],
+    queryFn: () => search(currentQuery ?? undefined, currentPage),
     enabled: !!currentQuery,
     refetchOnWindowFocus: false,
   })
+
+  const handlePageChange = (page: number) => {
+    const newSearchParams = new URLSearchParams(searchParams)
+    if (page === 1) {
+      newSearchParams.delete("p")
+    } else {
+      newSearchParams.set("p", page.toString())
+    }
+    setSearchParams(newSearchParams)
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
 
   const isEmpty = _.isEmpty(data) || _.has(data, "error")
   const pageCount = Math.ceil((data?.total || 0) / (data?.itemsPerPage || 0))
@@ -154,8 +171,9 @@ export default function SearchResult() {
       <Box>
         <Pagination
           total={pageCount}
-          value={1}
-          // onChange={setPage}
+          value={currentPage}
+          onChange={handlePageChange}
+          withEdges
           mt="sm"
           w="100%"
         />
