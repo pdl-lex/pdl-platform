@@ -71,3 +71,10 @@ export interface Sense {
   def: string
   sense?: Sense[]
 }
+
+export interface DisplayEntryList {
+  items: DisplayEntry[]
+  total: number
+  page: number
+  itemsPerPage: number
+}
