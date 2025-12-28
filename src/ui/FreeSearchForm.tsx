@@ -11,7 +11,7 @@ export default function FreeSearchForm({ ...props }: GroupProps) {
   const [searchValue, setSearchValue] = useState(currentQuery)
 
   const SearchButton = (
-    <ActionIcon variant="white" size="lg" type="submit">
+    <ActionIcon variant="transparent" size="lg" type="submit">
       <IconSearch size={16} />
     </ActionIcon>
   )
