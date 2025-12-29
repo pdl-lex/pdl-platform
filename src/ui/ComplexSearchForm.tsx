@@ -10,6 +10,7 @@ import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { resources } from "../domain/Resource"
 import _ from "lodash"
+import { useEffect } from "react"
 
 const resourceKeys = Object.keys(resources)
 const resourceOptions = resourceKeys.map((key) => ({
@@ -38,6 +39,13 @@ export default function FullSearchForm() {
       resources: resourceKeys,
     },
   })
+
+  useEffect(() => {
+    form.setValues({
+      query: currentQuery,
+      resources: resourceKeys,
+    })
+  }, [currentQuery])
 
   const handleSubmit = (values: Record<string, any>) => {
     const queryParameters = new URLSearchParams({
