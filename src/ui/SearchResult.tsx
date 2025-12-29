@@ -30,7 +30,7 @@ const search = async (
     throw new Error(`HTTP error status: 400`)
   }
   const response = await fetch(
-    `/api/search?q=${encodeURIComponent(query)}&page=${page}`
+    `${import.meta.env.VITE_API_URL}/search?q=${encodeURIComponent(query)}&page=${page}`
   )
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
