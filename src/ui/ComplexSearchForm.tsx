@@ -1,4 +1,11 @@
-import { Button, Group, MultiSelect, Stack, TextInput } from "@mantine/core"
+import {
+  Button,
+  CloseButton,
+  Group,
+  MultiSelect,
+  Stack,
+  TextInput,
+} from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { resources } from "../domain/Resource"
@@ -42,6 +49,20 @@ export default function FullSearchForm() {
     navigate(`/search?${queryParameters.toString()}`)
   }
 
+  const ClearButton = (
+    <>
+      {!!form.getValues().query && (
+        <CloseButton
+          variant="transparent"
+          size="sm"
+          onClick={() => {
+            form.setFieldValue("query", "")
+          }}
+        />
+      )}
+    </>
+  )
+
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack gap="5">
@@ -50,6 +71,7 @@ export default function FullSearchForm() {
           autoFocus
           flex={1}
           placeholder="Freie Suche..."
+          rightSection={ClearButton}
           {...form.getInputProps("query")}
         />
         <MultiSelect
