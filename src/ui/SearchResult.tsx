@@ -140,7 +140,6 @@ export default function SearchResult() {
   const { data, isLoading } = useQuery<DisplayEntryList>({
     queryKey: ["search", searchParams.toString()],
     queryFn: () => search(searchParams),
-    enabled: !!searchParams.get("q"),
     refetchOnWindowFocus: false,
   })
 
