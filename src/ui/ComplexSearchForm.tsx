@@ -18,10 +18,15 @@ const resourceOptions = resourceKeys.map((key) => ({
   label: key.toUpperCase(),
 }))
 
-function setURLParams(params: URLSearchParams, values: Record<string, any>) {
-  const cleanParams = new URLSearchParams(
-    _.pick(Object.fromEntries(params.entries()), ["page", "q"])
-  )
+interface SearchFormValues {
+  q: string
+  resources: string[]
+  pos: string
+  npos: string
+}
+
+function createParams(values: SearchFormValues): string {
+  const cleanParams = new URLSearchParams()
 
   _(values)
     .omit("resources")
@@ -29,14 +34,19 @@ function setURLParams(params: URLSearchParams, values: Record<string, any>) {
       if (value) {
         cleanParams.set(key, value)
       } else {
-        params.delete(key)
+        cleanParams.delete(key)
       }
     })
 
   values.resources.forEach((key: string) => {
     cleanParams.append("resources", key)
   })
-  return cleanParams
+
+  if (cleanParams.getAll("resources").length === resourceKeys.length) {
+    cleanParams.delete("resources")
+  }
+
+  return cleanParams.toString()
 }
 
 export default function FullSearchForm() {
@@ -47,10 +57,10 @@ export default function FullSearchForm() {
   const pos = searchParams.get("pos") || ""
   const npos = searchParams.get("npos") || ""
 
-  const form = useForm({
+  const form = useForm<SearchFormValues>({
     mode: "uncontrolled",
     initialValues: {
-      query: currentQuery,
+      q: currentQuery,
       resources:
         _.find(
           [searchParams.getAll("resources"), resourceKeys],
@@ -65,20 +75,13 @@ export default function FullSearchForm() {
     },
   })
 
-  const handleSubmit = (values: Record<string, any>) => {
-    const queryParameters = new URLSearchParams({
-      ...Object.fromEntries(searchParams.entries()),
-      q: values.query.trim(),
-    })
-
-    const params = setURLParams(queryParameters, values)
-
-    navigate(`/search?${params.toString()}`)
+  const handleSubmit = (values: SearchFormValues) => {
+    navigate(`/search?${createParams(values)}`)
   }
 
   const ClearButton = (
     <>
-      {!!form.getValues().query && (
+      {!!form.getValues().q && (
         <CloseButton
           variant="transparent"
           size="sm"
@@ -94,12 +97,12 @@ export default function FullSearchForm() {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack gap="5">
         <TextInput
-          key={form.key("query")}
+          key={form.key("q")}
           autoFocus
           flex={1}
           placeholder="Freie Suche..."
           rightSection={ClearButton}
-          {...form.getInputProps("query")}
+          {...form.getInputProps("q")}
         />
         <MultiSelect
           key={form.key("resources")}
