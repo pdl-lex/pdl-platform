@@ -47,9 +47,9 @@ function DisplayResource({ name }: { name: ResourceKey }) {
 function DisplayGrammarInfo({ entry }: { entry: DisplayEntry }) {
   return (
     <Group mb="md" gap={5}>
-      {entry.pos && (
+      {entry.nPos && (
         <Badge size="xs" variant="default" radius="xs">
-          {entry.pos}
+          {entry.nPos}
         </Badge>
       )}
       {entry.gender && (
