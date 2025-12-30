@@ -1,6 +1,7 @@
 import {
   Button,
   CloseButton,
+  Fieldset,
   Group,
   MultiSelect,
   Stack,
@@ -42,12 +43,16 @@ export default function FullSearchForm() {
     () => getResources(searchParams),
     [searchParams]
   )
+  const pos = searchParams.get("pos") || ""
+  const npos = searchParams.get("npos") || ""
 
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
       query: currentQuery,
       resources: currentResources,
+      pos: pos,
+      npos: npos,
     },
   })
 
@@ -64,6 +69,9 @@ export default function FullSearchForm() {
       q: values.query.trim(),
     })
     setResources(queryParameters, values.resources)
+
+    queryParameters.set("pos", values.pos)
+    queryParameters.set("npos", values.npos)
 
     navigate(`/search?${queryParameters.toString()}`)
   }
@@ -102,6 +110,22 @@ export default function FullSearchForm() {
           searchable
           {...form.getInputProps("resources")}
         />
+        <Fieldset legend="Wortart">
+          <Stack gap="5">
+            <TextInput
+              key={form.key("pos")}
+              placeholder="Normalisiert"
+              flex={1}
+              {...form.getInputProps("pos")}
+            />
+            <TextInput
+              key={form.key("npos")}
+              placeholder="Original"
+              flex={1}
+              {...form.getInputProps("npos")}
+            />
+          </Stack>
+        </Fieldset>
       </Stack>
 
       <Group justify="flex-end" mt="md">
