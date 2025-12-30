@@ -11,7 +11,6 @@ import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { resources } from "../domain/Resource"
 import _ from "lodash"
-import { useEffect, useMemo } from "react"
 
 const resourceKeys = Object.keys(resources)
 const resourceOptions = resourceKeys.map((key) => ({
@@ -34,30 +33,17 @@ function setURLParams(params: URLSearchParams, values: Record<string, any>) {
       }
     })
 
-  const resources: string[] = _.uniq(values.resources) || []
-
-  if (resources.length > 0 && resources.length < resourceKeys.length) {
-    resources.forEach((key: string) => {
-      cleanParams.append("resources", key)
-    })
-  }
-
+  values.resources.forEach((key: string) => {
+    cleanParams.append("resources", key)
+  })
   return cleanParams
-}
-
-function getResources(queryParameters: URLSearchParams): string[] {
-  const resources = queryParameters.getAll("resources")
-  return resources.length > 0 ? resources : resourceKeys
 }
 
 export default function FullSearchForm() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const currentQuery = searchParams.get("q") || ""
-  const currentResources = useMemo(
-    () => getResources(searchParams),
-    [searchParams]
-  )
+
   const pos = searchParams.get("pos") || ""
   const npos = searchParams.get("npos") || ""
 
@@ -65,18 +51,19 @@ export default function FullSearchForm() {
     mode: "uncontrolled",
     initialValues: {
       query: currentQuery,
-      resources: currentResources,
+      resources:
+        _.find(
+          [searchParams.getAll("resources"), resourceKeys],
+          (list) => list.length > 0
+        ) || [],
       pos: pos,
       npos: npos,
     },
+    validate: {
+      resources: (values) =>
+        values.length < 1 ? "Mindestens ein Wörterbuch auswählen" : null,
+    },
   })
-
-  useEffect(() => {
-    form.setValues({
-      query: currentQuery,
-      resources: currentResources,
-    })
-  }, [currentQuery, currentResources])
 
   const handleSubmit = (values: Record<string, any>) => {
     const queryParameters = new URLSearchParams({
