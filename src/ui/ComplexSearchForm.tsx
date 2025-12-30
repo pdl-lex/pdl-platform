@@ -4,6 +4,7 @@ import {
   Fieldset,
   Group,
   MultiSelect,
+  Select,
   Stack,
   TextInput,
 } from "@mantine/core"
@@ -11,6 +12,7 @@ import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { resources } from "../domain/Resource"
 import _ from "lodash"
+import { partsOfSpeech } from "../domain/PartOfSpeech"
 
 const resourceKeys = Object.keys(resources)
 const resourceOptions = resourceKeys.map((key) => ({
@@ -116,9 +118,12 @@ export default function FullSearchForm() {
         />
         <Fieldset legend="Wortart">
           <Stack gap="5">
-            <TextInput
+            <Select
               key={form.key("npos")}
               placeholder="Normalisiert"
+              data={partsOfSpeech}
+              searchable
+              clearable
               flex={1}
               {...form.getInputProps("npos")}
             />
