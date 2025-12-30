@@ -86,7 +86,7 @@ export default function FullSearchForm() {
           variant="transparent"
           size="sm"
           onClick={() => {
-            form.setFieldValue("query", "")
+            form.setFieldValue("q", "")
           }}
         />
       )}
