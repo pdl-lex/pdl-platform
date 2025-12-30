@@ -2,10 +2,10 @@ import {
   ActionIcon,
   Button,
   Card,
+  Center,
   CloseButton,
   Collapse,
   Fieldset,
-  Group,
   MultiSelect,
   Select,
   Space,
@@ -19,7 +19,11 @@ import { resources } from "../domain/Resource"
 import _ from "lodash"
 import { partsOfSpeech } from "../domain/PartOfSpeech"
 import { useDisclosure } from "@mantine/hooks"
-import { IconAdjustments, IconAdjustmentsX, IconSearch } from "@tabler/icons-react"
+import {
+  IconAdjustments,
+  IconAdjustmentsX,
+  IconSearch,
+} from "@tabler/icons-react"
 
 const resourceKeys = Object.keys(resources)
 const resourceOptions = resourceKeys.map((key) => ({
@@ -32,6 +36,13 @@ interface SearchFormValues {
   resources: string[]
   pos: string
   npos: string
+}
+
+const defaultValues: SearchFormValues = {
+  q: "",
+  resources: resourceKeys,
+  pos: "",
+  npos: "",
 }
 
 function createParams(values: SearchFormValues): string {
@@ -121,22 +132,14 @@ export default function FullSearchForm() {
           autoFocus
           flex={1}
           placeholder="Freie Suche..."
-          rightSection={
-            <>
-              {ClearButton}
-              {FilterButton}
-            </>
-          }
-          rightSectionProps={{
-            style: { justifyContent: "flex-end" },
-          }}
+          leftSection={FilterButton}
+          rightSection={ClearButton}
           {...form.getInputProps("q")}
         />
         <Collapse in={opened}>
           <Card withBorder>
             <MultiSelect
               key={form.key("resources")}
-              flex={1}
               label={"Wörterbücher"}
               data={resourceOptions}
               placeholder={"Wörterbücher auswählen..."}
@@ -153,26 +156,32 @@ export default function FullSearchForm() {
                   data={partsOfSpeech}
                   searchable
                   clearable
-                  flex={1}
                   {...form.getInputProps("npos")}
                 />
                 <TextInput
                   key={form.key("pos")}
                   placeholder="Original"
-                  flex={1}
                   {...form.getInputProps("pos")}
                 />
               </Stack>
             </Fieldset>
+            <Space h="md" />
+            <Button
+              style={{ alignSelf: "flex-end" }}
+              onClick={() => form.setValues(defaultValues)}
+              color="red"
+            >
+              Filter zurücksetzen
+            </Button>
           </Card>
         </Collapse>
       </Stack>
 
-      <Group justify="flex-end" mt="md">
+      <Center mt="md">
         <Button type="submit" leftSection={<IconSearch size={16} />}>
           Suchen
         </Button>
-      </Group>
+      </Center>
     </form>
   )
 }
