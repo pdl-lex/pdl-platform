@@ -35,3 +35,5 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+          build-args: |
+            VITE_API_URL=https://api.lexoterm.de

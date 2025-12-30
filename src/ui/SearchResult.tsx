@@ -23,7 +23,9 @@ import DisplaySense from "./DisplaySense"
 import React from "react"
 
 const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
-  const response = await fetch(`/api/search?${query.toString()}`)
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/search?${query.toString()}`
+  )
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
   }

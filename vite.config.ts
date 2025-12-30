@@ -12,13 +12,13 @@ export default ({ mode }: { mode: string }) => {
       strictPort: true,
       host: true,
       origin: "http://0.0.0.0:8080",
-      proxy: {
-        "/api": {
-          target: env.VITE_API_URL,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ""),
-        },
-      },
+      // proxy: {
+      //   "/api": {
+      //     target: env.VITE_API_URL,
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/api/, ""),
+      //   },
+      // },
     },
     preview: {
       port: 3000,
