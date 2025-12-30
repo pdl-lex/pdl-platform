@@ -1,18 +1,25 @@
 import {
+  ActionIcon,
   Button,
+  Card,
   CloseButton,
+  Collapse,
   Fieldset,
   Group,
   MultiSelect,
   Select,
+  Space,
   Stack,
   TextInput,
+  Tooltip,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { resources } from "../domain/Resource"
 import _ from "lodash"
 import { partsOfSpeech } from "../domain/PartOfSpeech"
+import { useDisclosure } from "@mantine/hooks"
+import { IconAdjustments, IconAdjustmentsX, IconSearch } from "@tabler/icons-react"
 
 const resourceKeys = Object.keys(resources)
 const resourceOptions = resourceKeys.map((key) => ({
@@ -56,8 +63,7 @@ export default function FullSearchForm() {
   const [searchParams] = useSearchParams()
   const currentQuery = searchParams.get("q") || ""
 
-  const pos = searchParams.get("pos") || ""
-  const npos = searchParams.get("npos") || ""
+  const [opened, { toggle }] = useDisclosure(true)
 
   const form = useForm<SearchFormValues>({
     mode: "uncontrolled",
@@ -68,8 +74,8 @@ export default function FullSearchForm() {
           [searchParams.getAll("resources"), resourceKeys],
           (list) => list.length > 0
         ) || [],
-      pos: pos,
-      npos: npos,
+      pos: searchParams.get("pos") || "",
+      npos: searchParams.get("npos") || "",
     },
     validate: {
       resources: (values) =>
@@ -95,50 +101,77 @@ export default function FullSearchForm() {
     </>
   )
 
+  const FilterButton = (
+    <Tooltip label={opened ? "Filter verbergen" : "Filter anzeigen"}>
+      <ActionIcon onClick={toggle} variant="transparent">
+        {opened ? (
+          <IconAdjustmentsX size={16} />
+        ) : (
+          <IconAdjustments size={16} />
+        )}
+      </ActionIcon>
+    </Tooltip>
+  )
+
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack gap="5">
+      <Stack gap="sm">
         <TextInput
           key={form.key("q")}
           autoFocus
           flex={1}
           placeholder="Freie Suche..."
-          rightSection={ClearButton}
+          rightSection={
+            <>
+              {ClearButton}
+              {FilterButton}
+            </>
+          }
+          rightSectionProps={{
+            style: { justifyContent: "flex-end" },
+          }}
           {...form.getInputProps("q")}
         />
-        <MultiSelect
-          key={form.key("resources")}
-          flex={1}
-          label={"Wörterbücher"}
-          data={resourceOptions}
-          placeholder={"Wörterbücher auswählen..."}
-          clearable
-          searchable
-          {...form.getInputProps("resources")}
-        />
-        <Fieldset legend="Wortart">
-          <Stack gap="5">
-            <Select
-              key={form.key("npos")}
-              placeholder="Normalisiert"
-              data={partsOfSpeech}
-              searchable
+        <Collapse in={opened}>
+          <Card withBorder>
+            <MultiSelect
+              key={form.key("resources")}
+              flex={1}
+              label={"Wörterbücher"}
+              data={resourceOptions}
+              placeholder={"Wörterbücher auswählen..."}
               clearable
-              flex={1}
-              {...form.getInputProps("npos")}
+              searchable
+              {...form.getInputProps("resources")}
             />
-            <TextInput
-              key={form.key("pos")}
-              placeholder="Original"
-              flex={1}
-              {...form.getInputProps("pos")}
-            />
-          </Stack>
-        </Fieldset>
+            <Space h="md" />
+            <Fieldset legend="Wortart" variant="unstyled">
+              <Stack gap="sm">
+                <Select
+                  key={form.key("npos")}
+                  placeholder="Normalisiert"
+                  data={partsOfSpeech}
+                  searchable
+                  clearable
+                  flex={1}
+                  {...form.getInputProps("npos")}
+                />
+                <TextInput
+                  key={form.key("pos")}
+                  placeholder="Original"
+                  flex={1}
+                  {...form.getInputProps("pos")}
+                />
+              </Stack>
+            </Fieldset>
+          </Card>
+        </Collapse>
       </Stack>
 
       <Group justify="flex-end" mt="md">
-        <Button type="submit">Suchen</Button>
+        <Button type="submit" leftSection={<IconSearch size={16} />}>
+          Suchen
+        </Button>
       </Group>
     </form>
   )
