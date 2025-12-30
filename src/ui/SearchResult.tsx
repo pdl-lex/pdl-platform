@@ -180,7 +180,7 @@ export default function SearchResult() {
               <LemmaNotFound />
             ) : (
               <Stack>
-                <Center>{data?.total} Treffer</Center>
+                <Center>{data?.total.toLocaleString("de-DE")} Treffer</Center>
                 {pagination}
                 <ResultList entries={data?.items || []} />
                 {pagination}
