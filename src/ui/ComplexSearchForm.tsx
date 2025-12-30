@@ -19,15 +19,30 @@ const resourceOptions = resourceKeys.map((key) => ({
   label: key.toUpperCase(),
 }))
 
-function setResources(queryParameters: URLSearchParams, resources: string[]) {
-  const isDefaultSelection =
-    resources.length === resourceKeys.length || resources.length === 0
-  queryParameters.delete("resources")
-  if (!isDefaultSelection) {
-    resources.forEach((resourceKey: string) => {
-      queryParameters.append("resources", resourceKey)
+function setURLParams(params: URLSearchParams, values: Record<string, any>) {
+  const cleanParams = new URLSearchParams(
+    _.pick(Object.fromEntries(params.entries()), ["page", "q"])
+  )
+
+  _(values)
+    .omit("resources")
+    .forEach((value: any, key: string) => {
+      if (value) {
+        cleanParams.set(key, value)
+      } else {
+        params.delete(key)
+      }
+    })
+
+  const resources: string[] = _.uniq(values.resources) || []
+
+  if (resources.length > 0 && resources.length < resourceKeys.length) {
+    resources.forEach((key: string) => {
+      cleanParams.append("resources", key)
     })
   }
+
+  return cleanParams
 }
 
 function getResources(queryParameters: URLSearchParams): string[] {
@@ -68,12 +83,10 @@ export default function FullSearchForm() {
       ...Object.fromEntries(searchParams.entries()),
       q: values.query.trim(),
     })
-    setResources(queryParameters, values.resources)
 
-    queryParameters.set("pos", values.pos)
-    queryParameters.set("npos", values.npos)
+    const params = setURLParams(queryParameters, values)
 
-    navigate(`/search?${queryParameters.toString()}`)
+    navigate(`/search?${params.toString()}`)
   }
 
   const ClearButton = (
