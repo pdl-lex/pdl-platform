@@ -113,16 +113,16 @@ export default function FullSearchForm() {
         <Fieldset legend="Wortart">
           <Stack gap="5">
             <TextInput
-              key={form.key("pos")}
+              key={form.key("npos")}
               placeholder="Normalisiert"
               flex={1}
-              {...form.getInputProps("pos")}
+              {...form.getInputProps("npos")}
             />
             <TextInput
-              key={form.key("npos")}
+              key={form.key("pos")}
               placeholder="Original"
               flex={1}
-              {...form.getInputProps("npos")}
+              {...form.getInputProps("pos")}
             />
           </Stack>
         </Fieldset>
