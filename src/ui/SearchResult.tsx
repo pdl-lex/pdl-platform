@@ -22,15 +22,9 @@ import { IconExternalLink } from "@tabler/icons-react"
 import DisplaySense from "./DisplaySense"
 import React from "react"
 
-const search = async (
-  query?: string,
-  page: number = 1
-): Promise<DisplayEntryList> => {
-  if (!query) {
-    throw new Error(`HTTP error status: 400`)
-  }
+const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/search?q=${encodeURIComponent(query)}&page=${page}`
+    `${import.meta.env.VITE_API_URL}/search?${query.toString()}`
   )
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
@@ -53,9 +47,9 @@ function DisplayResource({ name }: { name: ResourceKey }) {
 function DisplayGrammarInfo({ entry }: { entry: DisplayEntry }) {
   return (
     <Group mb="md" gap={5}>
-      {entry.pos && (
+      {entry.nPos && (
         <Badge size="xs" variant="default" radius="xs">
-          {entry.pos}
+          {entry.nPos}
         </Badge>
       )}
       {entry.gender && (
@@ -142,24 +136,18 @@ function ResultList({ entries }: { entries: DisplayEntry[] }) {
 
 export default function SearchResult() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const currentQuery = searchParams.get("q")
-  const currentPage = parseInt(searchParams.get("p") || "1", 10)
 
   const { data, isLoading } = useQuery<DisplayEntryList>({
-    queryKey: ["search", currentQuery, currentPage],
-    queryFn: () => search(currentQuery ?? undefined, currentPage),
-    enabled: !!currentQuery,
+    queryKey: ["search", searchParams.toString()],
+    queryFn: () => search(searchParams),
     refetchOnWindowFocus: false,
   })
 
   const handlePageChange = (page: number) => {
-    const newSearchParams = new URLSearchParams(searchParams)
-    if (page === 1) {
-      newSearchParams.delete("p")
-    } else {
-      newSearchParams.set("p", page.toString())
-    }
-    setSearchParams(newSearchParams)
+    setSearchParams((prev) => {
+      prev.set("page", page.toString())
+      return prev
+    })
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
@@ -171,7 +159,7 @@ export default function SearchResult() {
       <Box>
         <Pagination
           total={pageCount}
-          value={currentPage}
+          value={parseInt(searchParams.get("page") || "1", 10)}
           onChange={handlePageChange}
           withEdges
           mt="sm"
@@ -182,7 +170,7 @@ export default function SearchResult() {
   )
 
   return (
-    currentQuery && (
+    !!searchParams && (
       <Box maw="800px" mx="auto" py="xl" px="md">
         {isLoading ? (
           <Loader />
@@ -192,7 +180,7 @@ export default function SearchResult() {
               <LemmaNotFound />
             ) : (
               <Stack>
-                <Center>{data?.total} Treffer</Center>
+                <Center>{data?.total.toLocaleString("de-DE")} Treffer</Center>
                 {pagination}
                 <ResultList entries={data?.items || []} />
                 {pagination}

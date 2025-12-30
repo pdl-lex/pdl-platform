@@ -1,15 +1,15 @@
 import _ from "lodash"
 import { JSX } from "react"
 import { DisplayEntry } from "../domain/Entry"
-import { Text, Card } from "@mantine/core"
+import { Text, Card, Center } from "@mantine/core"
 import { DisplayVariants, EntryHeader } from "./SearchResult"
 import DisplaySense from "./DisplaySense"
 
 export function LemmaNotFound(): JSX.Element {
   return (
-    <section>
+    <Center>
       <Text>Keine Treffer</Text>
-    </section>
+    </Center>
   )
 }
 
