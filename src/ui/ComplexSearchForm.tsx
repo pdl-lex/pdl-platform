@@ -33,6 +33,7 @@ const resourceOptions = resourceKeys.map((key) => ({
 
 interface SearchFormValues {
   q: string
+  lemma: string
   resources: string[]
   pos: string
   npos: string
@@ -40,6 +41,7 @@ interface SearchFormValues {
 
 const defaultValues: SearchFormValues = {
   q: "",
+  lemma: "",
   resources: resourceKeys,
   pos: "",
   npos: "",
@@ -80,6 +82,7 @@ export default function FullSearchForm() {
     mode: "uncontrolled",
     initialValues: {
       q: currentQuery,
+      lemma: searchParams.get("lemma") || "",
       resources:
         _.find(
           [searchParams.getAll("resources"), resourceKeys],
@@ -137,7 +140,13 @@ export default function FullSearchForm() {
           {...form.getInputProps("q")}
         />
         <Collapse in={opened}>
-          <Card withBorder>
+          <Card withBorder px={"lg"}>
+            <TextInput
+              key={form.key("lemma")}
+              label={"Lemma (exakt)"}
+              {...form.getInputProps("lemma")}
+            />
+            <Space h="md" />
             <MultiSelect
               key={form.key("resources")}
               label={"Wörterbücher"}
