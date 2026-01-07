@@ -4,6 +4,7 @@ import { DisplayEntry } from "../domain/Entry"
 import _ from "lodash"
 import LemmaDisplay, { LemmaNotFound } from "../ui/LemmaDisplay"
 import { useParams } from "react-router-dom"
+import { useScrollToTop } from "../hooks/useScrollToTop"
 
 const fetchLemma = async (query?: string): Promise<DisplayEntry> => {
   if (!query) {
@@ -21,6 +22,7 @@ const fetchLemma = async (query?: string): Promise<DisplayEntry> => {
 
 export default function Article() {
   const { id } = useParams<{ id: string }>()
+  useScrollToTop()
 
   const { data, isLoading } = useQuery<DisplayEntry>({
     queryKey: ["search", id],
