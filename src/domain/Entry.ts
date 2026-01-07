@@ -70,11 +70,17 @@ export interface GrammarGroup {
   gram: GrammaticalFeature[]
 }
 
+export interface Citation {
+  type: string
+  quote: string
+}
+
 export interface Sense {
   id: string
   n: string
   gloss: string
   def: string
+  cit?: Citation[] 
   sense?: Sense[]
 }
 
