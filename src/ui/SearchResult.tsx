@@ -98,12 +98,14 @@ export function EntryHeader({
   entry: DisplayEntry
   children?: React.ReactNode
 }) {
+  const lemmaIndex = entry.headword.index
   return (
     <Stack gap={0}>
       <DisplayResource name={entry.source} />
       <Group gap={5} mb="xs">
         <Title mt={0} mb={0} order={2}>
-          {entry.headword}
+          {entry.headword.lemma}
+          {lemmaIndex !== null && <sup>{lemmaIndex}</sup>}
         </Title>
         {children}
       </Group>

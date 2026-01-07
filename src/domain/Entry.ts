@@ -22,10 +22,15 @@ export default class Entry {
   }
 }
 
+export interface Headword {
+  lemma: string
+  index: number | null
+}
+
 export interface DisplayEntry {
   ["xml:id"]: string
   source: ResourceKey
-  headword: string
+  headword: Headword
   variants: string[]
   sense?: Sense[]
   gender: string | null
