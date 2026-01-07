@@ -143,7 +143,8 @@ export default function FullSearchForm() {
           <Card withBorder px={"lg"}>
             <TextInput
               key={form.key("lemma")}
-              label={"Lemma (exakt)"}
+              label={"Lemma"}
+              placeholder={"Exaktes Lemma oder /regulärer Ausdruck/i"}
               {...form.getInputProps("lemma")}
             />
             <Space h="md" />
