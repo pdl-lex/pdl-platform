@@ -5,7 +5,6 @@ import {
   Blockquote,
   Text,
   Divider,
-  Group,
   ActionIcon,
   Tooltip,
 } from "@mantine/core"
@@ -61,15 +60,12 @@ function SenseItem({
 }) {
   const examples = sense.cit?.filter((c) => c.type === "example") || []
   const [opened, { toggle }] = useDisclosure(showExamples)
+  const Icon = opened ? IconMessageMinus : IconMessagePlus
 
   const ToggleExamplesButton = (
     <Tooltip label={opened ? "Belege verbergen" : "Belege anzeigen"}>
       <ActionIcon variant="transparent" onClick={toggle}>
-        {opened ? (
-          <IconMessageMinus size={16} />
-        ) : (
-          <IconMessagePlus size={16} />
-        )}
+        <Icon size={"1em"} />
       </ActionIcon>
     </Tooltip>
   )
@@ -82,10 +78,10 @@ function SenseItem({
       })}
       data-sense-n={`${sense.n}.`}
     >
-      <Group gap={"0"}>
-        <span>{sense.def}</span>
+      <Text span>
+        {sense.def}
         {examples.length > 0 && ToggleExamplesButton}
-      </Group>
+      </Text>
       <Examples examples={examples} opened={opened} />
       <DisplaySense senses={sense.sense} showExamples={showExamples} />
     </List.Item>
