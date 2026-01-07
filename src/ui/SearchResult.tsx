@@ -80,7 +80,7 @@ export function DisplayVariants({ variants }: { variants: string[] }) {
 }
 
 function PreviewSenses({ senses }: { senses: DisplayEntry["sense"] }) {
-  return <DisplaySense senses={senses} />
+  return <DisplaySense senses={senses} showExamples={false} />
 }
 
 function EntryLink({ id }: { id: string }) {
