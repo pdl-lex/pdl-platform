@@ -50,6 +50,48 @@ function Examples({
   )
 }
 
+function SenseItem({
+  sense,
+  index,
+  showExamples,
+}: {
+  sense: Sense
+  index: number
+  showExamples: boolean
+}) {
+  const examples = sense.cit?.filter((c) => c.type === "example") || []
+  const [opened, { toggle }] = useDisclosure(showExamples)
+
+  const ToggleExamplesButton = (
+    <Tooltip label={opened ? "Belege verbergen" : "Belege anzeigen"}>
+      <ActionIcon variant="transparent" onClick={toggle}>
+        {opened ? (
+          <IconMessageMinus size={16} />
+        ) : (
+          <IconMessagePlus size={16} />
+        )}
+      </ActionIcon>
+    </Tooltip>
+  )
+
+  return (
+    <List.Item
+      key={index}
+      className={classNames({
+        [classes.numbered_sense_item]: !!sense.n,
+      })}
+      data-sense-n={`${sense.n}.`}
+    >
+      <Group gap={"0"}>
+        <span>{sense.def}</span>
+        {examples.length > 0 && ToggleExamplesButton}
+      </Group>
+      <Examples examples={examples} opened={opened} />
+      <DisplaySense senses={sense.sense} showExamples={showExamples} />
+    </List.Item>
+  )
+}
+
 export default function DisplaySense({
   senses,
   showExamples,
@@ -59,39 +101,14 @@ export default function DisplaySense({
 }): JSX.Element {
   return senses && senses.length > 0 ? (
     <List>
-      {senses.map((sense, index) => {
-        const examples = sense.cit?.filter((c) => c.type === "example") || []
-        const [opened, { toggle }] = useDisclosure(showExamples)
-
-        const ToggleExamplesButton = (
-          <Tooltip label={opened ? "Belege verbergen" : "Belege anzeigen"}>
-            <ActionIcon variant="transparent" onClick={toggle}>
-              {opened ? (
-                <IconMessageMinus size={16} />
-              ) : (
-                <IconMessagePlus size={16} />
-              )}
-            </ActionIcon>
-          </Tooltip>
-        )
-
-        return (
-          <List.Item
-            key={index}
-            className={classNames({
-              [classes.numbered_sense_item]: !!sense.n,
-            })}
-            data-sense-n={`${sense.n}.`}
-          >
-            <Group gap={"0"}>
-              <span>{sense.def}</span>
-              {examples.length > 0 && ToggleExamplesButton}
-            </Group>
-            <Examples examples={examples} opened={opened} />
-            <DisplaySense senses={sense.sense} showExamples={showExamples} />
-          </List.Item>
-        )
-      })}
+      {senses.map((sense, index) => (
+        <SenseItem
+          key={index}
+          sense={sense}
+          index={index}
+          showExamples={showExamples}
+        />
+      ))}
     </List>
   ) : (
     <></>
