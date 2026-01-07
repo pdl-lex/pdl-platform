@@ -9,7 +9,9 @@ const fetchLemma = async (query?: string): Promise<DisplayEntry> => {
   if (!query) {
     throw new Error(`HTTP error status: 400`)
   }
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/lemma-display/${query}`)
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/lemma-display/${query}`
+  )
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
   }

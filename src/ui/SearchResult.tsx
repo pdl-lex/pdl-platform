@@ -79,10 +79,6 @@ export function DisplayVariants({ variants }: { variants: string[] }) {
   )
 }
 
-function PreviewSenses({ senses }: { senses: DisplayEntry["sense"] }) {
-  return <DisplaySense senses={senses} showExamples={false} />
-}
-
 function EntryLink({ id }: { id: string }) {
   return (
     <NavLink className={classes.lemmalink} to={"/entry/" + id}>
@@ -121,7 +117,7 @@ function ResultItem({ entry }: { entry: DisplayEntry }) {
         <EntryLink id={entry["xml:id"]} />
       </EntryHeader>
       <DisplayVariants variants={entry.variants} />
-      <PreviewSenses senses={entry.sense} />
+      <DisplaySense senses={entry.sense} showExamples={false} />
     </Card>
   )
 }
