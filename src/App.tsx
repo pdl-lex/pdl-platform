@@ -25,9 +25,9 @@ const toplevelRoutes: AppRoute[] = [
   { path: "/", Component: Home, title: "Startseite" },
   { path: "/search", Component: SearchView, title: "Suche" },
   { path: "/dictionaries", Component: Dictionaries, title: "Wörterbücher" },
-  { path: "/corpora", Component: Corpora, title: "Korpora" },
-  { path: "/lab", Component: Lab, title: "Lab" },
-  { path: "/about", Component: About, title: "Über" },
+  // { path: "/corpora", Component: Corpora, title: "Korpora" },
+  // { path: "/lab", Component: Lab, title: "Lab" },
+  // { path: "/about", Component: About, title: "Über" },
 ]
 
 const subRoutes: AppRoute[] = [
