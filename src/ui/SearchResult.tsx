@@ -250,7 +250,7 @@ export default function SearchResult() {
         gap={5}
         bg="white"
       >
-        <Center>{total.toLocaleString("de-DE")} Treffer</Center>
+        {!!data && <Center>{total.toLocaleString("de-DE")} Treffer</Center>}
         {pagination}
       </Stack>
       <Stack maw="800px" w="100%" mx="auto" gap="xl" p="xl">
