@@ -11,17 +11,20 @@ import {
   Center,
   Pagination,
   Button,
+  Modal,
+  ActionIcon,
 } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import _ from "lodash"
-import { NavLink, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import { DisplayEntry, DisplayEntryList } from "../domain/Entry"
 import { ResourceKey, resources } from "../domain/Resource"
 import classes from "./SearchResult.module.css"
-import { IconArrowUp, IconExternalLink } from "@tabler/icons-react"
+import { IconArrowUp, IconBook } from "@tabler/icons-react"
 import DisplaySense from "./DisplaySense"
 import React from "react"
 import { HEADER_HEIGHT } from "../layout/MainLayout"
+import { useDisclosure } from "@mantine/hooks"
 
 const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
   const response = await fetch(
@@ -80,14 +83,6 @@ export function DisplayVariants({ variants }: { variants: string[] }) {
   )
 }
 
-function EntryLink({ id }: { id: string }) {
-  return (
-    <NavLink className={classes.lemmalink} to={"/entry/" + id}>
-      <IconExternalLink />
-    </NavLink>
-  )
-}
-
 export function EntryHeader({
   entry,
   children,
@@ -100,11 +95,13 @@ export function EntryHeader({
     <Stack gap={0}>
       <DisplayResource name={entry.source} />
       <Group gap={5} mb="xs">
-        <Title mt={0} mb={0} order={2}>
-          {entry.headword.lemma}
-          {lemmaIndex !== null && <sup>{lemmaIndex}</sup>}
-        </Title>
-        {children}
+        <Group gap={0} align={"baseline"}>
+          <Title mt={0} mb={0} order={2}>
+            {entry.headword.lemma}
+            {lemmaIndex !== null && <sup>{lemmaIndex}</sup>}
+          </Title>
+          {children}
+        </Group>
       </Group>
       <DisplayGrammarInfo entry={entry} />
     </Stack>
@@ -112,6 +109,36 @@ export function EntryHeader({
 }
 
 function ResultItem({ entry }: { entry: DisplayEntry }) {
+  const [opened, { open, close }] = useDisclosure(false)
+  const overlay = (
+    <Modal
+      opened={opened}
+      transitionProps={{ transition: "fade-down", duration: 300 }}
+      size={"xl"}
+      padding={"lg"}
+      title={
+        <>
+          <EntryHeader entry={entry} />
+          <Text color="dimmed" pb={0} size="xs">
+            <code>ID: {entry["xml:id"]}</code>
+          </Text>
+        </>
+      }
+      onClose={close}
+      centered
+      styles={{
+        header: {
+          alignItems: "flex-start",
+          borderBottom: "1px solid var(--mantine-color-gray-3)",
+        },
+      }}
+    >
+      <Stack py={"md"}>
+        <DisplayVariants variants={entry.variants} />
+        {!!entry.sense && <DisplaySense senses={entry.sense} />}
+      </Stack>
+    </Modal>
+  )
   return (
     <Card
       withBorder
@@ -120,12 +147,17 @@ function ResultItem({ entry }: { entry: DisplayEntry }) {
       className={classes["result-item"]}
       miw="100%"
     >
+      {overlay}
       <EntryHeader entry={entry}>
-        <EntryLink id={entry["xml:id"]} />
+        <Tooltip label={"Vollständigen Eintrag anzeigen"}>
+          <ActionIcon variant="subtle" color="gray">
+            <IconBook size={16} onClick={open} />
+          </ActionIcon>
+        </Tooltip>
       </EntryHeader>
       <DisplayVariants variants={entry.variants} />
       {!!entry.sense && (
-        <DisplaySense senses={entry.sense} showExamples={false} />
+        <DisplaySense senses={entry.sense} maxSensesToShow={10} />
       )}
     </Card>
   )
