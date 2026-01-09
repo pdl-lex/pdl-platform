@@ -13,6 +13,8 @@ import {
   Button,
   Modal,
   ActionIcon,
+  Affix,
+  Transition,
 } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import _ from "lodash"
@@ -24,7 +26,7 @@ import { IconArrowUp, IconBook } from "@tabler/icons-react"
 import DisplaySense from "./DisplaySense"
 import React from "react"
 import { HEADER_HEIGHT } from "../layout/MainLayout"
-import { useDisclosure } from "@mantine/hooks"
+import { useDisclosure, useWindowScroll } from "@mantine/hooks"
 import SearchExamples from "./SearchExamples"
 
 const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
@@ -190,6 +192,7 @@ function ResultList({
 
 export default function SearchResult() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const [scroll, scrollTo] = useWindowScroll()
 
   const { data, isFetching } = useQuery<DisplayEntryList>({
     queryKey: ["search", searchParams.toString()],
@@ -225,17 +228,19 @@ export default function SearchResult() {
   )
 
   const backToTopButton = (
-    <Center>
-      <Box>
-        <Button
-          variant="light"
-          leftSection={<IconArrowUp size={14} />}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        >
-          Zum Seitenanfang
-        </Button>
-      </Box>
-    </Center>
+    <Affix position={{ bottom: 32, right: 32 }}>
+      <Transition transition="slide-up" mounted={scroll.y > 0}>
+        {(transitionStyles) => (
+          <Button
+            leftSection={<IconArrowUp size={14} />}
+            style={transitionStyles}
+            onClick={() => scrollTo({ y: 0 })}
+          >
+            Zum Seitenanfang
+          </Button>
+        )}
+      </Transition>
+    </Affix>
   )
   return searchParams.size > 0 ? (
     <Stack p={0}>
