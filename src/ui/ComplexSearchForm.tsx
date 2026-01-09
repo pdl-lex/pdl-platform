@@ -25,8 +25,8 @@ import {
   IconSearch,
 } from "@tabler/icons-react"
 
-const resourceNames = Object.values(resources).map(
-  (resource) => resource.displayName
+const resourceOptions = Object.values(resources).map(
+  ({ key, displayName }) => `${key.toUpperCase()} | ${displayName}`
 )
 
 interface SearchFormValues {
@@ -40,7 +40,7 @@ interface SearchFormValues {
 const defaultValues: SearchFormValues = {
   q: "",
   lemma: "",
-  resources: resourceNames,
+  resources: resourceOptions,
   pos: "",
   npos: "",
 }
@@ -62,7 +62,7 @@ function createParams(values: SearchFormValues): string {
     cleanParams.append("resources", key)
   })
 
-  if (cleanParams.getAll("resources").length === resourceNames.length) {
+  if (cleanParams.getAll("resources").length === resourceOptions.length) {
     cleanParams.delete("resources")
   }
 
@@ -74,7 +74,7 @@ function getCurrentResources(searchParams: URLSearchParams): string[] {
     .getAll("resources")
     .map((key) => resources[key as ResourceKey].displayName)
 
-  return currentResources.length === 0 ? resourceNames : currentResources
+  return currentResources.length === 0 ? resourceOptions : currentResources
 }
 
 export default function FullSearchForm() {
@@ -153,7 +153,7 @@ export default function FullSearchForm() {
             <MultiSelect
               key={form.key("resources")}
               label={"Wörterbücher"}
-              data={resourceNames}
+              data={resourceOptions}
               placeholder={"Wörterbücher auswählen..."}
               clearable
               searchable
