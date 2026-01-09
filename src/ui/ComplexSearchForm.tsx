@@ -179,11 +179,11 @@ export default function FullSearchForm() {
             </Fieldset>
             <Space h="md" />
             <Button
-              style={{ alignSelf: "flex-end" }}
+              style={{ alignSelf: "flex-start" }}
               onClick={() => form.setValues(defaultValues)}
               color="red"
             >
-              Filter zurücksetzen
+              Filter löschen
             </Button>
           </Card>
         </Collapse>
