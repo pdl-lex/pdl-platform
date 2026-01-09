@@ -99,19 +99,21 @@ export default function FullSearchForm() {
     navigate(`/search?${createParams(values)}`)
   }
 
-  const ClearButton = (
-    <>
-      {!!form.getValues().q && (
-        <CloseButton
-          variant="transparent"
-          size="sm"
-          onClick={() => {
-            form.setFieldValue("q", "")
-          }}
-        />
-      )}
-    </>
-  )
+  function createClearButton(key: keyof SearchFormValues) {
+    return (
+      <>
+        {!!form.getValues()[key] && (
+          <CloseButton
+            variant="transparent"
+            size="sm"
+            onClick={() => {
+              form.setFieldValue(key, "")
+            }}
+          />
+        )}
+      </>
+    )
+  }
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -120,15 +122,15 @@ export default function FullSearchForm() {
           key={form.key("q")}
           label={"Freie Suche"}
           autoFocus
-          flex={1}
           placeholder="Lemma, Bedeutung, Beleg..."
-          rightSection={ClearButton}
+          rightSection={createClearButton("q")}
           {...form.getInputProps("q")}
         />
         <TextInput
           key={form.key("lemma")}
           label={"Lemma"}
           placeholder={"Exaktes Lemma oder /regulärer Ausdruck/i"}
+          rightSection={createClearButton("lemma")}
           {...form.getInputProps("lemma")}
         />
         <MultiSelect
