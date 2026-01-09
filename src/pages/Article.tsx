@@ -1,4 +1,4 @@
-import { Box, Loader } from "@mantine/core"
+import { Box, Card, Loader } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import { DisplayEntry } from "../domain/Entry"
 import _ from "lodash"
@@ -37,8 +37,12 @@ export default function Article() {
     <Box maw="800px" mx="auto" py="xl" px="md">
       {isLoading ? (
         <Loader />
+      ) : isEmpty ? (
+        <LemmaNotFound />
       ) : (
-        <>{isEmpty ? <LemmaNotFound /> : <LemmaDisplay entry={data} />} </>
+        <Card withBorder shadow="md" padding="xl">
+          <LemmaDisplay entry={data} />
+        </Card>
       )}
     </Box>
   )

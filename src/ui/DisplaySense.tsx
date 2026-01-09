@@ -7,6 +7,7 @@ import {
   Divider,
   ActionIcon,
   Tooltip,
+  Spoiler,
 } from "@mantine/core"
 import classNames from "classnames"
 import React, { JSX } from "react"
@@ -22,9 +23,6 @@ function Examples({
   examples: { quote: string }[]
   opened: boolean
 }) {
-  if (examples.length === 0) {
-    return <></>
-  }
   return (
     <Stack align="flex-start">
       <Collapse in={opened}>
@@ -58,7 +56,10 @@ function SenseItem({
   index: number
   showExamples: boolean
 }) {
-  const examples = sense.cit?.filter((c) => c.type === "example") || []
+  const examples =
+    sense.cit?.filter(
+      (c) => c.type === "example" && c.quote && c.quote.trim() !== ""
+    ) || []
   const [opened, { toggle }] = useDisclosure(showExamples)
   const Icon = opened ? IconMessageMinus : IconMessagePlus
 
@@ -82,22 +83,26 @@ function SenseItem({
         {sense.def}
         {examples.length > 0 && ToggleExamplesButton}
       </Text>
-      <Examples examples={examples} opened={opened} />
-      <DisplaySense senses={sense.sense} showExamples={showExamples} />
+      {examples.length > 0 && <Examples examples={examples} opened={opened} />}
+      {!!sense.sense && (
+        <DisplaySense senses={sense.sense} showExamples={showExamples} />
+      )}
     </List.Item>
   )
 }
 
 export default function DisplaySense({
   senses,
-  showExamples,
+  showExamples = false,
+  maxSensesToShow,
 }: {
-  senses?: Sense[]
-  showExamples: boolean
+  senses: Sense[]
+  showExamples?: boolean
+  maxSensesToShow?: number
 }): JSX.Element {
-  return senses && senses.length > 0 ? (
-    <List>
-      {senses.map((sense, index) => (
+  const SenseList = (
+    <List pl={"2em"}>
+      {senses?.map((sense, index) => (
         <SenseItem
           key={index}
           sense={sense}
@@ -106,7 +111,17 @@ export default function DisplaySense({
         />
       ))}
     </List>
+  )
+
+  return maxSensesToShow && senses.length > maxSensesToShow ? (
+    <Spoiler
+      maxHeight={320}
+      showLabel={`Alle ${senses.length} Bedeutungen anzeigen`}
+      hideLabel="Weniger anzeigen"
+    >
+      {SenseList}
+    </Spoiler>
   ) : (
-    <></>
+    <>{SenseList}</>
   )
 }
