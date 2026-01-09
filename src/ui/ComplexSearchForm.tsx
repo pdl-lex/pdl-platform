@@ -13,7 +13,6 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import { Resource, ResourceKey, resources } from "../domain/Resource"
 import _ from "lodash"
 import { partsOfSpeech } from "../domain/PartOfSpeech"
-import { useDisclosure } from "@mantine/hooks"
 import { IconSearch } from "@tabler/icons-react"
 
 const resourceOptions = Object.values(resources).map(
@@ -80,8 +79,6 @@ export default function FullSearchForm() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const currentQuery = searchParams.get("q") || ""
-
-  const [opened, { toggle }] = useDisclosure(true)
 
   const form = useForm<SearchFormValues>({
     mode: "uncontrolled",
