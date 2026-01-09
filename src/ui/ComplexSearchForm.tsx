@@ -1,33 +1,20 @@
 import {
-  ActionIcon,
   Button,
-  Card,
-  Center,
   CloseButton,
-  Collapse,
   Fieldset,
+  Group,
   MultiSelect,
   Select,
-  Space,
   Stack,
   TextInput,
-  Tooltip,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import {
-  Resource,
-  ResourceKey,
-  resources,
-} from "../domain/Resource"
+import { Resource, ResourceKey, resources } from "../domain/Resource"
 import _ from "lodash"
 import { partsOfSpeech } from "../domain/PartOfSpeech"
 import { useDisclosure } from "@mantine/hooks"
-import {
-  IconAdjustments,
-  IconAdjustmentsX,
-  IconSearch,
-} from "@tabler/icons-react"
+import { IconSearch } from "@tabler/icons-react"
 
 const resourceOptions = Object.values(resources).map(
   ({ key, displayName }) => `${key.toUpperCase()} | ${displayName}`
@@ -129,83 +116,59 @@ export default function FullSearchForm() {
     </>
   )
 
-  const FilterButton = (
-    <Tooltip label={opened ? "Filter verbergen" : "Filter anzeigen"}>
-      <ActionIcon onClick={toggle} variant="transparent">
-        {opened ? (
-          <IconAdjustmentsX size={16} />
-        ) : (
-          <IconAdjustments size={16} />
-        )}
-      </ActionIcon>
-    </Tooltip>
-  )
-
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack gap="sm">
+      <Stack gap="lg">
         <TextInput
           key={form.key("q")}
+          label={"Freie Suche"}
           autoFocus
           flex={1}
-          placeholder="Freie Suche..."
-          leftSection={FilterButton}
+          placeholder="Lemma, Bedeutung, Beleg..."
           rightSection={ClearButton}
           {...form.getInputProps("q")}
         />
-        <Collapse in={opened}>
-          <Card withBorder px={"lg"}>
-            <TextInput
-              key={form.key("lemma")}
-              label={"Lemma"}
-              placeholder={"Exaktes Lemma oder /regulärer Ausdruck/i"}
-              {...form.getInputProps("lemma")}
-            />
-            <Space h="md" />
-            <MultiSelect
-              key={form.key("resources")}
-              label={"Wörterbücher"}
-              data={resourceOptions}
-              placeholder={"Wörterbücher auswählen..."}
-              clearable
+        <TextInput
+          key={form.key("lemma")}
+          label={"Lemma"}
+          placeholder={"Exaktes Lemma oder /regulärer Ausdruck/i"}
+          {...form.getInputProps("lemma")}
+        />
+        <MultiSelect
+          key={form.key("resources")}
+          label={"Wörterbücher"}
+          data={resourceOptions}
+          placeholder={"Wörterbücher auswählen..."}
+          clearable
+          searchable
+          {...form.getInputProps("resources")}
+        />
+        <Fieldset legend="Wortart" variant="unstyled">
+          <Stack gap="sm">
+            <Select
+              key={form.key("npos")}
+              placeholder="Normalisiert"
+              data={partsOfSpeech}
               searchable
-              {...form.getInputProps("resources")}
+              clearable
+              {...form.getInputProps("npos")}
             />
-            <Space h="md" />
-            <Fieldset legend="Wortart" variant="unstyled">
-              <Stack gap="sm">
-                <Select
-                  key={form.key("npos")}
-                  placeholder="Normalisiert"
-                  data={partsOfSpeech}
-                  searchable
-                  clearable
-                  {...form.getInputProps("npos")}
-                />
-                <TextInput
-                  key={form.key("pos")}
-                  placeholder="Original"
-                  {...form.getInputProps("pos")}
-                />
-              </Stack>
-            </Fieldset>
-            <Space h="md" />
-            <Button
-              style={{ alignSelf: "flex-start" }}
-              onClick={() => form.setValues(defaultValues)}
-              color="red"
-            >
-              Filter löschen
-            </Button>
-          </Card>
-        </Collapse>
+            <TextInput
+              key={form.key("pos")}
+              placeholder="Original"
+              {...form.getInputProps("pos")}
+            />
+          </Stack>
+        </Fieldset>
+        <Group justify="space-between">
+          <Button onClick={() => form.setValues(defaultValues)} color="red">
+            Filter zurücksetzen
+          </Button>
+          <Button type="submit" leftSection={<IconSearch size={16} />}>
+            Suchen
+          </Button>
+        </Group>
       </Stack>
-
-      <Center mt="md">
-        <Button type="submit" leftSection={<IconSearch size={16} />}>
-          Suchen
-        </Button>
-      </Center>
     </form>
   )
 }
