@@ -8,16 +8,16 @@ export default function SearchView() {
     <Grid>
       <Grid.Col
         span={{ base: 12, sm: 4 }}
-        mih={"100vh"}
         style={{
           borderRight: "1px solid var(--app-shell-border-color)",
         }}
+        p={0}
       >
-        <Box p={"md"} style={{ position: "sticky", top: HEADER_HEIGHT }}>
+        <Box p={"xl"} style={{ position: "sticky", top: HEADER_HEIGHT }}>
           <ComplexSearchForm />
         </Box>
       </Grid.Col>
-      <Grid.Col span={{ base: 12, xs: 8 }}>
+      <Grid.Col span={{ base: 12, sm: 8 }} p={0}>
         <SearchResult />
       </Grid.Col>
     </Grid>

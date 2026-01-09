@@ -10,6 +10,7 @@ import {
   Group,
   Center,
   Pagination,
+  Button,
 } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import _ from "lodash"
@@ -17,9 +18,10 @@ import { NavLink, useSearchParams } from "react-router-dom"
 import { DisplayEntry, DisplayEntryList } from "../domain/Entry"
 import { ResourceKey, resources } from "../domain/Resource"
 import classes from "./SearchResult.module.css"
-import { IconExternalLink } from "@tabler/icons-react"
+import { IconArrowUp, IconExternalLink } from "@tabler/icons-react"
 import DisplaySense from "./DisplaySense"
 import React from "react"
+import { HEADER_HEIGHT } from "../layout/MainLayout"
 
 const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
   const response = await fetch(
@@ -111,7 +113,13 @@ export function EntryHeader({
 
 function ResultItem({ entry }: { entry: DisplayEntry }) {
   return (
-    <Card shadow="md" padding="xl" className={classes["result-item"]}>
+    <Card
+      withBorder
+      shadow="sm"
+      padding="xl"
+      className={classes["result-item"]}
+      miw="100%"
+    >
       <EntryHeader entry={entry}>
         <EntryLink id={entry["xml:id"]} />
       </EntryHeader>
@@ -129,7 +137,7 @@ function ResultList({
   isLoading: boolean
 }) {
   return (
-    <Stack>
+    <Stack gap={"xl"} mih={"100vh"}>
       {isLoading ? (
         <Center>
           <Loader />
@@ -181,16 +189,37 @@ export default function SearchResult() {
     </Center>
   )
 
+  const backToTopButton = (
+    <Center>
+      <Box>
+        <Button
+          variant="light"
+          leftSection={<IconArrowUp size={14} />}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          Zum Seitenanfang
+        </Button>
+      </Box>
+    </Center>
+  )
+
   return (
     !!searchParams && (
-      <Box maw="800px" mx="auto" py="xl" px="md">
-        <Stack>
+      <Stack p={0}>
+        <Stack
+          p="xl"
+          style={{ position: "sticky", top: HEADER_HEIGHT, zIndex: 1 }}
+          gap={5}
+          bg="white"
+        >
           <Center>{total.toLocaleString("de-DE")} Treffer</Center>
           {pagination}
-          <ResultList data={data} isLoading={isFetching} />
-          {pagination}
         </Stack>
-      </Box>
+        <Stack maw="800px" w="100%" mx="auto" gap="xl" p="xl">
+          <ResultList data={data} isLoading={isFetching} />
+          {backToTopButton}
+        </Stack>
+      </Stack>
     )
   )
 }
