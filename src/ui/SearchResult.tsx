@@ -259,6 +259,8 @@ export default function SearchResult() {
       </Stack>
     </Stack>
   ) : (
-    <SearchExamples />
+    <Box mih={"120vh"}>
+      <SearchExamples />
+    </Box>
   )
 }
