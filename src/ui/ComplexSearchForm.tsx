@@ -15,7 +15,11 @@ import {
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { resources } from "../domain/Resource"
+import {
+  Resource,
+  ResourceKey,
+  resources,
+} from "../domain/Resource"
 import _ from "lodash"
 import { partsOfSpeech } from "../domain/PartOfSpeech"
 import { useDisclosure } from "@mantine/hooks"
@@ -25,11 +29,17 @@ import {
   IconSearch,
 } from "@tabler/icons-react"
 
-const resourceKeys = Object.keys(resources)
-const resourceOptions = resourceKeys.map((key) => ({
-  value: key,
-  label: key.toUpperCase(),
-}))
+const resourceOptions = Object.values(resources).map(
+  ({ key, displayName }) => `${key.toUpperCase()} | ${displayName}`
+)
+
+function getResourceByOption(option: string): Resource {
+  const resource = _.find(resources, { displayName: option.split(" | ")[1] })
+  if (!resource) {
+    throw new Error(`Resource with name ${option} not found`)
+  }
+  return resource
+}
 
 interface SearchFormValues {
   q: string
@@ -42,7 +52,7 @@ interface SearchFormValues {
 const defaultValues: SearchFormValues = {
   q: "",
   lemma: "",
-  resources: resourceKeys,
+  resources: resourceOptions,
   pos: "",
   npos: "",
 }
@@ -60,15 +70,23 @@ function createParams(values: SearchFormValues): string {
       }
     })
 
-  values.resources.forEach((key: string) => {
+  values.resources.map(getResourceByOption).forEach(({ key }) => {
     cleanParams.append("resources", key)
   })
 
-  if (cleanParams.getAll("resources").length === resourceKeys.length) {
+  if (cleanParams.getAll("resources").length === resourceOptions.length) {
     cleanParams.delete("resources")
   }
 
   return cleanParams.toString()
+}
+
+function getCurrentResources(searchParams: URLSearchParams): string[] {
+  const currentResources = searchParams
+    .getAll("resources")
+    .map((key) => resources[key as ResourceKey].displayName)
+
+  return currentResources.length === 0 ? resourceOptions : currentResources
 }
 
 export default function FullSearchForm() {
@@ -83,11 +101,7 @@ export default function FullSearchForm() {
     initialValues: {
       q: currentQuery,
       lemma: searchParams.get("lemma") || "",
-      resources:
-        _.find(
-          [searchParams.getAll("resources"), resourceKeys],
-          (list) => list.length > 0
-        ) || [],
+      resources: getCurrentResources(searchParams),
       pos: searchParams.get("pos") || "",
       npos: searchParams.get("npos") || "",
     },
@@ -177,11 +191,11 @@ export default function FullSearchForm() {
             </Fieldset>
             <Space h="md" />
             <Button
-              style={{ alignSelf: "flex-end" }}
+              style={{ alignSelf: "flex-start" }}
               onClick={() => form.setValues(defaultValues)}
               color="red"
             >
-              Filter zurücksetzen
+              Filter löschen
             </Button>
           </Card>
         </Collapse>
