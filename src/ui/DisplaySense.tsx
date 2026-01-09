@@ -23,9 +23,6 @@ function Examples({
   examples: { quote: string }[]
   opened: boolean
 }) {
-  if (examples.length === 0) {
-    return <></>
-  }
   return (
     <Stack align="flex-start">
       <Collapse in={opened}>
@@ -59,7 +56,10 @@ function SenseItem({
   index: number
   showExamples: boolean
 }) {
-  const examples = sense.cit?.filter((c) => c.type === "example") || []
+  const examples =
+    sense.cit?.filter(
+      (c) => c.type === "example" && c.quote && c.quote.trim() !== ""
+    ) || []
   const [opened, { toggle }] = useDisclosure(showExamples)
   const Icon = opened ? IconMessageMinus : IconMessagePlus
 
@@ -83,7 +83,7 @@ function SenseItem({
         {sense.def}
         {examples.length > 0 && ToggleExamplesButton}
       </Text>
-      <Examples examples={examples} opened={opened} />
+      {examples.length > 0 && <Examples examples={examples} opened={opened} />}
       {!!sense.sense && (
         <DisplaySense senses={sense.sense} showExamples={showExamples} />
       )}
