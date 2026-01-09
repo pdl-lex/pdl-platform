@@ -7,6 +7,7 @@ import {
   Divider,
   ActionIcon,
   Tooltip,
+  Spoiler,
 } from "@mantine/core"
 import classNames from "classnames"
 import React, { JSX } from "react"
@@ -83,7 +84,9 @@ function SenseItem({
         {examples.length > 0 && ToggleExamplesButton}
       </Text>
       <Examples examples={examples} opened={opened} />
-      <DisplaySense senses={sense.sense} showExamples={showExamples} />
+      {!!sense.sense && (
+        <DisplaySense senses={sense.sense} showExamples={showExamples} />
+      )}
     </List.Item>
   )
 }
@@ -92,12 +95,13 @@ export default function DisplaySense({
   senses,
   showExamples,
 }: {
-  senses?: Sense[]
+  senses: Sense[]
   showExamples: boolean
 }): JSX.Element {
-  return senses && senses.length > 0 ? (
-    <List>
-      {senses.map((sense, index) => (
+  const maxSensesToShow = 15
+  const SenseList = (
+    <List pl={"2em"}>
+      {senses?.map((sense, index) => (
         <SenseItem
           key={index}
           sense={sense}
@@ -106,7 +110,17 @@ export default function DisplaySense({
         />
       ))}
     </List>
+  )
+
+  return senses.length > maxSensesToShow ? (
+    <Spoiler
+      maxHeight={320}
+      showLabel={`Alle ${senses.length} Bedeutungen anzeigen`}
+      hideLabel="Weniger anzeigen"
+    >
+      {SenseList}
+    </Spoiler>
   ) : (
-    <></>
+    <>{SenseList}</>
   )
 }

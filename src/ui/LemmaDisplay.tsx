@@ -22,7 +22,9 @@ export default function DisplayLemma({
     <Card shadow="md" padding="xl">
       <EntryHeader entry={entry} />
       <DisplayVariants variants={entry.variants} />
-      <DisplaySense senses={entry.sense} showExamples={true} />
+      {!!entry.sense && (
+        <DisplaySense senses={entry.sense} showExamples={true} />
+      )}
     </Card>
   )
 }

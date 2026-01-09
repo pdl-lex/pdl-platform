@@ -124,7 +124,9 @@ function ResultItem({ entry }: { entry: DisplayEntry }) {
         <EntryLink id={entry["xml:id"]} />
       </EntryHeader>
       <DisplayVariants variants={entry.variants} />
-      <DisplaySense senses={entry.sense} showExamples={false} />
+      {!!entry.sense && (
+        <DisplaySense senses={entry.sense} showExamples={false} />
+      )}
     </Card>
   )
 }
