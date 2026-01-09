@@ -13,7 +13,6 @@ import {
 } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import _ from "lodash"
-import { LemmaNotFound } from "./LemmaDisplay"
 import { NavLink, useSearchParams } from "react-router-dom"
 import { DisplayEntry, DisplayEntryList } from "../domain/Entry"
 import { ResourceKey, resources } from "../domain/Resource"
@@ -122,12 +121,26 @@ function ResultItem({ entry }: { entry: DisplayEntry }) {
   )
 }
 
-function ResultList({ entries }: { entries: DisplayEntry[] }) {
+function ResultList({
+  data,
+  isLoading,
+}: {
+  data: DisplayEntryList | undefined
+  isLoading: boolean
+}) {
   return (
     <Stack>
-      {entries.map((entry, index) => (
-        <ResultItem key={index} entry={entry} />
-      ))}
+      {isLoading ? (
+        <Center>
+          <Loader />
+        </Center>
+      ) : (
+        <>
+          {data?.items.map((entry, index) => (
+            <ResultItem key={index} entry={entry} />
+          ))}
+        </>
+      )}
     </Stack>
   )
 }
@@ -135,10 +148,11 @@ function ResultList({ entries }: { entries: DisplayEntry[] }) {
 export default function SearchResult() {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const { data, isLoading } = useQuery<DisplayEntryList>({
+  const { data, isFetching } = useQuery<DisplayEntryList>({
     queryKey: ["search", searchParams.toString()],
     queryFn: () => search(searchParams),
     refetchOnWindowFocus: false,
+    placeholderData: (previousData) => previousData,
   })
 
   const handlePageChange = (page: number) => {
@@ -149,8 +163,8 @@ export default function SearchResult() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
-  const isEmpty = _.isEmpty(data) || _.has(data, "error")
-  const pageCount = Math.ceil((data?.total || 0) / (data?.itemsPerPage || 0))
+  const total = data?.total || 0
+  const pageCount = Math.ceil(total / (data?.itemsPerPage || 1))
 
   const pagination = (
     <Center>
@@ -170,22 +184,12 @@ export default function SearchResult() {
   return (
     !!searchParams && (
       <Box maw="800px" mx="auto" py="xl" px="md">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <>
-            {isEmpty ? (
-              <LemmaNotFound />
-            ) : (
-              <Stack>
-                <Center>{data?.total.toLocaleString("de-DE")} Treffer</Center>
-                {pagination}
-                <ResultList entries={data?.items || []} />
-                {pagination}
-              </Stack>
-            )}{" "}
-          </>
-        )}
+        <Stack>
+          <Center>{total.toLocaleString("de-DE")} Treffer</Center>
+          {pagination}
+          <ResultList data={data} isLoading={isFetching} />
+          {pagination}
+        </Stack>
       </Box>
     )
   )
