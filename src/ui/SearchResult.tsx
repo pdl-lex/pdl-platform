@@ -25,6 +25,7 @@ import DisplaySense from "./DisplaySense"
 import React from "react"
 import { HEADER_HEIGHT } from "../layout/MainLayout"
 import { useDisclosure } from "@mantine/hooks"
+import SearchExamples from "./SearchExamples"
 
 const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
   const response = await fetch(
@@ -236,24 +237,23 @@ export default function SearchResult() {
       </Box>
     </Center>
   )
-
-  return (
-    !!searchParams && (
-      <Stack p={0}>
-        <Stack
-          p="xl"
-          style={{ position: "sticky", top: HEADER_HEIGHT, zIndex: 1 }}
-          gap={5}
-          bg="white"
-        >
-          <Center>{total.toLocaleString("de-DE")} Treffer</Center>
-          {pagination}
-        </Stack>
-        <Stack maw="800px" w="100%" mx="auto" gap="xl" p="xl">
-          <ResultList data={data} isLoading={isFetching} />
-          {backToTopButton}
-        </Stack>
+  return searchParams.size > 0 ? (
+    <Stack p={0}>
+      <Stack
+        p="xl"
+        style={{ position: "sticky", top: HEADER_HEIGHT, zIndex: 1 }}
+        gap={5}
+        bg="white"
+      >
+        <Center>{total.toLocaleString("de-DE")} Treffer</Center>
+        {pagination}
       </Stack>
-    )
+      <Stack maw="800px" w="100%" mx="auto" gap="xl" p="xl">
+        <ResultList data={data} isLoading={isFetching} />
+        {backToTopButton}
+      </Stack>
+    </Stack>
+  ) : (
+    <SearchExamples />
   )
 }
