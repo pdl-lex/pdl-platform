@@ -15,7 +15,7 @@ import {
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { resources } from "../domain/Resource"
+import { getResourceByName, ResourceKey, resources } from "../domain/Resource"
 import _ from "lodash"
 import { partsOfSpeech } from "../domain/PartOfSpeech"
 import { useDisclosure } from "@mantine/hooks"
@@ -25,11 +25,9 @@ import {
   IconSearch,
 } from "@tabler/icons-react"
 
-const resourceKeys = Object.keys(resources)
-const resourceOptions = resourceKeys.map((key) => ({
-  value: key,
-  label: key.toUpperCase(),
-}))
+const resourceNames = Object.values(resources).map(
+  (resource) => resource.displayName
+)
 
 interface SearchFormValues {
   q: string
@@ -42,7 +40,7 @@ interface SearchFormValues {
 const defaultValues: SearchFormValues = {
   q: "",
   lemma: "",
-  resources: resourceKeys,
+  resources: resourceNames,
   pos: "",
   npos: "",
 }
@@ -60,15 +58,23 @@ function createParams(values: SearchFormValues): string {
       }
     })
 
-  values.resources.forEach((key: string) => {
+  values.resources.map(getResourceByName).forEach(({ key }) => {
     cleanParams.append("resources", key)
   })
 
-  if (cleanParams.getAll("resources").length === resourceKeys.length) {
+  if (cleanParams.getAll("resources").length === resourceNames.length) {
     cleanParams.delete("resources")
   }
 
   return cleanParams.toString()
+}
+
+function getCurrentResources(searchParams: URLSearchParams): string[] {
+  const currentResources = searchParams
+    .getAll("resources")
+    .map((key) => resources[key as ResourceKey].displayName)
+
+  return currentResources.length === 0 ? resourceNames : currentResources
 }
 
 export default function FullSearchForm() {
@@ -83,11 +89,7 @@ export default function FullSearchForm() {
     initialValues: {
       q: currentQuery,
       lemma: searchParams.get("lemma") || "",
-      resources:
-        _.find(
-          [searchParams.getAll("resources"), resourceKeys],
-          (list) => list.length > 0
-        ) || [],
+      resources: getCurrentResources(searchParams),
       pos: searchParams.get("pos") || "",
       npos: searchParams.get("npos") || "",
     },
@@ -151,7 +153,7 @@ export default function FullSearchForm() {
             <MultiSelect
               key={form.key("resources")}
               label={"Wörterbücher"}
-              data={resourceOptions}
+              data={resourceNames}
               placeholder={"Wörterbücher auswählen..."}
               clearable
               searchable
