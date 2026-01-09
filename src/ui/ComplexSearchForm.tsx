@@ -136,7 +136,6 @@ export default function FullSearchForm() {
           label={"Wörterbücher"}
           data={resourceOptions}
           placeholder={"Wörterbücher auswählen..."}
-          clearable
           searchable
           {...form.getInputProps("resources")}
         />
