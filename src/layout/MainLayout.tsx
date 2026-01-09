@@ -4,6 +4,8 @@ import { HeaderMenu } from "./HeaderMenu"
 import { AppRoute } from "../App"
 import SidebarMenu from "./SidebarMenu"
 
+export const HEADER_HEIGHT = 60
+
 export default function MainLayout({
   routes,
   children,
@@ -15,7 +17,7 @@ export default function MainLayout({
 
   return (
     <AppShell
-      header={{ height: 60 }}
+      header={{ height: HEADER_HEIGHT }}
       navbar={{
         width: 300,
         breakpoint: "sm",
