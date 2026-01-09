@@ -93,12 +93,13 @@ function SenseItem({
 
 export default function DisplaySense({
   senses,
-  showExamples,
+  showExamples = false,
+  maxSensesToShow,
 }: {
   senses: Sense[]
-  showExamples: boolean
+  showExamples?: boolean
+  maxSensesToShow?: number
 }): JSX.Element {
-  const maxSensesToShow = 15
   const SenseList = (
     <List pl={"2em"}>
       {senses?.map((sense, index) => (
@@ -112,7 +113,7 @@ export default function DisplaySense({
     </List>
   )
 
-  return senses.length > maxSensesToShow ? (
+  return maxSensesToShow && senses.length > maxSensesToShow ? (
     <Spoiler
       maxHeight={320}
       showLabel={`Alle ${senses.length} Bedeutungen anzeigen`}
