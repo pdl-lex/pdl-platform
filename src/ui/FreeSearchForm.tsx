@@ -37,10 +37,11 @@ export default function FreeSearchForm({ ...props }: GroupProps) {
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault()
-    if (!searchValue.trim()) {
+    if (searchValue.trim().length === 0) {
       navigate(`/search`)
+    } else {
+      navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`)
     }
-    navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`)
   }
 
   return (
