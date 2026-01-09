@@ -16,11 +16,3 @@ export const resources: Record<ResourceKey, Resource> = {
   },
   wbf: { key: "wbf", color: "red", displayName: "Fränkisches Wörterbuch" },
 }
-
-export function getResourceByName(name: string): Resource {
-  const resource = _.find(resources, { displayName: name })
-  if (!resource) {
-    throw new Error(`Resource with name ${name} not found`)
-  }
-  return resource
-}
