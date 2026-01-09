@@ -15,7 +15,11 @@ import {
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { getResourceByName, ResourceKey, resources } from "../domain/Resource"
+import {
+  Resource,
+  ResourceKey,
+  resources,
+} from "../domain/Resource"
 import _ from "lodash"
 import { partsOfSpeech } from "../domain/PartOfSpeech"
 import { useDisclosure } from "@mantine/hooks"
@@ -28,6 +32,14 @@ import {
 const resourceOptions = Object.values(resources).map(
   ({ key, displayName }) => `${key.toUpperCase()} | ${displayName}`
 )
+
+function getResourceByOption(option: string): Resource {
+  const resource = _.find(resources, { displayName: option.split(" | ")[1] })
+  if (!resource) {
+    throw new Error(`Resource with name ${option} not found`)
+  }
+  return resource
+}
 
 interface SearchFormValues {
   q: string
@@ -58,7 +70,7 @@ function createParams(values: SearchFormValues): string {
       }
     })
 
-  values.resources.map(getResourceByName).forEach(({ key }) => {
+  values.resources.map(getResourceByOption).forEach(({ key }) => {
     cleanParams.append("resources", key)
   })
 
