@@ -1,7 +1,7 @@
 import _ from "lodash"
 import { JSX } from "react"
 import { DisplayEntry } from "../domain/Entry"
-import { Text, Card, Center } from "@mantine/core"
+import { Text, Center } from "@mantine/core"
 import { DisplayVariants, EntryHeader } from "./SearchResult"
 import DisplaySense from "./DisplaySense"
 
@@ -19,12 +19,12 @@ export default function DisplayLemma({
   entry: DisplayEntry
 }): JSX.Element {
   return (
-    <Card shadow="md" padding="xl">
+    <>
       <EntryHeader entry={entry} />
       <DisplayVariants variants={entry.variants} />
       {!!entry.sense && (
         <DisplaySense senses={entry.sense} showExamples={true} />
       )}
-    </Card>
+    </>
   )
 }
