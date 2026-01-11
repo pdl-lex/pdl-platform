@@ -1,9 +1,10 @@
-import { Burger, Group, UnstyledButton } from "@mantine/core"
+import { ActionIcon, Burger, Group, UnstyledButton } from "@mantine/core"
 import { NavLink } from "react-router-dom"
 import classes from "./MainLayout.module.css"
 import { AppRoute } from "../App"
 import AdlLogo from "./AdlLogo"
 import classNames from "classnames"
+import { IconFilter2Search } from "@tabler/icons-react"
 
 export function HeaderMenu({
   routes,
@@ -20,6 +21,7 @@ export function HeaderMenu({
         justify="space-between"
         style={{ display: "flex", "flex-wrap": "nowrap", "flex-grow": "1" }}
       >
+        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="md" />
         <AdlLogo />
         <Group ml="xl" gap={0} visibleFrom="sm">
           {routes.map(({ path, title }) => (
@@ -45,7 +47,15 @@ export function HeaderMenu({
             </UnstyledButton>
           ))}
         </Group>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="md" />
+        <ActionIcon
+          style={{ color: "inherit" }}
+          hiddenFrom="sm"
+          size="lg"
+          variant="subtle"
+          aria-label="Settings"
+        >
+          <IconFilter2Search size="lg" stroke={1.5} />
+        </ActionIcon>
       </Group>
     </Group>
   )
