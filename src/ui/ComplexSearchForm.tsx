@@ -86,7 +86,7 @@ function getCurrentValues(searchParams: URLSearchParams): SearchFormValues {
   }
 }
 
-export default function FullSearchForm({
+export default function ComplexSearchForm({
   onSubmit,
 }: {
   onSubmit?: () => void
