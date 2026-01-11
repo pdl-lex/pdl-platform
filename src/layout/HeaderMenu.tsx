@@ -3,10 +3,11 @@ import {
   Burger,
   Drawer,
   Group,
+  Indicator,
   Text,
   UnstyledButton,
 } from "@mantine/core"
-import { NavLink } from "react-router-dom"
+import { NavLink, useSearchParams } from "react-router-dom"
 import classes from "./MainLayout.module.css"
 import { AppRoute } from "../App"
 import AdlLogo from "./AdlLogo"
@@ -26,6 +27,8 @@ export function HeaderMenu({
 }) {
   const [filtersOpened, { open: openFilters, close: closeFilters }] =
     useDisclosure(false)
+
+  const [searchParams] = useSearchParams()
 
   return (
     <Group h="100%" px="md">
@@ -67,7 +70,9 @@ export function HeaderMenu({
           aria-label="Settings"
           onClick={openFilters}
         >
-          <IconFilter2Search stroke={1.5} />
+          <Indicator offset={5} disabled={searchParams.size === 0} size={6}>
+            <IconFilter2Search stroke={1.5} />
+          </Indicator>
         </ActionIcon>
         <Drawer
           offset={8}
