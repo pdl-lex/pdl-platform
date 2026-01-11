@@ -14,7 +14,14 @@ export default function AdlLogo() {
       href="/"
       style={{ display: "flex", alignItems: "center", gap: "0.5em" }}
     >
-      <Image src={src} alt="LexoTerm Logo" h="2em" w="auto" fit="contain" />
+      <Image
+        visibleFrom="sm"
+        src={src}
+        alt="LexoTerm Logo"
+        h="1.6em"
+        w="auto"
+        fit="contain"
+      />
       <Text span fw={500}>
         LexoTerm
       </Text>

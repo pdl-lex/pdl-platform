@@ -14,6 +14,7 @@ import { Resource, ResourceKey, resources } from "../domain/Resource"
 import _ from "lodash"
 import { partsOfSpeech } from "../domain/PartOfSpeech"
 import { IconSearch } from "@tabler/icons-react"
+import { useEffect } from "react"
 
 const resourceOptions = Object.values(resources).map(
   ({ key, displayName }) => `${key.toUpperCase()} | ${displayName}`
@@ -75,28 +76,40 @@ function getCurrentResources(searchParams: URLSearchParams): string[] {
   return currentResources.length === 0 ? resourceOptions : currentResources
 }
 
-export default function FullSearchForm() {
+function getCurrentValues(searchParams: URLSearchParams): SearchFormValues {
+  return {
+    q: searchParams.get("q") || "",
+    lemma: searchParams.get("lemma") || "",
+    resources: getCurrentResources(searchParams),
+    pos: searchParams.get("pos") || "",
+    npos: searchParams.get("npos") || "",
+  }
+}
+
+export default function ComplexSearchForm({
+  onSubmit,
+}: {
+  onSubmit?: () => void
+}) {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const currentQuery = searchParams.get("q") || ""
 
   const form = useForm<SearchFormValues>({
     mode: "uncontrolled",
-    initialValues: {
-      q: currentQuery,
-      lemma: searchParams.get("lemma") || "",
-      resources: getCurrentResources(searchParams),
-      pos: searchParams.get("pos") || "",
-      npos: searchParams.get("npos") || "",
-    },
+    initialValues: getCurrentValues(searchParams),
     validate: {
       resources: (values) =>
         values.length < 1 ? "Mindestens ein Wörterbuch auswählen" : null,
     },
   })
 
+  useEffect(() => {
+    form.setValues(getCurrentValues(searchParams))
+  }, [searchParams])
+
   const handleSubmit = (values: SearchFormValues) => {
     navigate(`/search?${createParams(values)}`)
+    onSubmit?.()
   }
 
   function createClearButton(key: keyof SearchFormValues) {

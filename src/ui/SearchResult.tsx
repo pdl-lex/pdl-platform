@@ -259,7 +259,9 @@ export default function SearchResult() {
       </Stack>
     </Stack>
   ) : (
-    <Box mih={"120vh"}>
+    <Box
+      mih={"120vh"} // ensure consistent scroll behavior
+    >
       <SearchExamples />
     </Box>
   )
