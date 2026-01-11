@@ -1,10 +1,19 @@
-import { ActionIcon, Burger, Group, UnstyledButton } from "@mantine/core"
+import {
+  ActionIcon,
+  Burger,
+  Drawer,
+  Group,
+  Text,
+  UnstyledButton,
+} from "@mantine/core"
 import { NavLink } from "react-router-dom"
 import classes from "./MainLayout.module.css"
 import { AppRoute } from "../App"
 import AdlLogo from "./AdlLogo"
 import classNames from "classnames"
 import { IconFilter2Search } from "@tabler/icons-react"
+import { useDisclosure } from "@mantine/hooks"
+import ComplexSearchForm from "../ui/ComplexSearchForm"
 
 export function HeaderMenu({
   routes,
@@ -15,6 +24,9 @@ export function HeaderMenu({
   opened: boolean
   toggle: () => void
 }) {
+  const [filtersOpened, { open: openFilters, close: closeFilters }] =
+    useDisclosure(false)
+
   return (
     <Group h="100%" px="md">
       <Group
@@ -53,9 +65,27 @@ export function HeaderMenu({
           size="lg"
           variant="subtle"
           aria-label="Settings"
+          onClick={openFilters}
         >
-          <IconFilter2Search size="lg" stroke={1.5} />
+          <IconFilter2Search stroke={1.5} />
         </ActionIcon>
+        <Drawer
+          offset={8}
+          title={
+            <Text size="xl" fw="bold">
+              Suchfilter
+            </Text>
+          }
+          radius="md"
+          size="lg"
+          padding="lg"
+          opened={filtersOpened}
+          position={"top"}
+          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+          onClose={closeFilters}
+        >
+          <ComplexSearchForm onSubmit={closeFilters} />
+        </Drawer>
       </Group>
     </Group>
   )

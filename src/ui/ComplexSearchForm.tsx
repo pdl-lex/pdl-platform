@@ -75,7 +75,11 @@ function getCurrentResources(searchParams: URLSearchParams): string[] {
   return currentResources.length === 0 ? resourceOptions : currentResources
 }
 
-export default function FullSearchForm() {
+export default function FullSearchForm({
+  onSubmit,
+}: {
+  onSubmit?: () => void
+}) {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const currentQuery = searchParams.get("q") || ""
@@ -97,6 +101,7 @@ export default function FullSearchForm() {
 
   const handleSubmit = (values: SearchFormValues) => {
     navigate(`/search?${createParams(values)}`)
+    onSubmit?.()
   }
 
   function createClearButton(key: keyof SearchFormValues) {

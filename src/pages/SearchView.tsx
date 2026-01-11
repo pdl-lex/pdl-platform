@@ -7,6 +7,7 @@ export default function SearchView() {
   return (
     <Grid>
       <Grid.Col
+        visibleFrom="sm"
         span={{ base: 12, sm: 4 }}
         style={{
           borderRight: "1px solid var(--app-shell-border-color)",
