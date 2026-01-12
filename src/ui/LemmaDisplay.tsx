@@ -1,9 +1,10 @@
 import _ from "lodash"
 import { JSX } from "react"
 import { DisplayEntry } from "../domain/Entry"
-import { Text, Center } from "@mantine/core"
+import { Text, Center, Title } from "@mantine/core"
 import { DisplayVariants, EntryHeader } from "./SearchResult"
 import DisplaySense from "./DisplaySense"
+import DisplayRichText from "./DisplayRichText"
 
 export function LemmaNotFound(): JSX.Element {
   return (
@@ -24,6 +25,14 @@ export default function DisplayLemma({
       <DisplayVariants variants={entry.variants} />
       {!!entry.sense && (
         <DisplaySense senses={entry.sense} showExamples={true} />
+      )}
+      {!!entry.etym && (
+        <>
+          <Title order={3} pb="md" mt="md">
+            Etymologie
+          </Title>
+          <DisplayRichText text={entry.etym} />
+        </>
       )}
     </>
   )

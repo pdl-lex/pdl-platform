@@ -28,6 +28,8 @@ import React from "react"
 import { HEADER_HEIGHT } from "../layout/MainLayout"
 import { useDisclosure, useWindowScroll } from "@mantine/hooks"
 import SearchExamples from "./SearchExamples"
+import DisplayRichText from "./DisplayRichText"
+import { RichText } from "../domain/RichText"
 
 const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
   const response = await fetch(
@@ -86,6 +88,17 @@ export function DisplayVariants({ variants }: { variants: string[] }) {
   )
 }
 
+function DisplayEtymology({ etym }: { etym: RichText }) {
+  return (
+    <Box>
+      <Title order={3} size="h4" mt="lg" pb="xs">
+        Etymologie
+      </Title>
+      <DisplayRichText text={etym} />
+    </Box>
+  )
+}
+
 export function EntryHeader({
   entry,
   children,
@@ -139,6 +152,11 @@ function ResultItem({ entry }: { entry: DisplayEntry }) {
       <Stack py={"md"}>
         <DisplayVariants variants={entry.variants} />
         {!!entry.sense && <DisplaySense senses={entry.sense} />}
+        {!!entry.etym && (
+          <>
+            <DisplayEtymology etym={entry.etym} />
+          </>
+        )}
       </Stack>
     </Modal>
   )
@@ -162,6 +180,7 @@ function ResultItem({ entry }: { entry: DisplayEntry }) {
       {!!entry.sense && (
         <DisplaySense senses={entry.sense} maxSensesToShow={10} />
       )}
+      {!!entry.etym && <DisplayEtymology etym={entry.etym} />}
     </Card>
   )
 }
