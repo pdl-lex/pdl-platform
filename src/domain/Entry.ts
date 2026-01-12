@@ -1,4 +1,5 @@
 import { ResourceKey } from "./Resource"
+import { RichText } from "./RichText"
 
 export default class Entry {
   xmlId: string
@@ -37,6 +38,7 @@ export interface DisplayEntry {
   pos: string | null
   nPos: string | null
   number: string | null
+  etym: RichText | null
 }
 
 export interface Form {
@@ -80,7 +82,7 @@ export interface Sense {
   n: string
   gloss: string
   def: string
-  cit?: Citation[] 
+  cit?: Citation[]
   sense?: Sense[]
 }
 
