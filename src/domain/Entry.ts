@@ -1,5 +1,5 @@
+import { AnnotatedText } from "./AnnotatedText"
 import { ResourceKey } from "./Resource"
-import { RichText } from "./RichText"
 
 export default class Entry {
   xmlId: string
@@ -38,7 +38,7 @@ export interface DisplayEntry {
   pos: string | null
   nPos: string | null
   number: string | null
-  etym: RichText | null
+  etym: AnnotatedText | null
 }
 
 export interface Form {

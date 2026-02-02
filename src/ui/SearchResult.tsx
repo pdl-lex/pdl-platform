@@ -28,12 +28,12 @@ import React from "react"
 import { HEADER_HEIGHT } from "../layout/MainLayout"
 import { useDisclosure, useWindowScroll } from "@mantine/hooks"
 import SearchExamples from "./SearchExamples"
-import DisplayRichText from "./DisplayRichText"
-import { RichText } from "../domain/RichText"
+import DisplayAnnotatedText from "./DisplayAnnotatedText"
+import { AnnotatedText } from "../domain/AnnotatedText"
 
 const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/search?${query.toString()}`
+    `${import.meta.env.VITE_API_URL}/search?${query.toString()}`,
   )
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
@@ -88,13 +88,13 @@ export function DisplayVariants({ variants }: { variants: string[] }) {
   )
 }
 
-function DisplayEtymology({ etym }: { etym: RichText }) {
+function DisplayEtymology({ etym }: { etym: AnnotatedText }) {
   return (
     <Box>
       <Title order={3} size="h4" mt="lg" pb="xs">
         Etymologie
       </Title>
-      <DisplayRichText text={etym} />
+      <DisplayAnnotatedText annotatedText={etym} />
     </Box>
   )
 }
