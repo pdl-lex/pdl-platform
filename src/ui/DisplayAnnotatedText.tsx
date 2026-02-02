@@ -9,6 +9,8 @@ import {
   TextSegment,
 } from "../domain/AnnotatedText"
 import classNames from "classnames"
+import "./AnnotatedText.sass"
+
 
 function DisplayPlainText({ segment }: { segment: TextSegment }) {
   const body = segment.labels?.includes("superscript") ? (
