@@ -4,7 +4,7 @@ import { DisplayEntry } from "../domain/Entry"
 import { Text, Center, Title } from "@mantine/core"
 import { DisplayVariants, EntryHeader } from "./SearchResult"
 import DisplaySense from "./DisplaySense"
-import DisplayRichText from "./DisplayRichText"
+import DisplayAnnotatedText from "./DisplayAnnotatedText"
 
 export function LemmaNotFound(): JSX.Element {
   return (
@@ -31,7 +31,7 @@ export default function DisplayLemma({
           <Title order={3} pb="md" mt="md">
             Etymologie
           </Title>
-          <DisplayRichText text={entry.etym} />
+          <DisplayAnnotatedText annotatedText={entry.etym} />
         </>
       )}
     </>
