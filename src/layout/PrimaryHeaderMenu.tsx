@@ -47,6 +47,7 @@ export default function PrimaryHeaderMenu({
           {routes.map(({ path, title }) => (
             <UnstyledButton
               key={path}
+              bg="inherit"
               renderRoot={(props) => (
                 <NavLink
                   {...props}
