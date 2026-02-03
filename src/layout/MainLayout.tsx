@@ -1,6 +1,6 @@
 import { AppShell } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { HeaderMenu } from "./HeaderMenu"
+import { HeaderMenu } from "./PrimaryHeaderMenu"
 import { AppRoute } from "../App"
 import SidebarMenu from "./SidebarMenu"
 
