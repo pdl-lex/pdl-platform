@@ -3,6 +3,7 @@ import { useDisclosure } from "@mantine/hooks"
 import PrimaryHeaderMenu from "./PrimaryHeaderMenu"
 import { AppRoute } from "../App"
 import SidebarMenu from "./SidebarMenu"
+import SecondaryHeaderMenu from "./SecondaryHeaderMenu"
 
 export const HEADER_HEIGHT = 150
 
@@ -26,6 +27,7 @@ export default function MainLayout({
     >
       <AppShell.Header withBorder={false} p={0}>
         <PrimaryHeaderMenu routes={routes} opened={opened} toggle={toggle} />
+        <SecondaryHeaderMenu />
       </AppShell.Header>
 
       <AppShell.Navbar py="md">

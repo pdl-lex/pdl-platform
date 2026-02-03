@@ -31,7 +31,7 @@ export default function PrimaryHeaderMenu({
   const [searchParams] = useSearchParams()
 
   return (
-    <Group h="100%" p={0} bg="lexoterm-primary.9" c="white" align="flex-start">
+    <Group h="100px" p={0} bg="lexoterm-primary.9" c="white" align="flex-start">
       <Group
         align="flex-end"
         justify="space-between"
@@ -39,7 +39,7 @@ export default function PrimaryHeaderMenu({
           "flex-wrap": "nowrap",
           "flex-grow": "1",
         }}
-        h="100px"
+        h="100%"
       >
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="md" />
         <AdlLogo />
