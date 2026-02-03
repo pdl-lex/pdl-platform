@@ -4,7 +4,7 @@ import { HeaderMenu } from "./HeaderMenu"
 import { AppRoute } from "../App"
 import SidebarMenu from "./SidebarMenu"
 
-export const HEADER_HEIGHT = 60
+export const HEADER_HEIGHT = 150
 
 export default function MainLayout({
   routes,
