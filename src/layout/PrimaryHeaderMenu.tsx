@@ -15,6 +15,7 @@ import classNames from "classnames"
 import { IconFilter2Search } from "@tabler/icons-react"
 import { useDisclosure } from "@mantine/hooks"
 import ComplexSearchForm from "../ui/ComplexSearchForm"
+import { HEADER_HEIGHT } from "./MainLayout"
 
 export default function PrimaryHeaderMenu({
   routes,
@@ -31,7 +32,13 @@ export default function PrimaryHeaderMenu({
   const [searchParams] = useSearchParams()
 
   return (
-    <Group h="100px" p={0} bg="lexoterm-primary.9" c="white" align="flex-start">
+    <Group
+      h={HEADER_HEIGHT * 0.75}
+      p={0}
+      bg="lexoterm-primary.9"
+      c="white"
+      align="flex-start"
+    >
       <Group
         align="flex-end"
         justify="space-between"
