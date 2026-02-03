@@ -31,10 +31,15 @@ export function HeaderMenu({
   const [searchParams] = useSearchParams()
 
   return (
-    <Group h="100%" px="md" bg="lexoterm-primary.9" c="white">
+    <Group h="100%" p={0} bg="lexoterm-primary.9" c="white" align="flex-start">
       <Group
+        align="flex-end"
         justify="space-between"
-        style={{ display: "flex", "flex-wrap": "nowrap", "flex-grow": "1" }}
+        style={{
+          "flex-wrap": "nowrap",
+          "flex-grow": "1",
+        }}
+        h="100px"
       >
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="md" />
         <AdlLogo />

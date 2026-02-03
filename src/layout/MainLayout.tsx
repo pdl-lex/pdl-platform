@@ -24,7 +24,7 @@ export default function MainLayout({
         collapsed: { desktop: true, mobile: !opened },
       }}
     >
-      <AppShell.Header withBorder={false}>
+      <AppShell.Header withBorder={false} p={0}>
         <HeaderMenu routes={routes} opened={opened} toggle={toggle} />
       </AppShell.Header>
 
