@@ -41,7 +41,13 @@ export default function PrimaryHeaderMenu({
         }}
         h="100%"
       >
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="md" />
+        <Burger
+          opened={opened}
+          onClick={toggle}
+          hiddenFrom="sm"
+          size="md"
+          color="white"
+        />
         <AdlLogo />
         <Group ml="xl" gap={0} visibleFrom="sm">
           {routes.map(({ path, title }) => (
