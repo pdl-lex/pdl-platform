@@ -1,6 +1,6 @@
 import { AppShell } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { HeaderMenu } from "./HeaderMenu"
+import PrimaryHeaderMenu from "./PrimaryHeaderMenu"
 import { AppRoute } from "../App"
 import SidebarMenu from "./SidebarMenu"
 
@@ -25,7 +25,7 @@ export default function MainLayout({
       }}
     >
       <AppShell.Header withBorder={false} p={0}>
-        <HeaderMenu routes={routes} opened={opened} toggle={toggle} />
+        <PrimaryHeaderMenu routes={routes} opened={opened} toggle={toggle} />
       </AppShell.Header>
 
       <AppShell.Navbar py="md">

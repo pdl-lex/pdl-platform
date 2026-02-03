@@ -16,7 +16,7 @@ import { IconFilter2Search } from "@tabler/icons-react"
 import { useDisclosure } from "@mantine/hooks"
 import ComplexSearchForm from "../ui/ComplexSearchForm"
 
-export function HeaderMenu({
+export default function PrimaryHeaderMenu({
   routes,
   opened,
   toggle,
