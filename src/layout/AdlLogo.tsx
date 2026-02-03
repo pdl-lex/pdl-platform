@@ -22,7 +22,7 @@ export default function AdlLogo() {
         w="auto"
         fit="contain"
       />
-      <Text span fw={500}>
+      <Text span fw={200} fz="35">
         LexoTerm
       </Text>
     </UnstyledButton>
