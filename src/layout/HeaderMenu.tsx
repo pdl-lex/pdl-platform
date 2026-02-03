@@ -31,7 +31,7 @@ export function HeaderMenu({
   const [searchParams] = useSearchParams()
 
   return (
-    <Group h="100%" px="md">
+    <Group h="100%" px="md" bg="lexoterm-primary.9" c="white">
       <Group
         justify="space-between"
         style={{ display: "flex", "flex-wrap": "nowrap", "flex-grow": "1" }}
@@ -52,7 +52,7 @@ export function HeaderMenu({
                         [classes.active]: isActive,
                       },
                       classes.control,
-                      props.className
+                      props.className,
                     )
                   }
                 />
