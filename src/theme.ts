@@ -5,7 +5,6 @@ export const theme = createTheme({
     Anchor: {
       defaultProps: {
         c: "inherit",
-        underline: "always",
       },
     },
   },
