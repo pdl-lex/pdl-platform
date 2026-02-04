@@ -2,6 +2,7 @@ import { Box, Grid } from "@mantine/core"
 import ComplexSearchForm from "../ui/ComplexSearchForm"
 import SearchResult from "../ui/SearchResult"
 import ContentPanel from "../ui/ContentPanel"
+import ResultSummary from "../ui/ResultSummary"
 
 export default function SearchView() {
   return (
@@ -14,9 +15,13 @@ export default function SearchView() {
         </Box>
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 4 }}>
+        <ContentPanel title="Treffer">
+          <ResultSummary />
+        </ContentPanel>
+      </Grid.Col>
+      <Grid.Col span={{ base: 12, sm: 4 }}>
         <SearchResult />
       </Grid.Col>
-      <Grid.Col span={{ base: 12, sm: 4 }}></Grid.Col>
     </Grid>
   )
 }
