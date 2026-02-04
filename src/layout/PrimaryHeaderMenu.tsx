@@ -34,7 +34,8 @@ export default function PrimaryHeaderMenu({
   return (
     <Group
       h={HEADER_HEIGHT * 0.75}
-      p={"md"}
+      py={"lg"}
+      px={"xl"}
       bg="lexoterm-primary.9"
       c="white"
       align="flex-start"
