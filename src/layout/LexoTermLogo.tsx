@@ -1,13 +1,6 @@
-import {
-  Image,
-  Text,
-  UnstyledButton,
-  useMantineColorScheme,
-} from "@mantine/core"
+import { Image, Text, UnstyledButton } from "@mantine/core"
 
 export default function LexoTermLogo() {
-  const { colorScheme } = useMantineColorScheme()
-  const src = colorScheme === "dark" ? "/logo_dark.svg" : "/logo_light.svg"
   return (
     <UnstyledButton
       component="a"
@@ -16,7 +9,7 @@ export default function LexoTermLogo() {
     >
       <Image
         visibleFrom="sm"
-        src={src}
+        src={"/lexoterm_logo.svg"}
         alt="LexoTerm Logo"
         h="1.6em"
         w="auto"
