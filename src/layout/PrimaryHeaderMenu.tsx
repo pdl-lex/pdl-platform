@@ -34,7 +34,7 @@ export default function PrimaryHeaderMenu({
   return (
     <Group
       h={HEADER_HEIGHT * 0.75}
-      p={0}
+      p={"md"}
       bg="lexoterm-primary.9"
       c="white"
       align="flex-start"
