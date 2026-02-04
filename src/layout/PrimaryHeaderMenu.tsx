@@ -10,7 +10,7 @@ import {
 import { NavLink, useSearchParams } from "react-router-dom"
 import classes from "./MainLayout.module.css"
 import { AppRoute } from "../App"
-import AdlLogo from "./AdlLogo"
+import LexoTermLogo from "./LexoTermLogo"
 import classNames from "classnames"
 import { IconFilter2Search } from "@tabler/icons-react"
 import { useDisclosure } from "@mantine/hooks"
@@ -55,7 +55,7 @@ export default function PrimaryHeaderMenu({
           size="md"
           color="white"
         />
-        <AdlLogo />
+        <LexoTermLogo />
         <Group ml="xl" gap={0} visibleFrom="sm">
           {routes.map(({ path, title }) => (
             <UnstyledButton

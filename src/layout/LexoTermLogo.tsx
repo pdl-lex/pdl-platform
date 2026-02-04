@@ -5,7 +5,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core"
 
-export default function AdlLogo() {
+export default function LexoTermLogo() {
   const { colorScheme } = useMantineColorScheme()
   const src = colorScheme === "dark" ? "/logo_dark.svg" : "/logo_light.svg"
   return (
