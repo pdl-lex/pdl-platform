@@ -15,6 +15,7 @@ import {
   ActionIcon,
   Affix,
   Transition,
+  BadgeProps,
 } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import _ from "lodash"
@@ -42,11 +43,14 @@ const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
   return data
 }
 
-function DisplayResource({ name }: { name: ResourceKey }) {
+export function DisplayResource({
+  name,
+  ...badgeProps
+}: { name: ResourceKey } & BadgeProps) {
   const resource = resources[name]
   return (
     <Tooltip label={resource.displayName}>
-      <Badge variant="outline" size="xs" color={resource.color}>
+      <Badge variant="outline" size="xs" color={resource.color} {...badgeProps}>
         {resource.key.toUpperCase()}
       </Badge>
     </Tooltip>
