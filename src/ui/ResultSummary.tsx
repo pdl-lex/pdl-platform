@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
 import { useSearchParams } from "react-router-dom"
-import { QuerySummary, LemmaPreview } from "../domain/QuerySummary"
+import { QuerySummary, LemmaInfo } from "../domain/QuerySummary"
 import InfoBox from "./InfoBox"
 import { DisplayResource } from "./SearchResult"
 import _ from "lodash"
-import { Accordion, List, Title, Text } from "@mantine/core"
+import { Accordion, List, Title, Text, Stack, Skeleton } from "@mantine/core"
 import { Headword } from "../domain/Entry"
 import React from "react"
 
@@ -55,11 +55,7 @@ function DisplayHeadword({ headword }: { headword: Headword }) {
   )
 }
 
-function headwordToString(headword: Headword): string {
-  return `${headword.lemma}${headword.index ?? ""}`
-}
-
-function LemmaQuicklook({ lemmaData }: { lemmaData: LemmaPreview }) {
+function LemmaQuicklook({ lemmaData }: { lemmaData: LemmaInfo }) {
   return (
     <InfoBox mb="sm">
       <Title order={4} fw={"600"} size="sm">
@@ -78,38 +74,28 @@ function LemmaQuicklook({ lemmaData }: { lemmaData: LemmaPreview }) {
 }
 
 function DisplayLemmaPreview({ data }: { data: QuerySummary }) {
-  const lemmaGroups = _(data.lemmaPreviews)
-    .groupBy((item) => item.headword.lemma)
-    .sortBy(
-      (value) => -value.length,
-      (value) => value[0]["xml:id"],
-    )
-    .value()
+  const lemmaGroups = data.lemmaGroups
 
   return (
     <>
       <Title order={3} size="sm">
         Lemmata
       </Title>
-      <Accordion
-        chevronPosition="left"
-        defaultValue={headwordToString(lemmaGroups[0][0].headword)}
-      >
+      <Accordion chevronPosition="left" defaultValue={lemmaGroups[0].lemma}>
         {lemmaGroups.map((group) => {
-          const headword = group[0].headword
-          const lemma = headwordToString(headword)
-          const n = group.length
+          const n = group.items.length
+
           return (
             <Accordion.Item
-              key={lemma}
-              value={lemma}
+              key={group.lemma}
+              value={group.lemma}
               style={{ borderBottom: "none" }}
             >
               <Accordion.Control>
-                <DisplayHeadword headword={headword} /> {n > 1 && `[${n}]`}
+                {group.lemma} {n > 1 && `[${n}]`}
               </Accordion.Control>
               <Accordion.Panel>
-                {group.map((item) => (
+                {group.items.map((item) => (
                   <LemmaQuicklook key={item["xml:id"]} lemmaData={item} />
                 ))}
               </Accordion.Panel>
