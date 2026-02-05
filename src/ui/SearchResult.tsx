@@ -139,7 +139,7 @@ function ResultItem({ entry }: { entry: DisplayEntry }) {
       title={
         <>
           <EntryHeader entry={entry} />
-          <Text color="dimmed" pb={0} size="xs">
+          <Text c="dimmed" pb={0} size="xs">
             <code>ID: {entry["xml:id"]}</code>
           </Text>
         </>
