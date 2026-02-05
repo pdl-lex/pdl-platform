@@ -14,7 +14,7 @@ import {
   UnstyledButton,
 } from "@mantine/core"
 import { Headword } from "../domain/Entry"
-import React from "react"
+import React, { useEffect } from "react"
 
 type LemmaDispatch = {
   setActiveLemmaId: React.Dispatch<React.SetStateAction<string | null>>
@@ -159,6 +159,15 @@ export default function ResultSummary({ setActiveLemmaId }: LemmaDispatch) {
     refetchOnWindowFocus: false,
     placeholderData: (previousData) => previousData,
   })
+
+  useEffect(() => {
+    if (data && data.lemmaGroups.length > 0) {
+      const firstLemma = data.lemmaGroups[0].items[0]
+      setActiveLemmaId(firstLemma["xml:id"])
+    } else {
+      setActiveLemmaId(null)
+    }
+  }, [data, setActiveLemmaId])
 
   return isFetching ? (
     <ResultMock />
