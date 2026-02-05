@@ -92,7 +92,7 @@ export function DisplayVariants({ variants }: { variants: string[] }) {
   )
 }
 
-function DisplayEtymology({ etym }: { etym: AnnotatedText }) {
+export function DisplayEtymology({ etym }: { etym: AnnotatedText }) {
   return (
     <Box>
       <Title order={3} size="h4" mt="lg" pb="xs">
