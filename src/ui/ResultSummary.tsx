@@ -121,6 +121,22 @@ function DisplayLemmaPreview({ data }: { data: QuerySummary }) {
   )
 }
 
+function ResultMock() {
+  return (
+    <Stack gap="xs">
+      <Skeleton height={150} />
+      <Skeleton height={"1em"} w={"5em"} />
+      <Skeleton height={"1em"} w={"10em"} />
+      {_.times(3, (index) => (
+        <Skeleton key={index} height={"5em"} />
+      ))}
+      {_.times(8, (index) => (
+        <Skeleton key={index} height={"1em"} />
+      ))}
+    </Stack>
+  )
+}
+
 export default function ResultSummary() {
   const [searchParams] = useSearchParams()
 
@@ -131,7 +147,9 @@ export default function ResultSummary() {
     placeholderData: (previousData) => previousData,
   })
 
-  return (
+  return isFetching ? (
+    <ResultMock />
+  ) : (
     data && (
       <>
         <FrequencyBreakdown data={data} />
