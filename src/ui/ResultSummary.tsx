@@ -76,7 +76,7 @@ function LemmaPreview({
       maw={"100%"}
       onClick={() => setActiveLemmaId(lemmaData["xml:id"])}
     >
-      <InfoBox mb="sm">
+      <InfoBox>
         <Title order={4} fw={"600"} size="sm">
           <DisplayHeadword headword={lemmaData.headword} />
         </Title>
@@ -93,7 +93,7 @@ function LemmaPreview({
   )
 }
 
-function DisplayQuerySummary({
+function DisplayResultSummary({
   data,
   setActiveLemmaId,
 }: LemmaDispatch & { data: QuerySummary }) {
@@ -101,35 +101,41 @@ function DisplayQuerySummary({
 
   return (
     <>
-      <Title order={3} size="sm">
-        Lemmata
-      </Title>
-      <Accordion chevronPosition="left" defaultValue={lemmaGroups[0].lemma}>
-        {lemmaGroups.map((group) => {
-          const n = group.items.length
+      {lemmaGroups.length > 0 && (
+        <>
+          <Title order={3} size="sm">
+            Lemmata
+          </Title>
+          <Accordion chevronPosition="left" defaultValue={lemmaGroups[0].lemma}>
+            {lemmaGroups.map((group) => {
+              const n = group.items.length
 
-          return (
-            <Accordion.Item
-              key={group.lemma}
-              value={group.lemma}
-              style={{ borderBottom: "none" }}
-            >
-              <Accordion.Control>
-                {group.lemma} {n > 1 && `[${n}]`}
-              </Accordion.Control>
-              <Accordion.Panel>
-                {group.items.map((item) => (
-                  <LemmaPreview
-                    key={item["xml:id"]}
-                    lemmaData={item}
-                    setActiveLemmaId={setActiveLemmaId}
-                  />
-                ))}
-              </Accordion.Panel>
-            </Accordion.Item>
-          )
-        })}
-      </Accordion>
+              return (
+                <Accordion.Item
+                  key={group.lemma}
+                  value={group.lemma}
+                  style={{ borderBottom: "none" }}
+                >
+                  <Accordion.Control>
+                    {group.lemma} {n > 1 && `[${n}]`}
+                  </Accordion.Control>
+                  <Accordion.Panel>
+                    <Stack gap={"xs"}>
+                      {group.items.map((item) => (
+                        <LemmaPreview
+                          key={item["xml:id"]}
+                          lemmaData={item}
+                          setActiveLemmaId={setActiveLemmaId}
+                        />
+                      ))}
+                    </Stack>
+                  </Accordion.Panel>
+                </Accordion.Item>
+              )
+            })}
+          </Accordion>
+        </>
+      )}
     </>
   )
 }
@@ -175,7 +181,7 @@ export default function ResultSummary({ setActiveLemmaId }: LemmaDispatch) {
     data && (
       <>
         <FrequencyBreakdown data={data} />
-        <DisplayQuerySummary data={data} setActiveLemmaId={setActiveLemmaId} />
+        <DisplayResultSummary data={data} setActiveLemmaId={setActiveLemmaId} />
       </>
     )
   )
