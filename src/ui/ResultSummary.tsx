@@ -21,7 +21,6 @@ type LemmaDispatch = {
 }
 
 const search = async (query: URLSearchParams): Promise<QuerySummary> => {
-  query.delete("detail")
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}/summary?${query.toString()}`,
   )
