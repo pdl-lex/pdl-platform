@@ -6,7 +6,10 @@ interface ResourceCount {
   count: number
 }
 
-export type LemmaInfo = Pick<DisplayEntry, "xml:id" | "headword" | "source"> & {
+export type LemmaInfo = Pick<
+  DisplayEntry,
+  "xml:id" | "headword" | "source" | "gender" | "nPos" | "number"
+> & {
   mainSenses: readonly string[]
 }
 export interface LemmaGroup {
