@@ -4,11 +4,24 @@ import { QuerySummary, LemmaInfo } from "../domain/QuerySummary"
 import InfoBox from "./InfoBox"
 import { DisplayResource } from "./SearchResult"
 import _ from "lodash"
-import { Accordion, List, Title, Text, Stack, Skeleton } from "@mantine/core"
+import {
+  Accordion,
+  List,
+  Title,
+  Text,
+  Stack,
+  Skeleton,
+  UnstyledButton,
+} from "@mantine/core"
 import { Headword } from "../domain/Entry"
 import React from "react"
 
+type LemmaDispatch = {
+  setActiveLemmaId: React.Dispatch<React.SetStateAction<string | null>>
+}
+
 const search = async (query: URLSearchParams): Promise<QuerySummary> => {
+  query.delete("detail")
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}/summary?${query.toString()}`,
   )
@@ -55,25 +68,36 @@ function DisplayHeadword({ headword }: { headword: Headword }) {
   )
 }
 
-function LemmaQuicklook({ lemmaData }: { lemmaData: LemmaInfo }) {
+function LemmaPreview({
+  lemmaData,
+  setActiveLemmaId,
+}: LemmaDispatch & { lemmaData: LemmaInfo }) {
   return (
-    <InfoBox mb="sm">
-      <Title order={4} fw={"600"} size="sm">
-        <DisplayHeadword headword={lemmaData.headword} />
-      </Title>
-      <Text c="dimmed" size="sm">
-        {lemmaData.mainSenses.map((sense, index) => (
-          <React.Fragment key={index}>
-            {index > 0 && "|"}
-            {sense}
-          </React.Fragment>
-        ))}
-      </Text>
-    </InfoBox>
+    <UnstyledButton
+      maw={"100%"}
+      onClick={() => setActiveLemmaId(lemmaData["xml:id"])}
+    >
+      <InfoBox mb="sm">
+        <Title order={4} fw={"600"} size="sm">
+          <DisplayHeadword headword={lemmaData.headword} />
+        </Title>
+        <Text c="dimmed" size="sm">
+          {lemmaData.mainSenses.map((sense, index) => (
+            <React.Fragment key={index}>
+              {index > 0 && "|"}
+              {sense}
+            </React.Fragment>
+          ))}
+        </Text>
+      </InfoBox>
+    </UnstyledButton>
   )
 }
 
-function DisplayLemmaPreview({ data }: { data: QuerySummary }) {
+function DisplayQuerySummary({
+  data,
+  setActiveLemmaId,
+}: LemmaDispatch & { data: QuerySummary }) {
   const lemmaGroups = data.lemmaGroups
 
   return (
@@ -96,7 +120,11 @@ function DisplayLemmaPreview({ data }: { data: QuerySummary }) {
               </Accordion.Control>
               <Accordion.Panel>
                 {group.items.map((item) => (
-                  <LemmaQuicklook key={item["xml:id"]} lemmaData={item} />
+                  <LemmaPreview
+                    key={item["xml:id"]}
+                    lemmaData={item}
+                    setActiveLemmaId={setActiveLemmaId}
+                  />
                 ))}
               </Accordion.Panel>
             </Accordion.Item>
@@ -123,7 +151,7 @@ function ResultMock() {
   )
 }
 
-export default function ResultSummary() {
+export default function ResultSummary({ setActiveLemmaId }: LemmaDispatch) {
   const [searchParams] = useSearchParams()
 
   const { data, isFetching } = useQuery<QuerySummary>({
@@ -139,7 +167,7 @@ export default function ResultSummary() {
     data && (
       <>
         <FrequencyBreakdown data={data} />
-        <DisplayLemmaPreview data={data} />
+        <DisplayQuerySummary data={data} setActiveLemmaId={setActiveLemmaId} />
       </>
     )
   )
