@@ -5,7 +5,6 @@ import InfoBox from "./InfoBox"
 import { DisplayResource } from "./SearchResult"
 import _ from "lodash"
 import {
-  Accordion,
   List,
   Title,
   Text,
@@ -27,8 +26,7 @@ const search = async (query: URLSearchParams): Promise<QuerySummary> => {
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
   }
-  const data = (await response.json()) as QuerySummary
-  return data
+  return (await response.json()) as QuerySummary
 }
 
 function FrequencyBreakdown({ data }: { data: QuerySummary }) {
@@ -67,29 +65,53 @@ function DisplayHeadword({ headword }: { headword: Headword }) {
   )
 }
 
-function LemmaPreview({
-  lemmaData,
+function LemmaListItem({
+  lemma,
   setActiveLemmaId,
-}: LemmaDispatch & { lemmaData: LemmaInfo }) {
+}: { lemma: LemmaInfo } & LemmaDispatch) {
+  const posMapping: Map<string | null, string> = new Map([
+    ["Substantiv", "Subst."],
+  ])
+
   return (
-    <UnstyledButton
-      maw={"100%"}
-      onClick={() => setActiveLemmaId(lemmaData["xml:id"])}
-    >
-      <InfoBox>
-        <Title order={4} fw={"600"} size="sm">
-          <DisplayHeadword headword={lemmaData.headword} />
-        </Title>
-        <Text c="dimmed" size="sm">
-          {lemmaData.mainSenses.map((sense, index) => (
-            <React.Fragment key={index}>
-              {index > 0 && "|"}
-              {sense}
-            </React.Fragment>
-          ))}
+    <List.Item pb={"0.2em"}>
+      <UnstyledButton
+        maw={"100%"}
+        onClick={() => setActiveLemmaId(lemma["xml:id"])}
+      >
+        <Text
+          style={{ hyphens: "auto", textIndent: "-1em", paddingLeft: "1em" }}
+          lineClamp={2}
+          size="sm"
+        >
+          <DisplayResource
+            style={{ textIndent: 0, paddingLeft: "none" }}
+            name={lemma.source}
+            variant="default"
+            radius="sm"
+          />{" "}
+          <Text span fw="bold">
+            <DisplayHeadword headword={lemma.headword} />
+          </Text>{" "}
+          <Text
+            c="dimmed"
+            style={{ fontVariant: "small-caps", textTransform: "lowercase" }}
+            span
+            size="sm"
+          >
+            {posMapping.get(lemma.nPos) || lemma.nPos} {lemma.gender}{" "}
+          </Text>
+          <Text span size="sm">
+            {lemma.mainSenses.length > 0 && (
+              <>
+                {" — "}
+                {`${lemma.mainSenses.join(" | ")}`}
+              </>
+            )}
+          </Text>
         </Text>
-      </InfoBox>
-    </UnstyledButton>
+      </UnstyledButton>
+    </List.Item>
   )
 }
 
@@ -103,37 +125,17 @@ function DisplayResultSummary({
     <>
       {lemmaGroups.length > 0 && (
         <>
-          <Title order={3} size="sm">
+          <Title order={3} size="sm" mb="xs">
             Lemmata
           </Title>
-          <Accordion chevronPosition="left" defaultValue={lemmaGroups[0].lemma}>
-            {lemmaGroups.map((group) => {
-              const n = group.items.length
-
-              return (
-                <Accordion.Item
-                  key={group.lemma}
-                  value={group.lemma}
-                  style={{ borderBottom: "none" }}
-                >
-                  <Accordion.Control>
-                    {group.lemma} {n > 1 && `[${n}]`}
-                  </Accordion.Control>
-                  <Accordion.Panel>
-                    <Stack gap={"xs"}>
-                      {group.items.map((item) => (
-                        <LemmaPreview
-                          key={item["xml:id"]}
-                          lemmaData={item}
-                          setActiveLemmaId={setActiveLemmaId}
-                        />
-                      ))}
-                    </Stack>
-                  </Accordion.Panel>
-                </Accordion.Item>
-              )
-            })}
-          </Accordion>
+          <List listStyleType="none">
+            {_.flatMap(lemmaGroups, (group) => group.items).map((lemma) => (
+              <LemmaListItem
+                lemma={lemma}
+                setActiveLemmaId={setActiveLemmaId}
+              />
+            ))}
+          </List>
         </>
       )}
     </>
