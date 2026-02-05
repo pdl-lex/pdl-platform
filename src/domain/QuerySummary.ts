@@ -6,15 +6,16 @@ interface ResourceCount {
   count: number
 }
 
-export type LemmaPreview = Pick<
-  DisplayEntry,
-  "xml:id" | "headword" | "source"
-> & {
+export type LemmaInfo = Pick<DisplayEntry, "xml:id" | "headword" | "source"> & {
   mainSenses: readonly string[]
+}
+export interface LemmaGroup {
+  lemma: string
+  items: readonly LemmaInfo[]
 }
 
 export interface QuerySummary {
   countsByResource: readonly ResourceCount[]
-  lemmaPreviews: readonly LemmaPreview[]
+  lemmaGroups: readonly LemmaGroup[]
   total: number
 }
