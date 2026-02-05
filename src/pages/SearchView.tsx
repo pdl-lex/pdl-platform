@@ -7,6 +7,7 @@ import { useState } from "react"
 
 export default function SearchView() {
   const [activeLemmaId, setActiveLemmaId] = useState<string | null>(null)
+
   return (
     <Grid maw={1200} p={"xl"} mx={"auto"}>
       <Grid.Col visibleFrom="sm" span={{ base: 12, sm: 4 }}>
@@ -22,9 +23,11 @@ export default function SearchView() {
         </ContentPanel>
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 4 }}>
-        <ContentPanel title="Lemma">
-          <LemmaDetail lemmaId={activeLemmaId} />
-        </ContentPanel>
+        {!!activeLemmaId && (
+          <ContentPanel title="Lemma">
+            <LemmaDetail lemmaId={activeLemmaId} />
+          </ContentPanel>
+        )}
       </Grid.Col>
     </Grid>
   )
