@@ -1,30 +1,11 @@
-import { BackgroundImage, Container, Title, Text } from "@mantine/core"
+import { Container } from "@mantine/core"
 import MainText from "../layout/MainText"
-import FreeSearchForm from "../ui/FreeSearchForm"
-
-function HeroSection() {
-  return (
-    <BackgroundImage
-      src="https://azlex.de/static/img/vis1.png"
-      mih="50vh"
-      p="xl"
-    >
-      <Title style={{ color: "white", lineHeight: 1.2 }} py="sm">
-        LexoTerm
-      </Title>
-      <Text fw="800" style={{ color: "white" }} pb="xl">
-        Lexikographische Suche und Analyse
-      </Text>
-      <FreeSearchForm gap="xs" maw="24em" />
-    </BackgroundImage>
-  )
-}
 
 export default function Home() {
   return (
-    <Container miw="100%" p="0">
-      <HeroSection />
+    <Container miw="100%" p="0" pt="xl">
       <MainText>
+        <h2>Einführung</h2>
         <p>
           <strong>LexoTerm</strong> ist ein wissenschaftliches Wörterbuch- und
           Analysetool, welches Forscherinnen und Forschern den Zugang zu einer
