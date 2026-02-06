@@ -9,7 +9,7 @@ export default function SearchView() {
   const [activeLemmaId, setActiveLemmaId] = useState<string | null>(null)
 
   return (
-    <Grid maw={1200} p={"xl"} mx={"auto"}>
+    <Grid p={"md"} pt={"xl"} mx={"auto"}>
       <Grid.Col visibleFrom="sm" span={{ base: 12, sm: 4 }}>
         <Box>
           <ContentPanel title="Suche">
