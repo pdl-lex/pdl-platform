@@ -14,8 +14,11 @@ import {
 } from "@mantine/core"
 import { Headword } from "../domain/Entry"
 import React, { useEffect } from "react"
+import classNames from "classnames"
+import "./ResultSummary.sass"
 
 type LemmaDispatch = {
+  activeLemmaId: string | null
   setActiveLemmaId: React.Dispatch<React.SetStateAction<string | null>>
 }
 
@@ -67,6 +70,7 @@ function DisplayHeadword({ headword }: { headword: Headword }) {
 
 function LemmaListItem({
   lemma,
+  activeLemmaId,
   setActiveLemmaId,
 }: { lemma: LemmaInfo } & LemmaDispatch) {
   const posMapping: Map<string | null, string> = new Map([
@@ -74,7 +78,13 @@ function LemmaListItem({
   ])
 
   return (
-    <List.Item pb={"0.2em"}>
+    <List.Item
+      mb={"0.5em"}
+      pl={"0.2em"}
+      className={classNames("lemma-list-item", {
+        active: activeLemmaId === lemma["xml:id"],
+      })}
+    >
       <UnstyledButton
         maw={"100%"}
         onClick={() => setActiveLemmaId(lemma["xml:id"])}
@@ -117,6 +127,7 @@ function LemmaListItem({
 
 function DisplayResultSummary({
   data,
+  activeLemmaId,
   setActiveLemmaId,
 }: LemmaDispatch & { data: QuerySummary }) {
   const lemmaGroups = data.lemmaGroups
@@ -131,7 +142,9 @@ function DisplayResultSummary({
           <List listStyleType="none">
             {_.flatMap(lemmaGroups, (group) => group.items).map((lemma) => (
               <LemmaListItem
+                key={lemma["xml:id"]}
                 lemma={lemma}
+                activeLemmaId={activeLemmaId}
                 setActiveLemmaId={setActiveLemmaId}
               />
             ))}
@@ -158,7 +171,10 @@ function ResultMock() {
   )
 }
 
-export default function ResultSummary({ setActiveLemmaId }: LemmaDispatch) {
+export default function ResultSummary({
+  activeLemmaId,
+  setActiveLemmaId,
+}: LemmaDispatch) {
   const [searchParams] = useSearchParams()
 
   const { data, isFetching } = useQuery<QuerySummary>({
@@ -183,7 +199,11 @@ export default function ResultSummary({ setActiveLemmaId }: LemmaDispatch) {
     data && (
       <>
         <FrequencyBreakdown data={data} />
-        <DisplayResultSummary data={data} setActiveLemmaId={setActiveLemmaId} />
+        <DisplayResultSummary
+          data={data}
+          activeLemmaId={activeLemmaId}
+          setActiveLemmaId={setActiveLemmaId}
+        />
       </>
     )
   )

@@ -19,13 +19,16 @@ export default function SearchView() {
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 4 }}>
         <ContentPanel title="Treffer">
-          <ResultSummary setActiveLemmaId={setActiveLemmaId} />
+          <ResultSummary
+            activeLemmaId={activeLemmaId}
+            setActiveLemmaId={setActiveLemmaId}
+          />
         </ContentPanel>
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 4 }}>
         {!!activeLemmaId && (
           <ContentPanel title="Lemma">
-            <LemmaDetail lemmaId={activeLemmaId} />
+            <LemmaDetail activeLemmaId={activeLemmaId} />
           </ContentPanel>
         )}
       </Grid.Col>

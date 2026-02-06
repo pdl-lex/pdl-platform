@@ -28,10 +28,14 @@ function DisplayLemmaDetail({ entry }: { entry: DisplayEntry }) {
   )
 }
 
-export default function LemmaDetail({ lemmaId }: { lemmaId: string }) {
+export default function LemmaDetail({
+  activeLemmaId,
+}: {
+  activeLemmaId: string
+}) {
   const { data, isFetching } = useQuery<DisplayEntry>({
-    queryKey: ["lemma-display", lemmaId],
-    queryFn: () => fetchLemma(lemmaId),
+    queryKey: ["lemma-display", activeLemmaId],
+    queryFn: () => fetchLemma(activeLemmaId),
     refetchOnWindowFocus: false,
     placeholderData: (previousData) => previousData,
   })
