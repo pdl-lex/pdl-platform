@@ -18,12 +18,3 @@
     text-underline-offset: 0.4em;
   }
 }
-
-:root {
-  --lexoterm-background-color: #b7c8c140;
-  --lexoterm-primary-color: #003835;
-}
-
-main {
-  background-color: var(--lexoterm-background-color);
-}
