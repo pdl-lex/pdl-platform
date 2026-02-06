@@ -15,6 +15,7 @@ import {
   ActionIcon,
   Affix,
   Transition,
+  BadgeProps,
 } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import _ from "lodash"
@@ -42,11 +43,14 @@ const search = async (query: URLSearchParams): Promise<DisplayEntryList> => {
   return data
 }
 
-function DisplayResource({ name }: { name: ResourceKey }) {
+export function DisplayResource({
+  name,
+  ...badgeProps
+}: { name: ResourceKey } & BadgeProps) {
   const resource = resources[name]
   return (
     <Tooltip label={resource.displayName}>
-      <Badge variant="outline" size="xs" color={resource.color}>
+      <Badge variant="outline" size="xs" color={resource.color} {...badgeProps}>
         {resource.key.toUpperCase()}
       </Badge>
     </Tooltip>
@@ -88,7 +92,7 @@ export function DisplayVariants({ variants }: { variants: string[] }) {
   )
 }
 
-function DisplayEtymology({ etym }: { etym: AnnotatedText }) {
+export function DisplayEtymology({ etym }: { etym: AnnotatedText }) {
   return (
     <Box>
       <Title order={3} size="h4" mt="lg" pb="xs">
@@ -135,7 +139,7 @@ function ResultItem({ entry }: { entry: DisplayEntry }) {
       title={
         <>
           <EntryHeader entry={entry} />
-          <Text color="dimmed" pb={0} size="xs">
+          <Text c="dimmed" pb={0} size="xs">
             <code>ID: {entry["xml:id"]}</code>
           </Text>
         </>
@@ -279,7 +283,7 @@ export default function SearchResult() {
     </Stack>
   ) : (
     <Box
-      mih={"120vh"} // ensure consistent scroll behavior
+      mih={"120vh"} // ensures consistent scroll behavior
     >
       <SearchExamples />
     </Box>
