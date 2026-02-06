@@ -11,7 +11,7 @@ export default function LexoTermLogo() {
         visibleFrom="sm"
         src={"/lexoterm_logo.svg"}
         alt="LexoTerm Logo"
-        h="1.6em"
+        h="2.3em"
         w="auto"
         fit="contain"
       />
