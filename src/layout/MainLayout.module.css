@@ -3,7 +3,7 @@
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
   border-radius: var(--mantine-radius-md);
   font-weight: 200;
-  font-size: var(--mantine-font-size-md);
+  font-size: var(--mantine-font-size-xl);
 
   &:hover {
     background-color: light-dark(

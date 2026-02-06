@@ -2,10 +2,13 @@ import {
   ActionIcon,
   Burger,
   Drawer,
+  Flex,
+  getGradient,
   Group,
   Indicator,
   Text,
   UnstyledButton,
+  useMantineTheme,
 } from "@mantine/core"
 import { NavLink, useSearchParams } from "react-router-dom"
 import classes from "./MainLayout.module.css"
@@ -30,88 +33,85 @@ export default function PrimaryHeaderMenu({
     useDisclosure(false)
 
   const [searchParams] = useSearchParams()
+  const theme = useMantineTheme()
 
   return (
-    <Group
-      h={HEADER_HEIGHT * 0.75}
-      py={"lg"}
+    <Flex
+      h={HEADER_HEIGHT}
       px={"xl"}
-      bg="lexoterm-primary.9"
+      bg={getGradient(
+        { deg: 90, from: "lexoterm-primary.9", to: "#222222" },
+        theme,
+      )}
+      style={{ borderRadius: "5px" }}
+      m="md"
       c="white"
-      align="flex-start"
+      align={"center"}
+      justify={"space-between"}
+      wrap="nowrap"
     >
-      <Group
-        align="flex-end"
-        justify="space-between"
-        style={{
-          "flex-wrap": "nowrap",
-          "flex-grow": "1",
-        }}
-        h="100%"
-      >
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          hiddenFrom="sm"
-          size="md"
-          color="white"
-        />
-        <LexoTermLogo />
-        <Group ml="xl" gap={0} visibleFrom="sm">
-          {routes.map(({ path, title }) => (
-            <UnstyledButton
-              key={path}
-              bg="inherit"
-              renderRoot={(props) => (
-                <NavLink
-                  {...props}
-                  to={path}
-                  className={({ isActive }) =>
-                    classNames(
-                      {
-                        [classes.active]: isActive,
-                      },
-                      classes.control,
-                      props.className,
-                    )
-                  }
-                />
-              )}
-            >
-              {title}
-            </UnstyledButton>
-          ))}
-        </Group>
-        <ActionIcon
-          style={{ color: "inherit" }}
-          hiddenFrom="sm"
-          size="lg"
-          variant="subtle"
-          aria-label="Settings"
-          onClick={openFilters}
-        >
-          <Indicator offset={5} disabled={searchParams.size === 0} size={6}>
-            <IconFilter2Search stroke={1.5} />
-          </Indicator>
-        </ActionIcon>
-        <Drawer
-          offset={8}
-          title={
-            <Text size="xl" fw="bold">
-              Suchfilter
-            </Text>
-          }
-          radius="md"
-          size="lg"
-          padding="lg"
-          opened={filtersOpened}
-          position={"top"}
-          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-          onClose={closeFilters}
-        >
-          <ComplexSearchForm onSubmit={closeFilters} />
-        </Drawer>
+      <Burger
+        opened={opened}
+        onClick={toggle}
+        hiddenFrom="sm"
+        size="md"
+        color="white"
+      />
+      <LexoTermLogo />
+      <Group ml="xl" gap={0} visibleFrom="sm">
+        {routes.map(({ path, title }) => (
+          <UnstyledButton
+            key={path}
+            bg="inherit"
+            renderRoot={(props) => (
+              <NavLink
+                {...props}
+                to={path}
+                className={({ isActive }) =>
+                  classNames(
+                    {
+                      [classes.active]: isActive,
+                    },
+                    classes.control,
+                    props.className,
+                  )
+                }
+              />
+            )}
+          >
+            {title}
+          </UnstyledButton>
+        ))}
       </Group>
-    </Group>
+      <ActionIcon
+        style={{ color: "inherit" }}
+        hiddenFrom="sm"
+        size="lg"
+        variant="subtle"
+        aria-label="Settings"
+        onClick={openFilters}
+      >
+        <Indicator offset={5} disabled={searchParams.size === 0} size={6}>
+          <IconFilter2Search stroke={1.5} />
+        </Indicator>
+      </ActionIcon>
+      <Drawer
+        offset={8}
+        title={
+          <Text size="xl" fw="bold">
+            Suchfilter
+          </Text>
+        }
+        radius="md"
+        size="lg"
+        padding="lg"
+        opened={filtersOpened}
+        position={"top"}
+        overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+        onClose={closeFilters}
+      >
+        <ComplexSearchForm onSubmit={closeFilters} />
+      </Drawer>
+    </Flex>
   )
 }
