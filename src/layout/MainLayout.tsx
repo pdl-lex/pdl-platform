@@ -15,16 +15,20 @@ export default function MainLayout({
 }) {
   const [opened, { toggle }] = useDisclosure()
 
+  const headerPadding = "md"
+
   return (
     <AppShell
-      header={{ height: HEADER_HEIGHT }}
+      header={{
+        height: `calc(${HEADER_HEIGHT}px + var(--mantine-spacing-${headerPadding}))`,
+      }}
       navbar={{
         width: 300,
         breakpoint: "sm",
         collapsed: { desktop: true, mobile: !opened },
       }}
     >
-      <AppShell.Header withBorder={false} p={0}>
+      <AppShell.Header withBorder={false} p={headerPadding} pb={0}>
         <PrimaryHeaderMenu routes={routes} opened={opened} toggle={toggle} />
       </AppShell.Header>
 

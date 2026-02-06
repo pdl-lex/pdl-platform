@@ -44,7 +44,6 @@ export default function PrimaryHeaderMenu({
         theme,
       )}
       style={{ borderRadius: "5px" }}
-      m="md"
       c="white"
       align={"center"}
       justify={"space-between"}
