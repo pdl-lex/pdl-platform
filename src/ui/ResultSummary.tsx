@@ -38,7 +38,9 @@ function FrequencyBreakdown({ data }: { data: QuerySummary }) {
   return (
     <InfoBox mb="md">
       <List listStyleType="none">
-        <List.Item key={"total"}>{data.total} Treffer</List.Item>
+        <List.Item key={"total"}>
+          {data.total.toLocaleString()} Treffer
+        </List.Item>
         {resources.map(({ source, count }) => {
           return (
             <List.Item key={source}>
@@ -50,7 +52,7 @@ function FrequencyBreakdown({ data }: { data: QuerySummary }) {
                 color="darkgreen"
                 mr="md"
               />
-              {count}
+              {count.toLocaleString()}
             </List.Item>
           )
         })}
