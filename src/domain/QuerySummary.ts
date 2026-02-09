@@ -8,7 +8,7 @@ interface ResourceCount {
 
 export type LemmaInfo = Pick<
   DisplayEntry,
-  "xml:id" | "headword" | "source" | "gender" | "nPos" | "number"
+  "sourceId" | "headword" | "source" | "gender" | "nPos" | "number"
 > & {
   mainSenses: readonly string[]
 }
