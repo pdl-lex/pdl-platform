@@ -16,6 +16,7 @@ import { Headword } from "../domain/Entry"
 import React, { useEffect } from "react"
 import classNames from "classnames"
 import "./ResultSummary.sass"
+import ContentPanel from "./ContentPanel"
 
 type LemmaDispatch = {
   activeLemmaId: string | null
@@ -180,29 +181,34 @@ export default function ResultSummary({
     queryFn: () => search(searchParams),
     refetchOnWindowFocus: false,
     placeholderData: (previousData) => previousData,
+    enabled: searchParams.size > 0,
   })
 
   useEffect(() => {
-    if (data && data.items.length > 0) {
+    if (searchParams.size === 0) {
+      setActiveLemmaId(null)
+    } else if (data && data.items.length > 0) {
       const firstLemma = data.items[0]
       setActiveLemmaId(firstLemma["xml:id"])
     } else {
       setActiveLemmaId(null)
     }
-  }, [data, setActiveLemmaId])
+  }, [data, setActiveLemmaId, searchParams])
+
+  console.log(data)
 
   return isFetching ? (
     <ResultMock />
   ) : (
     data && (
-      <>
+      <ContentPanel title={"Treffer"}>
         <FrequencyBreakdown data={data} />
         <DisplayResultSummary
           data={data}
           activeLemmaId={activeLemmaId}
           setActiveLemmaId={setActiveLemmaId}
         />
-      </>
+      </ContentPanel>
     )
   )
 }

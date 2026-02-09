@@ -18,12 +18,10 @@ export default function SearchView() {
         </Box>
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 4 }}>
-        <ContentPanel title="Treffer">
-          <ResultSummary
-            activeLemmaId={activeLemmaId}
-            setActiveLemmaId={setActiveLemmaId}
-          />
-        </ContentPanel>
+        <ResultSummary
+          activeLemmaId={activeLemmaId}
+          setActiveLemmaId={setActiveLemmaId}
+        />
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 4 }}>
         {!!activeLemmaId && (
