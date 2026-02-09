@@ -195,8 +195,6 @@ export default function ResultSummary({
     }
   }, [data, setActiveLemmaId, searchParams])
 
-  console.log(data)
-
   return isFetching ? (
     <ResultMock />
   ) : (
