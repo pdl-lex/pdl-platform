@@ -87,10 +87,7 @@ function LemmaListItem({
         active: activeLemmaId === lemma["xml:id"],
       })}
     >
-      <UnstyledButton
-        maw={"100%"}
-        onClick={() => setActiveLemmaId(lemma["xml:id"])}
-      >
+      <UnstyledButton onClick={() => setActiveLemmaId(lemma["xml:id"])}>
         <Text
           style={{ hyphens: "auto", textIndent: "-1em", paddingLeft: "1em" }}
           lineClamp={2}
