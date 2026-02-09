@@ -1,4 +1,4 @@
-import { createTheme } from "@mantine/core"
+import { colorsTuple, createTheme } from "@mantine/core"
 
 export const theme = createTheme({
   fontFamily: "Noto Sans, sans-serif",
@@ -8,19 +8,23 @@ export const theme = createTheme({
         c: "inherit",
       },
     },
+    Button: {
+      defaultProps: {
+        size: "sm",
+        p: "xs",
+      },
+      styles: {
+        root: {
+          fontWeight: 300,
+          fontSize: "1em",
+          textTransform: "uppercase",
+        },
+      },
+    },
   },
   colors: {
-    "lexoterm-primary": [
-      "#ebfffe",
-      "#d7fdfb",
-      "#aafdf8",
-      "#7cfdf5",
-      "#60fcf2",
-      "#53fdf1",
-      "#4bfdf1",
-      "#3ee1d6",
-      "#2ec8be",
-      "#003835",
-    ],
+    "lexoterm-brand": colorsTuple("#003835"),
+    "lexoterm-primary": colorsTuple("#006844"),
+    "lexoterm-secondary": colorsTuple("#CE601C"),
   },
 })

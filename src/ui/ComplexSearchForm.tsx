@@ -1,4 +1,5 @@
 import {
+  alpha,
   Button,
   CloseButton,
   Fieldset,
@@ -7,13 +8,13 @@ import {
   Select,
   Stack,
   TextInput,
+  useMantineTheme,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { Resource, ResourceKey, resources } from "../domain/Resource"
 import _ from "lodash"
 import { partsOfSpeech } from "../domain/PartOfSpeech"
-import { IconSearch } from "@tabler/icons-react"
 import { useEffect } from "react"
 
 function createOptionLabel({ key, displayName }: Resource): string {
@@ -96,6 +97,8 @@ export default function ComplexSearchForm({
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
 
+  const theme = useMantineTheme()
+
   const form = useForm<SearchFormValues>({
     mode: "uncontrolled",
     initialValues: getCurrentValues(searchParams),
@@ -173,11 +176,27 @@ export default function ComplexSearchForm({
             />
           </Stack>
         </Fieldset>
-        <Group justify="space-between">
-          <Button onClick={() => form.setValues(defaultValues)} color="red">
-            Filter zurücksetzen
+        <Group>
+          <Button
+            variant="gradient"
+            onClick={() => form.setValues(defaultValues)}
+            gradient={{
+              deg: 90,
+              from: "lexoterm-secondary",
+              to: alpha(theme.colors["lexoterm-secondary"][0], 0.75),
+            }}
+          >
+            Zurücksetzen
           </Button>
-          <Button type="submit" leftSection={<IconSearch size={16} />}>
+          <Button
+            type="submit"
+            variant="gradient"
+            gradient={{
+              deg: 90,
+              from: "lexoterm-primary",
+              to: alpha(theme.colors["lexoterm-primary"][0], 0.75),
+            }}
+          >
             Suchen
           </Button>
         </Group>

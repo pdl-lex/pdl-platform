@@ -40,7 +40,7 @@ export default function PrimaryHeaderMenu({
       h={HEADER_HEIGHT}
       px={"xl"}
       bg={getGradient(
-        { deg: 90, from: "lexoterm-primary.9", to: "#222222" },
+        { deg: 90, from: "lexoterm-brand", to: "#222222" },
         theme,
       )}
       style={{ borderRadius: "5px" }}
