@@ -92,6 +92,7 @@ function LemmaListItem({
           style={{ hyphens: "auto", textIndent: "-1em", paddingLeft: "1em" }}
           lineClamp={2}
           size="sm"
+          span
         >
           <DisplayResource
             style={{ textIndent: 0, paddingLeft: "none" }}
