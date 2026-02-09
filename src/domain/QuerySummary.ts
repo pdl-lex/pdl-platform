@@ -12,13 +12,9 @@ export type LemmaInfo = Pick<
 > & {
   mainSenses: readonly string[]
 }
-export interface LemmaGroup {
-  lemma: string
-  items: readonly LemmaInfo[]
-}
 
 export interface QuerySummary {
   countsByResource: readonly ResourceCount[]
-  lemmaGroups: readonly LemmaGroup[]
+  items: readonly LemmaInfo[]
   total: number
 }

@@ -132,17 +132,15 @@ function DisplayResultSummary({
   activeLemmaId,
   setActiveLemmaId,
 }: LemmaDispatch & { data: QuerySummary }) {
-  const lemmaGroups = data.lemmaGroups
-
   return (
     <>
-      {lemmaGroups.length > 0 && (
+      {data.items.length > 0 && (
         <>
           <Title order={3} size="sm" mb="xs">
             Lemmata
           </Title>
           <List listStyleType="none">
-            {_.flatMap(lemmaGroups, (group) => group.items).map((lemma) => (
+            {data.items.map((lemma) => (
               <LemmaListItem
                 key={lemma["xml:id"]}
                 lemma={lemma}
@@ -187,8 +185,8 @@ export default function ResultSummary({
   })
 
   useEffect(() => {
-    if (data && data.lemmaGroups.length > 0) {
-      const firstLemma = data.lemmaGroups[0].items[0]
+    if (data && data.items.length > 0) {
+      const firstLemma = data.items[0]
       setActiveLemmaId(firstLemma["xml:id"])
     } else {
       setActiveLemmaId(null)
