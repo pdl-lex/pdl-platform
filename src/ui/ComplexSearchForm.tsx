@@ -16,9 +16,11 @@ import { partsOfSpeech } from "../domain/PartOfSpeech"
 import { IconSearch } from "@tabler/icons-react"
 import { useEffect } from "react"
 
-const resourceOptions = Object.values(resources).map(
-  ({ key, displayName }) => `${key.toUpperCase()} | ${displayName}`
-)
+function createOptionLabel({ key, displayName }: Resource): string {
+  return `${key.toUpperCase()} | ${displayName}`
+}
+
+const resourceOptions = Object.values(resources).map(createOptionLabel)
 
 function getResourceByOption(option: string): Resource {
   const resource = _.find(resources, { displayName: option.split(" | ")[1] })
@@ -71,7 +73,7 @@ function createParams(values: SearchFormValues): string {
 function getCurrentResources(searchParams: URLSearchParams): string[] {
   const currentResources = searchParams
     .getAll("resources")
-    .map((key) => resources[key as ResourceKey].displayName)
+    .map((key) => createOptionLabel(resources[key as ResourceKey]))
 
   return currentResources.length === 0 ? resourceOptions : currentResources
 }
