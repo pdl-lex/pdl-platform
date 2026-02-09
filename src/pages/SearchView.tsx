@@ -1,23 +1,34 @@
-import { Box, Card, Grid, Title } from "@mantine/core"
+import { Box, Grid } from "@mantine/core"
 import ComplexSearchForm from "../ui/ComplexSearchForm"
-import SearchResult from "../ui/SearchResult"
-import { HEADER_HEIGHT } from "../layout/MainLayout"
+import ContentPanel from "../ui/ContentPanel"
+import ResultSummary from "../ui/ResultSummary"
+import LemmaDetail from "../ui/LemmaDetail"
+import { useState } from "react"
 
 export default function SearchView() {
+  const [activeLemmaId, setActiveLemmaId] = useState<string | null>(null)
+
   return (
-    <Grid>
-      <Grid.Col visibleFrom="sm" span={{ base: 12, sm: 4 }} p={0}>
-        <Box p={"lg"} style={{ position: "sticky", top: HEADER_HEIGHT }}>
-          <Card withBorder p={"lg"} radius="md">
-            <Title order={2} size="h4" mb="md">
-              Suchfilter
-            </Title>
+    <Grid p={"md"} pt={"md"} mx={"auto"}>
+      <Grid.Col visibleFrom="sm" span={{ base: 12, sm: 4 }}>
+        <Box>
+          <ContentPanel title="Suche">
             <ComplexSearchForm />
-          </Card>
+          </ContentPanel>
         </Box>
       </Grid.Col>
-      <Grid.Col span={{ base: 12, sm: 8 }} p={0}>
-        <SearchResult />
+      <Grid.Col span={{ base: 12, sm: 4 }}>
+        <ResultSummary
+          activeLemmaId={activeLemmaId}
+          setActiveLemmaId={setActiveLemmaId}
+        />
+      </Grid.Col>
+      <Grid.Col span={{ base: 12, sm: 4 }}>
+        {!!activeLemmaId && (
+          <ContentPanel title="Lemma">
+            <LemmaDetail activeLemmaId={activeLemmaId} />
+          </ContentPanel>
+        )}
       </Grid.Col>
     </Grid>
   )

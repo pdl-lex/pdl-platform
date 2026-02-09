@@ -1,10 +1,10 @@
 import { AppShell } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { HeaderMenu } from "./HeaderMenu"
+import PrimaryHeaderMenu from "./PrimaryHeaderMenu"
 import { AppRoute } from "../App"
 import SidebarMenu from "./SidebarMenu"
 
-export const HEADER_HEIGHT = 60
+export const HEADER_HEIGHT = 70
 
 export default function MainLayout({
   routes,
@@ -15,17 +15,21 @@ export default function MainLayout({
 }) {
   const [opened, { toggle }] = useDisclosure()
 
+  const headerPadding = "md"
+
   return (
     <AppShell
-      header={{ height: HEADER_HEIGHT }}
+      header={{
+        height: `calc(${HEADER_HEIGHT}px + var(--mantine-spacing-${headerPadding}))`,
+      }}
       navbar={{
         width: 300,
         breakpoint: "sm",
         collapsed: { desktop: true, mobile: !opened },
       }}
     >
-      <AppShell.Header>
-        <HeaderMenu routes={routes} opened={opened} toggle={toggle} />
+      <AppShell.Header withBorder={false} p={headerPadding} pb={0}>
+        <PrimaryHeaderMenu routes={routes} opened={opened} toggle={toggle} />
       </AppShell.Header>
 
       <AppShell.Navbar py="md">

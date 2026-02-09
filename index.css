@@ -1,0 +1,5 @@
+:root {
+  --lexoterm-background-color: #edf1f0;
+  --lexoterm-brand-color: #003835;
+  --mantine-color-body: var(--lexoterm-background-color) !important;
+}
