@@ -26,5 +26,6 @@ export const theme = createTheme({
     "lexoterm-brand": colorsTuple("#003835"),
     "lexoterm-primary": colorsTuple("#006844"),
     "lexoterm-secondary": colorsTuple("#CE601C"),
+    "lexoterm-footer": colorsTuple("#cfdddc"),
   },
 })

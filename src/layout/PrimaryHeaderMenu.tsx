@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Box,
   Burger,
   Drawer,
   Flex,
@@ -36,81 +37,87 @@ export default function PrimaryHeaderMenu({
   const theme = useMantineTheme()
 
   return (
-    <Flex
-      h={HEADER_HEIGHT}
-      px={"xl"}
+    <Box
+      w={"100%"}
       bg={getGradient(
         { deg: 90, from: "lexoterm-brand", to: "#222222" },
         theme,
       )}
       style={{ borderRadius: "5px" }}
-      c="white"
-      align={"center"}
-      justify={"space-between"}
-      wrap="nowrap"
     >
-      <Burger
-        opened={opened}
-        onClick={toggle}
-        hiddenFrom="sm"
-        size="md"
-        color="white"
-      />
-      <LexoTermLogo />
-      <Group ml="xl" gap={0} visibleFrom="sm">
-        {routes.map(({ path, title }) => (
-          <UnstyledButton
-            key={path}
-            bg="inherit"
-            renderRoot={(props) => (
-              <NavLink
-                {...props}
-                to={path}
-                className={({ isActive }) =>
-                  classNames(
-                    {
-                      [classes.active]: isActive,
-                    },
-                    classes.control,
-                    props.className,
-                  )
-                }
-              />
-            )}
-          >
-            {title}
-          </UnstyledButton>
-        ))}
-      </Group>
-      <ActionIcon
-        style={{ color: "inherit" }}
-        hiddenFrom="sm"
-        size="lg"
-        variant="subtle"
-        aria-label="Settings"
-        onClick={openFilters}
+      <Flex
+        h={HEADER_HEIGHT}
+        px={"xl"}
+        c="white"
+        align={"center"}
+        justify={"space-between"}
+        wrap="nowrap"
+        maw={"1440px"}
+        mx="auto"
       >
-        <Indicator offset={5} disabled={searchParams.size === 0} size={6}>
-          <IconFilter2Search stroke={1.5} />
-        </Indicator>
-      </ActionIcon>
-      <Drawer
-        offset={8}
-        title={
-          <Text size="xl" fw="bold">
-            Suchfilter
-          </Text>
-        }
-        radius="md"
-        size="lg"
-        padding="lg"
-        opened={filtersOpened}
-        position={"top"}
-        overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-        onClose={closeFilters}
-      >
-        <ComplexSearchForm onSubmit={closeFilters} />
-      </Drawer>
-    </Flex>
+        <Burger
+          opened={opened}
+          onClick={toggle}
+          hiddenFrom="sm"
+          size="md"
+          color="white"
+        />
+        <LexoTermLogo />
+        <Group ml="xl" gap={0} visibleFrom="sm">
+          {routes.map(({ path, title }) => (
+            <UnstyledButton
+              key={path}
+              bg="inherit"
+              renderRoot={(props) => (
+                <NavLink
+                  {...props}
+                  to={path}
+                  className={({ isActive }) =>
+                    classNames(
+                      {
+                        [classes.active]: isActive,
+                      },
+                      classes.control,
+                      props.className,
+                    )
+                  }
+                />
+              )}
+            >
+              {title}
+            </UnstyledButton>
+          ))}
+        </Group>
+        <ActionIcon
+          style={{ color: "inherit" }}
+          hiddenFrom="sm"
+          size="lg"
+          variant="subtle"
+          aria-label="Settings"
+          onClick={openFilters}
+        >
+          <Indicator offset={5} disabled={searchParams.size === 0} size={6}>
+            <IconFilter2Search stroke={1.5} />
+          </Indicator>
+        </ActionIcon>
+        <Drawer
+          offset={8}
+          title={
+            <Text size="xl" fw="bold">
+              Suchfilter
+            </Text>
+          }
+          radius="md"
+          size="lg"
+          padding="lg"
+          opened={filtersOpened}
+          position={"top"}
+          overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+          onClose={closeFilters}
+        >
+          <ComplexSearchForm onSubmit={closeFilters} />
+        </Drawer>
+      </Flex>
+    </Box>
   )
 }

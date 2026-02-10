@@ -3,8 +3,10 @@ import { useDisclosure } from "@mantine/hooks"
 import PrimaryHeaderMenu from "./PrimaryHeaderMenu"
 import { AppRoute } from "../App"
 import SidebarMenu from "./SidebarMenu"
+import Footer from "./Footer"
 
 export const HEADER_HEIGHT = 70
+const MAIN_MAX_WIDTH = "1440px"
 
 export default function MainLayout({
   routes,
@@ -15,12 +17,12 @@ export default function MainLayout({
 }) {
   const [opened, { toggle }] = useDisclosure()
 
-  const headerPadding = "md"
+  const outerSpacing = "md"
 
   return (
     <AppShell
       header={{
-        height: `calc(${HEADER_HEIGHT}px + var(--mantine-spacing-${headerPadding}))`,
+        height: `calc(${HEADER_HEIGHT}px + var(--mantine-spacing-${outerSpacing}))`,
       }}
       navbar={{
         width: 300,
@@ -28,7 +30,7 @@ export default function MainLayout({
         collapsed: { desktop: true, mobile: !opened },
       }}
     >
-      <AppShell.Header withBorder={false} p={headerPadding} pb={0}>
+      <AppShell.Header withBorder={false} p={outerSpacing} pb={0}>
         <PrimaryHeaderMenu routes={routes} opened={opened} toggle={toggle} />
       </AppShell.Header>
 
@@ -36,7 +38,10 @@ export default function MainLayout({
         <SidebarMenu routes={routes} />
       </AppShell.Navbar>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main maw={MAIN_MAX_WIDTH} mx={"auto"}>
+        {children}
+      </AppShell.Main>
+      <Footer mainMaxWidth={MAIN_MAX_WIDTH} outerSpacing={outerSpacing} />
     </AppShell>
   )
 }
