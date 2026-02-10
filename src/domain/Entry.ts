@@ -2,13 +2,13 @@ import { AnnotatedText } from "./AnnotatedText"
 import { ResourceKey } from "./Resource"
 
 export default class Entry {
-  xmlId: string
+  sourceId: string
   form?: Form[]
   gramGrp?: GrammarGroup[]
   sense?: Sense[]
 
   constructor(data: any) {
-    this.xmlId = data["xml:id"] || ""
+    this.sourceId = data.sourceId || ""
     this.form = data.form
     this.gramGrp = data.gramGrp
     this.sense = data.sense
@@ -29,7 +29,8 @@ export interface Headword {
 }
 
 export interface DisplayEntry {
-  ["xml:id"]: string
+  sourceId: string
+  lexId: string
   source: ResourceKey
   headword: Headword
   variants: string[]
