@@ -30,6 +30,7 @@ export interface Headword {
 
 export interface DisplayEntry {
   sourceId: string
+  lexotermId: string
   source: ResourceKey
   headword: Headword
   variants: string[]

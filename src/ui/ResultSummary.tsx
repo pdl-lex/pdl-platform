@@ -85,10 +85,10 @@ function LemmaListItem({
       mb={"0.5em"}
       pl={"0.2em"}
       className={classNames("lemma-list-item", {
-        active: activeLemmaId === lemma.sourceId,
+        active: activeLemmaId === lemma.lexotermId,
       })}
     >
-      <UnstyledButton onClick={() => setActiveLemmaId(lemma.sourceId)}>
+      <UnstyledButton onClick={() => setActiveLemmaId(lemma.lexotermId)}>
         <Text
           style={{ hyphens: "auto", textIndent: "-1em", paddingLeft: "1em" }}
           lineClamp={2}
@@ -141,7 +141,7 @@ function DisplayResultSummary({
           <List listStyleType="none">
             {data.items.map((lemma) => (
               <LemmaListItem
-                key={lemma.sourceId}
+                key={lemma.lexotermId}
                 lemma={lemma}
                 activeLemmaId={activeLemmaId}
                 setActiveLemmaId={setActiveLemmaId}
@@ -189,7 +189,7 @@ export default function ResultSummary({
       setActiveLemmaId(null)
     } else if (data && data.items.length > 0) {
       const firstLemma = data.items[0]
-      setActiveLemmaId(firstLemma.sourceId)
+      setActiveLemmaId(firstLemma.lexotermId)
     } else {
       setActiveLemmaId(null)
     }
