@@ -6,6 +6,7 @@ import SidebarMenu from "./SidebarMenu"
 import Footer from "./Footer"
 
 export const HEADER_HEIGHT = 70
+const MAIN_MAX_WIDTH = "1440px"
 
 export default function MainLayout({
   routes,
@@ -37,8 +38,10 @@ export default function MainLayout({
         <SidebarMenu routes={routes} />
       </AppShell.Navbar>
 
-      <AppShell.Main>{children}</AppShell.Main>
-      <Footer m={outerSpacing} />
+      <AppShell.Main maw={MAIN_MAX_WIDTH} mx={"auto"}>
+        {children}
+      </AppShell.Main>
+      <Footer mainMaxWidth={MAIN_MAX_WIDTH} outerSpacing={outerSpacing} />
     </AppShell>
   )
 }
