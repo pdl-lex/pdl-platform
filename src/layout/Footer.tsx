@@ -14,11 +14,11 @@ export default function Footer({
       <SimpleGrid
         maw={mainMaxWidth}
         mx={"auto"}
-        cols={{ base: 2, sm: 5 }}
+        cols={{ base: 1, sm: 5 }}
         p={"lg"}
       >
         <Box>
-          <FooterColumn>
+          <FooterColumn pb={"xl"}>
             <BadwLogo />
           </FooterColumn>
         </Box>
