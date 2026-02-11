@@ -6,6 +6,7 @@ import DisplaySense from "./DisplaySense"
 import { AnnotatedText } from "../domain/AnnotatedText"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
 import React from "react"
+import "./LemmaDetail.sass"
 
 const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
   const response = await fetch(
@@ -20,7 +21,7 @@ const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
 
 function DisplayCompounds({ compounds }: { compounds: AnnotatedText[] }) {
   return (
-    <Box>
+    <Box className="compounds">
       <Title order={3} size="h4" mt="lg" pb="xs">
         Komposita
       </Title>
@@ -62,12 +63,12 @@ export default function LemmaDetail({
     placeholderData: (previousData) => previousData,
   })
   return (
-    <>
+    <span className={"lemma-detail"}>
       {isFetching ? (
         <Skeleton height={"1em"} width={"6em"} />
       ) : (
         data && <DisplayLemmaDetail entry={data} />
       )}
-    </>
+    </span>
   )
 }
