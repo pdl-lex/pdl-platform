@@ -40,7 +40,7 @@ export default function PrimaryHeaderMenu({
     <Box
       w={"100%"}
       bg={getGradient(
-        { deg: 90, from: "lexoterm-brand", to: "#222222" },
+        { deg: 90, from: "lexoterm-brand", to: "lexoterm-gray" },
         theme,
       )}
       style={{ borderRadius: "5px" }}
