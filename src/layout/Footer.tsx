@@ -55,15 +55,13 @@ export default function Footer({
                 <br />
                 Telefon: <a href="tel:089230311375">089 23031-1375</a>
               </p>
-              <p>
-                <address style={{ fontStyle: "normal" }}>
-                  Bayerische Akademie der Wissenschaften
-                  <br />
-                  Alfons-Goppel-Straße 11
-                  <br />
-                  80539 München
-                </address>
-              </p>
+              <address style={{ fontStyle: "normal" }}>
+                Bayerische Akademie der Wissenschaften
+                <br />
+                Alfons-Goppel-Straße 11
+                <br />
+                80539 München
+              </address>
             </FooterColumn.Content>
           </FooterColumn>
         </Box>
