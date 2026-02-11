@@ -4,5 +4,13 @@
   &::marker {
     content: attr(data-sense-n);
     font-weight: 600;
+    color: var(--lexoterm-primary-color);
+  }
+}
+
+.sense_list {
+  ul {
+    border-left: 2px solid var(--lexoterm-primary-color);
+    margin-bottom: 0.5em;
   }
 }
