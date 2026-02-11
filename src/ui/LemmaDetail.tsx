@@ -21,7 +21,7 @@ function DisplayLemmaDetail({ entry }: { entry: DisplayEntry }) {
       <EntryHeader entry={entry} />
       <DisplayVariants variants={entry.variants} />
       {!!entry.sense && (
-        <DisplaySense senses={entry.sense} showExamples={true} />
+        <DisplaySense senses={entry.sense} showExamples={false} />
       )}
       {!!entry.etym && <DisplayEtymology etym={entry.etym} />}
     </>
