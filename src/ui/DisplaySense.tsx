@@ -51,10 +51,12 @@ function SenseItem({
   sense,
   index,
   showExamples,
+  depth,
 }: {
   sense: Sense
   index: number
   showExamples: boolean
+  depth: number
 }) {
   const examples =
     sense.cit?.filter(
@@ -85,7 +87,11 @@ function SenseItem({
       </Text>
       {examples.length > 0 && <Examples examples={examples} opened={opened} />}
       {!!sense.sense && (
-        <DisplaySense senses={sense.sense} showExamples={showExamples} />
+        <DisplaySense
+          senses={sense.sense}
+          showExamples={showExamples}
+          depth={depth + 1}
+        />
       )}
     </List.Item>
   )
@@ -95,19 +101,28 @@ export default function DisplaySense({
   senses,
   showExamples = false,
   maxSensesToShow,
+  depth = 1,
 }: {
   senses: Sense[]
   showExamples?: boolean
   maxSensesToShow?: number
+  depth?: number
 }): JSX.Element {
   const SenseList = (
-    <List pl={"2em"}>
+    <List
+      className={classes.sense_list}
+      style={{
+        marginLeft: `calc(-0.4em * ${depth})`,
+        paddingLeft: `calc(1.6em + 0.5em * ${depth})`,
+      }}
+    >
       {senses?.map((sense, index) => (
         <SenseItem
           key={index}
           sense={sense}
           index={index}
           showExamples={showExamples}
+          depth={depth}
         />
       ))}
     </List>
