@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query"
-import { DisplayEntry } from "../domain/Entry"
-import { Box, Skeleton, Title } from "@mantine/core"
-import { DisplayEtymology, DisplayVariants, EntryHeader } from "./SearchResult"
+import { DisplayEntry, Headword, Sense } from "../domain/Entry"
+import { Divider, Grid, Skeleton, Title, Text } from "@mantine/core"
 import DisplaySense from "./DisplaySense"
 import { AnnotatedText } from "../domain/AnnotatedText"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
 import React from "react"
 import "./LemmaDetail.sass"
+import _ from "lodash"
 
 const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
   const response = await fetch(
@@ -19,33 +19,127 @@ const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
   return (await response.json()) as DisplayEntry
 }
 
-function DisplayCompounds({ compounds }: { compounds: AnnotatedText[] }) {
+function LemmaHeader({ headword }: { headword: Headword }) {
   return (
-    <Box className="compounds">
-      <Title order={3} size="h4" mt="lg" pb="xs">
-        Komposita
+    <Title mt={0} mb={"xl"} order={2} ff={"serif"} c={"lexoterm-brand"}>
+      {headword.lemma}
+      {headword.index !== null && <sup>{headword.index}</sup>}
+    </Title>
+  )
+}
+
+function Variants({ variants }: { variants: string[] }) {
+  return (
+    variants.length > 0 && (
+      <>
+        <Grid.Col span={4}>Varianten</Grid.Col>
+        <Grid.Col span={8}>
+          {variants.map((variant, index) => (
+            <React.Fragment key={index}>
+              <Text span fs={"italic"}>
+                {variant}
+              </Text>
+              {index < variants.length - 1 ? ", " : ""}
+            </React.Fragment>
+          ))}
+        </Grid.Col>
+      </>
+    )
+  )
+}
+
+function Grammar({ entry }: { entry: DisplayEntry }) {
+  const features = _.compact([entry.nPos, entry.gender, entry.number])
+  return (
+    features.length > 0 && (
+      <>
+        <Grid.Col span={4}>Grammatik</Grid.Col>
+        <Grid.Col span={8}>
+          {features.map((value, index) => (
+            <>
+              {index > 0 && ", "}
+              <Text key={index} span>
+                {value}
+              </Text>
+            </>
+          ))}
+        </Grid.Col>
+      </>
+    )
+  )
+}
+
+function LemmaDetailSection({
+  title,
+  children,
+}: {
+  title: string
+  children?: React.ReactNode
+}) {
+  return (
+    <Text component="section" pb={"xl"}>
+      <Title order={3} size="sm" mb={5}>
+        {title}
       </Title>
+      <Divider size="sm" mb={"xs"} c={"lexoterm-primary"} />
+      {children}
+    </Text>
+  )
+}
+
+function MetaDataSection({ entry }: { entry: DisplayEntry }) {
+  return (
+    <LemmaDetailSection title={"Stammdaten"}>
+      <Grid gutter={0}>
+        <Variants variants={entry.variants} />
+        <Grammar entry={entry} />
+      </Grid>
+    </LemmaDetailSection>
+  )
+}
+
+function SenseSection({ sense }: { sense?: Sense[] }) {
+  return (
+    !!sense && (
+      <LemmaDetailSection title={"Bedeutungen"}>
+        <DisplaySense senses={sense} showExamples={false} />
+      </LemmaDetailSection>
+    )
+  )
+}
+
+function EtymologySection({ etymology }: { etymology?: AnnotatedText | null }) {
+  return (
+    !!etymology && (
+      <LemmaDetailSection title={"Etymologie"}>
+        <DisplayAnnotatedText annotatedText={etymology} />
+      </LemmaDetailSection>
+    )
+  )
+}
+
+function CompoundSection({ compounds }: { compounds: AnnotatedText[] }) {
+  return (
+    <LemmaDetailSection title={"Komposita"}>
       {compounds.map((compound, index) => (
         <React.Fragment key={index}>
           {index > 0 && ", "}
           <DisplayAnnotatedText annotatedText={compound} />
         </React.Fragment>
       ))}
-    </Box>
+    </LemmaDetailSection>
   )
 }
 
 function DisplayLemmaDetail({ entry }: { entry: DisplayEntry }) {
   return (
     <>
-      <EntryHeader entry={entry} />
-      <DisplayVariants variants={entry.variants} />
-      {!!entry.sense && (
-        <DisplaySense senses={entry.sense} showExamples={false} />
-      )}
-      {!!entry.etym && <DisplayEtymology etym={entry.etym} />}
+      <LemmaHeader headword={entry.headword} />
+      <MetaDataSection entry={entry} />
+      <SenseSection sense={entry.sense} />
+      <EtymologySection etymology={entry.etym} />
       {entry.compounds && entry.compounds.length > 0 && (
-        <DisplayCompounds compounds={entry.compounds} />
+        <CompoundSection compounds={entry.compounds} />
       )}
     </>
   )
