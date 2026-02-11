@@ -8,6 +8,7 @@ export interface CrossReferenceSegment {
   text: string
   target: string
   variant: string
+  missing: boolean
   content: AnySegment[]
 }
 
