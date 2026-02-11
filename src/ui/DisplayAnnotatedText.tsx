@@ -11,7 +11,6 @@ import {
 import classNames from "classnames"
 import "./AnnotatedText.sass"
 
-
 function DisplayPlainText({ segment }: { segment: TextSegment }) {
   const body = segment.labels?.includes("superscript") ? (
     <sup>{segment.text}</sup>
@@ -32,7 +31,7 @@ function DisplayCrossReference({
 }) {
   return (
     <Link
-      to={`/entry/${encodeURIComponent(segment.target)}`}
+      to={`${encodeURIComponent(segment.target)}`}
       className={classNames(segment.variant)}
     >
       <DisplayAnnotatedText annotatedText={segment} />
