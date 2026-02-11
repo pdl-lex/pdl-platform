@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
 import { DisplayEntry } from "../domain/Entry"
-import { Skeleton } from "@mantine/core"
+import { Box, Skeleton, Title } from "@mantine/core"
 import { DisplayEtymology, DisplayVariants, EntryHeader } from "./SearchResult"
 import DisplaySense from "./DisplaySense"
+import { AnnotatedText } from "../domain/AnnotatedText"
+import DisplayAnnotatedText from "./DisplayAnnotatedText"
+import React from "react"
 
 const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
   const response = await fetch(
@@ -15,6 +18,22 @@ const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
   return (await response.json()) as DisplayEntry
 }
 
+function DisplayCompounds({ compounds }: { compounds: AnnotatedText[] }) {
+  return (
+    <Box>
+      <Title order={3} size="h4" mt="lg" pb="xs">
+        Komposita
+      </Title>
+      {compounds.map((compound, index) => (
+        <React.Fragment key={index}>
+          {index > 0 && ", "}
+          <DisplayAnnotatedText annotatedText={compound} />
+        </React.Fragment>
+      ))}
+    </Box>
+  )
+}
+
 function DisplayLemmaDetail({ entry }: { entry: DisplayEntry }) {
   return (
     <>
@@ -24,6 +43,7 @@ function DisplayLemmaDetail({ entry }: { entry: DisplayEntry }) {
         <DisplaySense senses={entry.sense} showExamples={false} />
       )}
       {!!entry.etym && <DisplayEtymology etym={entry.etym} />}
+      {!!entry.compounds && <DisplayCompounds compounds={entry.compounds} />}
     </>
   )
 }
