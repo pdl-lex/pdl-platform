@@ -68,7 +68,7 @@ function SenseItem({
   const ToggleExamplesButton = (
     <Tooltip label={opened ? "Belege verbergen" : "Belege anzeigen"}>
       <ActionIcon variant="transparent" onClick={toggle}>
-        <Icon size={"1em"} />
+        <Icon size={"1em"} stroke={1.2} color="var(--lexoterm-gray-color)"/>
       </ActionIcon>
     </Tooltip>
   )
