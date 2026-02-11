@@ -58,7 +58,7 @@ function SenseItem({
 }) {
   const examples =
     sense.cit?.filter(
-      (c) => c.type === "example" && c.quote && c.quote.trim() !== ""
+      (c) => c.type === "example" && c.quote && c.quote.trim() !== "",
     ) || []
   const [opened, { toggle }] = useDisclosure(showExamples)
   const Icon = opened ? IconMessageMinus : IconMessagePlus
