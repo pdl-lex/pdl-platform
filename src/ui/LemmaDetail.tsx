@@ -43,7 +43,9 @@ function DisplayLemmaDetail({ entry }: { entry: DisplayEntry }) {
         <DisplaySense senses={entry.sense} showExamples={false} />
       )}
       {!!entry.etym && <DisplayEtymology etym={entry.etym} />}
-      {!!entry.compounds && <DisplayCompounds compounds={entry.compounds} />}
+      {entry.compounds && entry.compounds.length > 0 && (
+        <DisplayCompounds compounds={entry.compounds} />
+      )}
     </>
   )
 }

@@ -40,7 +40,7 @@ export interface DisplayEntry {
   nPos: string | null
   number: string | null
   etym: AnnotatedText | null
-  compounds: AnnotatedText[]
+  compounds?: AnnotatedText[]
 }
 
 export interface Form {
