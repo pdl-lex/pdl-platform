@@ -12,7 +12,7 @@ import {
 import classNames from "classnames"
 import React, { JSX } from "react"
 import { Sense } from "../domain/Entry"
-import classes from "./DisplaySense.module.css"
+import classes from "./DisplaySense.module.sass"
 import { useDisclosure } from "@mantine/hooks"
 import { IconMessageMinus, IconMessagePlus } from "@tabler/icons-react"
 
