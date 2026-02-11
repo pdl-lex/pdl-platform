@@ -121,12 +121,14 @@ function EtymologySection({ etymology }: { etymology?: AnnotatedText | null }) {
 function CompoundSection({ compounds }: { compounds: AnnotatedText[] }) {
   return (
     <LemmaDetailSection title={"Komposita"}>
-      {compounds.map((compound, index) => (
-        <React.Fragment key={index}>
-          {index > 0 && ", "}
-          <DisplayAnnotatedText annotatedText={compound} />
-        </React.Fragment>
-      ))}
+      <Text span className="compounds">
+        {compounds.map((compound, index) => (
+          <React.Fragment key={index}>
+            {index > 0 && ", "}
+            <DisplayAnnotatedText annotatedText={compound} />
+          </React.Fragment>
+        ))}
+      </Text>
     </LemmaDetailSection>
   )
 }
