@@ -1,12 +1,14 @@
+import _ from "lodash"
 import { useQuery } from "@tanstack/react-query"
 import { DisplayEntry, Headword, Sense } from "../domain/Entry"
-import { Divider, Grid, Skeleton, Title, Text } from "@mantine/core"
+import { Divider, Skeleton, Title, Text, Table, Anchor } from "@mantine/core"
 import DisplaySense from "./DisplaySense"
 import { AnnotatedText } from "../domain/AnnotatedText"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
 import React from "react"
 import "./LemmaDetail.sass"
-import _ from "lodash"
+import { ResourceKey, resources } from "../domain/Resource"
+import { IconExternalLink } from "@tabler/icons-react"
 
 const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
   const response = await fetch(
@@ -46,22 +48,45 @@ function LemmaDetailSection({
   )
 }
 
+function MetaDataRow({
+  title,
+  children,
+}: {
+  title: string
+  children?: React.ReactNode
+}) {
+  return (
+    <Table.Tr>
+      <Table.Td>{title}</Table.Td>
+      <Table.Td>{children}</Table.Td>
+    </Table.Tr>
+  )
+}
+
+function Dictionary({ resourceKey }: { resourceKey: ResourceKey }) {
+  const resource = resources[resourceKey]
+  return (
+    <MetaDataRow title={"Wörterbuch"}>
+      <Anchor href={resource.url} target="_blank" fz={"sm"}>
+        {resource.displayName} <IconExternalLink size={"1em"} />
+      </Anchor>
+    </MetaDataRow>
+  )
+}
+
 function Variants({ variants }: { variants: string[] }) {
   return (
     variants.length > 0 && (
-      <>
-        <Grid.Col span={4}>Varianten</Grid.Col>
-        <Grid.Col span={8}>
-          {variants.map((variant, index) => (
-            <React.Fragment key={index}>
-              <Text span fs={"italic"}>
-                {variant}
-              </Text>
-              {index < variants.length - 1 ? ", " : ""}
-            </React.Fragment>
-          ))}
-        </Grid.Col>
-      </>
+      <MetaDataRow title={"Varianten"}>
+        {variants.map((variant, index) => (
+          <React.Fragment key={index}>
+            <Text span fz={"sm"} fs={"italic"}>
+              {variant}
+            </Text>
+            {index < variants.length - 1 ? ", " : ""}
+          </React.Fragment>
+        ))}
+      </MetaDataRow>
     )
   )
 }
@@ -70,19 +95,14 @@ function Grammar({ entry }: { entry: DisplayEntry }) {
   const features = _.compact([entry.nPos, entry.gender, entry.number])
   return (
     features.length > 0 && (
-      <>
-        <Grid.Col span={4}>Grammatik</Grid.Col>
-        <Grid.Col span={8}>
-          {features.map((value, index) => (
-            <>
-              {index > 0 && ", "}
-              <Text key={index} span>
-                {value}
-              </Text>
-            </>
-          ))}
-        </Grid.Col>
-      </>
+      <MetaDataRow title={"Grammatik"}>
+        {features.map((value, index) => (
+          <React.Fragment key={index}>
+            {index > 0 && ", "}
+            {value}
+          </React.Fragment>
+        ))}
+      </MetaDataRow>
     )
   )
 }
@@ -90,10 +110,13 @@ function Grammar({ entry }: { entry: DisplayEntry }) {
 function MetaDataSection({ entry }: { entry: DisplayEntry }) {
   return (
     <LemmaDetailSection title={"Stammdaten"}>
-      <Grid gutter={0}>
-        <Variants variants={entry.variants} />
-        <Grammar entry={entry} />
-      </Grid>
+      <Table withRowBorders={false} verticalSpacing={0}>
+        <Table.Tbody>
+          <Variants variants={entry.variants} />
+          <Grammar entry={entry} />
+          <Dictionary resourceKey={entry.source} />
+        </Table.Tbody>
+      </Table>
     </LemmaDetailSection>
   )
 }
