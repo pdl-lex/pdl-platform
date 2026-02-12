@@ -1,7 +1,6 @@
 import {
   Collapse,
   List,
-  Stack,
   Blockquote,
   Text,
   Divider,
@@ -24,26 +23,24 @@ function Examples({
   opened: boolean
 }) {
   return (
-    <Stack align="flex-start">
-      <Collapse in={opened}>
-        <Blockquote
-          color={"lightgray"}
-          radius={"xs"}
-          p={"xs"}
-          mt={"xs"}
-          mb={"lg"}
-        >
-          {examples.map((example, index) => (
-            <React.Fragment key={index}>
-              {index > 0 && <Divider my={"xs"} />}
-              <Text p="0" m="0" fs="italic" size="sm" key={index}>
-                {example.quote}
-              </Text>
-            </React.Fragment>
-          ))}
-        </Blockquote>
-      </Collapse>
-    </Stack>
+    <Collapse in={opened}>
+      <Blockquote
+        color={"lightgray"}
+        radius={"xs"}
+        p={"xs"}
+        mt={"xs"}
+        mb={"lg"}
+      >
+        {examples.map((example, index) => (
+          <React.Fragment key={index}>
+            {index > 0 && <Divider my={"xs"} />}
+            <Text p="0" m="0" fs="italic" size="sm" key={index}>
+              {example.quote}
+            </Text>
+          </React.Fragment>
+        ))}
+      </Blockquote>
+    </Collapse>
   )
 }
 
@@ -68,7 +65,7 @@ function SenseItem({
   const ToggleExamplesButton = (
     <Tooltip label={opened ? "Belege verbergen" : "Belege anzeigen"}>
       <ActionIcon variant="transparent" onClick={toggle}>
-        <Icon size={"1em"} stroke={1.2} color="var(--lexoterm-gray-color)"/>
+        <Icon size={"1em"} stroke={1.2} color="var(--lexoterm-gray-color)" />
       </ActionIcon>
     </Tooltip>
   )
