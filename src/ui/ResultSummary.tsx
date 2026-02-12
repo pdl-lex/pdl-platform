@@ -180,7 +180,6 @@ export default function ResultSummary({
     queryKey: ["summary", searchParams.toString()],
     queryFn: () => search(searchParams),
     refetchOnWindowFocus: false,
-    placeholderData: (previousData) => previousData,
     enabled: searchParams.size > 0,
   })
 
