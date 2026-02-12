@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-import { Popover, UnstyledButton } from "@mantine/core"
+import { Popover, Tooltip, UnstyledButton, Text } from "@mantine/core"
 import {
   AnnotatedText,
   BibReferenceSegment,
@@ -10,7 +10,6 @@ import {
 } from "../domain/AnnotatedText"
 import classNames from "classnames"
 import "./AnnotatedText.sass"
-
 
 function DisplayPlainText({ segment }: { segment: TextSegment }) {
   const body = segment.labels?.includes("superscript") ? (
@@ -30,11 +29,18 @@ function DisplayCrossReference({
 }: {
   segment: CrossReferenceSegment
 }) {
-  return (
-    <Link
-      to={`/entry/${encodeURIComponent(segment.target)}`}
-      className={classNames(segment.variant)}
-    >
+  return segment.missing ? (
+    <Tooltip label={"Eintrag fehlt"}>
+      <Text
+        span
+        className={classNames(segment.type, segment.variant, "missing")}
+        c="dimmed"
+      >
+        <DisplayAnnotatedText annotatedText={segment} />
+      </Text>
+    </Tooltip>
+  ) : (
+    <Link to={`${segment.target}`} className={classNames(segment.variant)}>
       <DisplayAnnotatedText annotatedText={segment} />
     </Link>
   )
@@ -44,7 +50,7 @@ function DisplayBibReference({ segment }: { segment: BibReferenceSegment }) {
   return (
     <Popover width={400} position="top" withArrow shadow="md">
       <Popover.Target>
-        <UnstyledButton className={classNames("bibref")}>
+        <UnstyledButton className={classNames(segment.type)}>
           <DisplayAnnotatedText annotatedText={segment} />
         </UnstyledButton>
       </Popover.Target>

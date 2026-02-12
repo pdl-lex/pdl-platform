@@ -3,11 +3,6 @@ import { colorsTuple, createTheme } from "@mantine/core"
 export const theme = createTheme({
   fontFamily: "Noto Sans, sans-serif",
   components: {
-    Anchor: {
-      defaultProps: {
-        c: "inherit",
-      },
-    },
     Button: {
       defaultProps: {
         size: "sm",
@@ -24,6 +19,7 @@ export const theme = createTheme({
   },
   colors: {
     "lexoterm-brand": colorsTuple("#003835"),
+    "lexoterm-gray": colorsTuple("#222222"),
     "lexoterm-primary": colorsTuple("#006844"),
     "lexoterm-secondary": colorsTuple("#CE601C"),
     "lexoterm-footer": colorsTuple("#cfdddc"),

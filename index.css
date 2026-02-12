@@ -1,5 +1,8 @@
 :root {
   --lexoterm-background-color: #edf1f0;
   --lexoterm-brand-color: #003835;
+  --lexoterm-gray-color: #222222;
+  --lexoterm-primary-color: #006844;
+  --lexoterm-secondary-color: #CE601C;
   --mantine-color-body: var(--lexoterm-background-color) !important;
 }
