@@ -28,6 +28,24 @@ function LemmaHeader({ headword }: { headword: Headword }) {
   )
 }
 
+function LemmaDetailSection({
+  title,
+  children,
+}: {
+  title: string
+  children?: React.ReactNode
+}) {
+  return (
+    <Text component="section" pb={"xl"}>
+      <Title order={3} size="sm" mb={5}>
+        {title}
+      </Title>
+      <Divider size="sm" mb={"xs"} c={"lexoterm-primary"} />
+      {children}
+    </Text>
+  )
+}
+
 function Variants({ variants }: { variants: string[] }) {
   return (
     variants.length > 0 && (
@@ -66,24 +84,6 @@ function Grammar({ entry }: { entry: DisplayEntry }) {
         </Grid.Col>
       </>
     )
-  )
-}
-
-function LemmaDetailSection({
-  title,
-  children,
-}: {
-  title: string
-  children?: React.ReactNode
-}) {
-  return (
-    <Text component="section" pb={"xl"}>
-      <Title order={3} size="sm" mb={5}>
-        {title}
-      </Title>
-      <Divider size="sm" mb={"xs"} c={"lexoterm-primary"} />
-      {children}
-    </Text>
   )
 }
 
