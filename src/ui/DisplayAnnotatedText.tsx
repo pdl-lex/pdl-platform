@@ -2,14 +2,16 @@ import { Link } from "react-router-dom"
 
 import { Popover, Tooltip, UnstyledButton, Text } from "@mantine/core"
 import {
-  AnnotatedText,
   BibReferenceSegment,
   CrossReferenceSegment,
+  DisplaySegment,
   LinkSegment,
   TextSegment,
-} from "../domain/AnnotatedText"
+} from "../domain/DisplaySegment"
 import classNames from "classnames"
 import "./AnnotatedText.sass"
+import AnnotatedTextdata from "../domain/AnnotatedTextData"
+import { createDisplaySegments } from "../utils/SpanAccumulator"
 
 function DisplayPlainText({ segment }: { segment: TextSegment }) {
   const body = segment.labels?.includes("superscript") ? (
@@ -36,12 +38,12 @@ function DisplayCrossReference({
         className={classNames(segment.type, segment.variant, "missing")}
         c="dimmed"
       >
-        <DisplayAnnotatedText annotatedText={segment} />
+        <RenderSegments segments={segment.content} />
       </Text>
     </Tooltip>
   ) : (
     <Link to={`${segment.target}`} className={classNames(segment.variant)}>
-      <DisplayAnnotatedText annotatedText={segment} />
+      <RenderSegments segments={segment.content} />
     </Link>
   )
 }
@@ -51,37 +53,49 @@ function DisplayBibReference({ segment }: { segment: BibReferenceSegment }) {
     <Popover width={400} position="top" withArrow shadow="md">
       <Popover.Target>
         <UnstyledButton className={classNames(segment.type)}>
-          <DisplayAnnotatedText annotatedText={segment} />
+          <RenderSegments segments={segment.content} />
         </UnstyledButton>
       </Popover.Target>
       <Popover.Dropdown>
-        <DisplayAnnotatedText annotatedText={segment.fullReference} />
+        <RenderSegments segments={segment.fullReference} />
       </Popover.Dropdown>
     </Popover>
   )
 }
 
+function RenderSegment({ segment }: { segment: DisplaySegment }) {
+  switch (segment.type) {
+    case "text":
+      return <DisplayPlainText segment={segment} />
+    case "link":
+      return <DisplayLink segment={segment} />
+    case "crossref":
+      return <DisplayCrossReference segment={segment} />
+    case "bibref":
+      return <DisplayBibReference segment={segment} />
+    default:
+      return "??"
+  }
+}
+
+function RenderSegments({ segments }: { segments: DisplaySegment[] }) {
+  return (
+    <>
+      {segments.map((segment, index) => (
+        <RenderSegment segment={segment} key={index} />
+      ))}
+    </>
+  )
+}
+
 export default function DisplayAnnotatedText({
-  annotatedText,
+  data,
 }: {
-  annotatedText: AnnotatedText
+  data: AnnotatedTextdata
 }) {
   return (
     <span>
-      {annotatedText.content.map((segment, index) => {
-        switch (segment.type) {
-          case "text":
-            return <DisplayPlainText key={index} segment={segment} />
-          case "link":
-            return <DisplayLink key={index} segment={segment} />
-          case "crossref":
-            return <DisplayCrossReference key={index} segment={segment} />
-          case "bibref":
-            return <DisplayBibReference key={index} segment={segment} />
-          default:
-            return "??"
-        }
-      })}
+      <RenderSegments segments={createDisplaySegments(data)} />
     </span>
   )
 }
