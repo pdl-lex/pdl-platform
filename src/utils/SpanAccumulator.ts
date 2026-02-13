@@ -1,5 +1,5 @@
 import _ from "lodash"
-import AnnotatedTextdata, {
+import AnnotatedTextData, {
   BaseSpan,
   ContainerSpan,
   TextFormatSpan,
@@ -29,7 +29,7 @@ class SpanAccumulator {
   containerSpans: ContainerSpan[]
   segments: TextFormatSpan[]
 
-  constructor(data: AnnotatedTextdata) {
+  constructor(data: AnnotatedTextData) {
     const [textSpans, containers] = _.partition(
       data.annotations,
       (span) => span.type === "text",
@@ -110,7 +110,7 @@ class SpanAccumulator {
 }
 
 export function createDisplaySegments(
-  data: AnnotatedTextdata,
+  data: AnnotatedTextData,
 ): DisplaySegment[] {
   const acc = new SpanAccumulator(data)
   return acc.accumulate()

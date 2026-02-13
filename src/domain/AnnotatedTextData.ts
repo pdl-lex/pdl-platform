@@ -24,13 +24,13 @@ export interface CrossRefSpan extends BaseSpan {
 export interface BibRefSpan extends BaseSpan {
   type: "bibref"
   bibId: string
-  fullReference: AnnotatedTextdata
+  fullReference: AnnotatedTextData
 }
 
 export type ContainerSpan = LinkSpan | CrossRefSpan | BibRefSpan
 export type AnnotationSpan = TextFormatSpan | ContainerSpan
 
-export default interface AnnotatedTextdata {
+export default interface AnnotatedTextData {
   text: string
   annotations: AnnotationSpan[]
 }

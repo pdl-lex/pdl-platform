@@ -10,7 +10,7 @@ import {
 } from "../domain/DisplaySegment"
 import classNames from "classnames"
 import "./AnnotatedText.sass"
-import AnnotatedTextdata from "../domain/AnnotatedTextData"
+import AnnotatedTextData from "../domain/AnnotatedTextData"
 import { createDisplaySegments } from "../utils/SpanAccumulator"
 
 function DisplayPlainText({ segment }: { segment: TextSegment }) {
@@ -91,7 +91,7 @@ function RenderSegments({ segments }: { segments: DisplaySegment[] }) {
 export default function DisplayAnnotatedText({
   data,
 }: {
-  data: AnnotatedTextdata
+  data: AnnotatedTextData
 }) {
   return (
     <span>
