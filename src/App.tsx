@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Home from "./pages/Home"
 import Dictionaries from "./pages/Dictionaries"
 import SearchView from "./pages/SearchView"
-import Article from "./pages/Article"
 import NotFound from "./pages/NotFound"
 
 const queryClient = new QueryClient()
@@ -27,9 +26,7 @@ const toplevelRoutes: AppRoute[] = [
   // { path: "/about", Component: About, title: "Über" },
 ]
 
-const subRoutes: AppRoute[] = [
-  { path: "/entry/:id", Component: Article, title: "Eintrag" },
-]
+const subRoutes: AppRoute[] = []
 
 const routes = [...toplevelRoutes, ...subRoutes]
 

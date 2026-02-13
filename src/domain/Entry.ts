@@ -1,4 +1,4 @@
-import { AnnotatedText } from "./AnnotatedText"
+import AnnotatedTextData from "./AnnotatedTextData"
 import { ResourceKey } from "./Resource"
 
 export default class Entry {
@@ -39,8 +39,8 @@ export interface DisplayEntry {
   pos: string | null
   nPos: string | null
   number: string | null
-  etym: AnnotatedText | null
-  compounds?: AnnotatedText[]
+  etym: AnnotatedTextData | null
+  compounds?: AnnotatedTextData[]
 }
 
 export interface Form {

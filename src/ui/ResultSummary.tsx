@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query"
 import { useSearchParams } from "react-router-dom"
 import { QuerySummary, LemmaInfo } from "../domain/QuerySummary"
 import InfoBox from "./InfoBox"
-import { DisplayResource } from "./SearchResult"
 import _ from "lodash"
 import {
   List,
@@ -11,12 +10,16 @@ import {
   Stack,
   Skeleton,
   UnstyledButton,
+  BadgeProps,
+  Tooltip,
+  Badge,
 } from "@mantine/core"
 import { Headword } from "../domain/Entry"
 import React, { useEffect } from "react"
 import classNames from "classnames"
 import "./ResultSummary.sass"
 import ContentPanel from "./ContentPanel"
+import { ResourceKey, resources } from "../domain/Resource"
 
 type LemmaDispatch = {
   activeLemmaId: string | null
@@ -31,6 +34,20 @@ const search = async (query: URLSearchParams): Promise<QuerySummary> => {
     throw new Error(`HTTP error status: ${response.status}`)
   }
   return (await response.json()) as QuerySummary
+}
+
+function DisplayResource({
+  name,
+  ...badgeProps
+}: { name: ResourceKey } & BadgeProps) {
+  const resource = resources[name]
+  return (
+    <Tooltip label={resource.displayName}>
+      <Badge variant="outline" size="xs" color={resource.color} {...badgeProps}>
+        {resource.key.toUpperCase()}
+      </Badge>
+    </Tooltip>
+  )
 }
 
 function FrequencyBreakdown({ data }: { data: QuerySummary }) {
