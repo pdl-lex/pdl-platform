@@ -3,12 +3,12 @@ import { useQuery } from "@tanstack/react-query"
 import { DisplayEntry, Headword, Sense } from "../domain/Entry"
 import { Divider, Skeleton, Title, Text, Table, Anchor } from "@mantine/core"
 import DisplaySense from "./DisplaySense"
-import { AnnotatedText } from "../domain/AnnotatedText"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
 import React from "react"
 import "./LemmaDetail.sass"
 import { ResourceKey, resources } from "../domain/Resource"
 import { IconExternalLink } from "@tabler/icons-react"
+import AnnotatedTextData from "../domain/AnnotatedTextData"
 
 const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
   const response = await fetch(
@@ -131,24 +131,28 @@ function SenseSection({ sense }: { sense?: Sense[] }) {
   )
 }
 
-function EtymologySection({ etymology }: { etymology?: AnnotatedText | null }) {
+function EtymologySection({
+  etymology,
+}: {
+  etymology?: AnnotatedTextData | null
+}) {
   return (
     !!etymology && (
       <LemmaDetailSection title={"Etymologie"}>
-        <DisplayAnnotatedText annotatedText={etymology} />
+        <DisplayAnnotatedText data={etymology} />
       </LemmaDetailSection>
     )
   )
 }
 
-function CompoundSection({ compounds }: { compounds: AnnotatedText[] }) {
+function CompoundSection({ compounds }: { compounds: AnnotatedTextData[] }) {
   return (
     <LemmaDetailSection title={"Komposita"}>
       <Text span className="compounds">
         {compounds.map((compound, index) => (
           <React.Fragment key={index}>
             {index > 0 && ", "}
-            <DisplayAnnotatedText annotatedText={compound} />
+            <DisplayAnnotatedText data={compound} />
           </React.Fragment>
         ))}
       </Text>
