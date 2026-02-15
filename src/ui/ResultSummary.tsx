@@ -13,6 +13,7 @@ import {
   BadgeProps,
   Tooltip,
   Badge,
+  Pagination,
 } from "@mantine/core"
 import { Headword } from "../domain/Entry"
 import React, { useEffect } from "react"
@@ -148,24 +149,42 @@ function DisplayResultSummary({
   activeLemmaId,
   setActiveLemmaId,
 }: LemmaDispatch & { data: QuerySummary }) {
+  if (data.items.length === 0) {
+    return <></>
+  }
+  const [searchParams, setSearchParams] = useSearchParams()
+  const totalPages = Math.ceil(
+    data.total / parseInt(searchParams.get("itemsPerPage") || "10"),
+  )
+  const currentPage = parseInt(searchParams.get("page") || "1")
+
+  const handlePageChange = (page: number) => {
+    const newSearchParams = new URLSearchParams(searchParams)
+    newSearchParams.set("page", page.toString())
+    setSearchParams(newSearchParams)
+  }
+
   return (
-    data.items.length > 0 && (
-      <>
-        <Title order={3} size="sm" mb="xs">
-          Lemmata
-        </Title>
-        <List listStyleType="none">
-          {data.items.map((lemma) => (
-            <LemmaListItem
-              key={lemma.lexId}
-              lemma={lemma}
-              activeLemmaId={activeLemmaId}
-              setActiveLemmaId={setActiveLemmaId}
-            />
-          ))}
-        </List>
-      </>
-    )
+    <>
+      <Title order={3} size="sm" mb="xs">
+        Lemmata
+      </Title>
+      <List listStyleType="none" mb="md">
+        {data.items.map((lemma) => (
+          <LemmaListItem
+            key={lemma.lexId}
+            lemma={lemma}
+            activeLemmaId={activeLemmaId}
+            setActiveLemmaId={setActiveLemmaId}
+          />
+        ))}
+      </List>
+      <Pagination
+        value={currentPage}
+        total={totalPages}
+        onChange={handlePageChange}
+      ></Pagination>
+    </>
   )
 }
 
