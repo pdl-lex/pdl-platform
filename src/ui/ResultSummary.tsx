@@ -149,25 +149,23 @@ function DisplayResultSummary({
   setActiveLemmaId,
 }: LemmaDispatch & { data: QuerySummary }) {
   return (
-    <>
-      {data.items.length > 0 && (
-        <>
-          <Title order={3} size="sm" mb="xs">
-            Lemmata
-          </Title>
-          <List listStyleType="none">
-            {data.items.map((lemma) => (
-              <LemmaListItem
-                key={lemma.lexId}
-                lemma={lemma}
-                activeLemmaId={activeLemmaId}
-                setActiveLemmaId={setActiveLemmaId}
-              />
-            ))}
-          </List>
-        </>
-      )}
-    </>
+    data.items.length > 0 && (
+      <>
+        <Title order={3} size="sm" mb="xs">
+          Lemmata
+        </Title>
+        <List listStyleType="none">
+          {data.items.map((lemma) => (
+            <LemmaListItem
+              key={lemma.lexId}
+              lemma={lemma}
+              activeLemmaId={activeLemmaId}
+              setActiveLemmaId={setActiveLemmaId}
+            />
+          ))}
+        </List>
+      </>
+    )
   )
 }
 
