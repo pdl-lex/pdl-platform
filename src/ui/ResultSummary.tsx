@@ -131,7 +131,6 @@ function LemmaListItem({
             <DisplayHeadword headword={lemma.headword} />
           </Text>{" "}
           <Text
-            c="dimmed"
             style={{ fontVariant: "small-caps", textTransform: "lowercase" }}
             span
             size="sm"
