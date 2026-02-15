@@ -191,7 +191,7 @@ function DisplayResultSummary({
   )
 }
 
-function ResultMock() {
+function ResultSkeleton() {
   return (
     <Stack gap="xs">
       <Skeleton height={150} />
@@ -232,7 +232,7 @@ export default function ResultSummary({
   }, [data, setActiveLemmaId, searchParams])
 
   return isFetching ? (
-    <ResultMock />
+    <ResultSkeleton />
   ) : (
     data && (
       <ContentPanel title={"Treffer"}>
