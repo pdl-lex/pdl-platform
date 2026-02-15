@@ -1,7 +1,16 @@
 import _ from "lodash"
 import { useQuery } from "@tanstack/react-query"
 import { DisplayEntry, Headword, Sense } from "../domain/Entry"
-import { Divider, Skeleton, Title, Text, Table, Anchor } from "@mantine/core"
+import {
+  Divider,
+  Skeleton,
+  Title,
+  Text,
+  Table,
+  Anchor,
+  Stack,
+  Space,
+} from "@mantine/core"
 import DisplaySense from "./DisplaySense"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
 import React from "react"
@@ -174,6 +183,23 @@ function DisplayLemmaDetail({ entry }: { entry: DisplayEntry }) {
   )
 }
 
+function LemmaDetailSkeleton({ activeLemmaId }: { activeLemmaId: string }) {
+  const estimatedLength = activeLemmaId.length - 13
+  return (
+    <Stack gap={"xs"}>
+      <Skeleton height={"1.8em"} width={`${estimatedLength}ch`} />
+      <Space h={"1.5em"} />
+      <Skeleton height={"1em"} width={"6em"} />
+      <Skeleton height={"4em"} />
+      <Space h={"1.5em"} />
+      <Skeleton height={"1em"} width={"6em"} />
+      {_.times(5, (index) => (
+        <Skeleton key={index} height={"4em"} />
+      ))}
+    </Stack>
+  )
+}
+
 export default function LemmaDetail({
   activeLemmaId,
 }: {
@@ -188,7 +214,7 @@ export default function LemmaDetail({
   return (
     <span className={"lemma-detail"}>
       {isFetching ? (
-        <Skeleton height={"1em"} width={"6em"} />
+        <LemmaDetailSkeleton activeLemmaId={activeLemmaId} />
       ) : (
         data && <DisplayLemmaDetail entry={data} />
       )}
