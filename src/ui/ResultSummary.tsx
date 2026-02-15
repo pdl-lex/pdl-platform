@@ -183,7 +183,10 @@ function DisplayResultSummary({
         value={currentPage}
         total={totalPages}
         onChange={handlePageChange}
-      ></Pagination>
+        className={"result-summary-pagination"}
+        size={"xs"}
+        radius={"xs"}
+      />
     </>
   )
 }
