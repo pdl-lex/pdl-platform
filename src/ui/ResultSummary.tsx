@@ -13,6 +13,8 @@ import {
   BadgeProps,
   Tooltip,
   Badge,
+  Pagination,
+  Group,
 } from "@mantine/core"
 import { Headword } from "../domain/Entry"
 import React, { useEffect } from "react"
@@ -51,30 +53,36 @@ function DisplayResource({
 }
 
 function FrequencyBreakdown({ data }: { data: QuerySummary }) {
-  const resources = _.sortBy(data.countsByResource, (value) => -value.count)
+  const matchedResources = _.sortBy(
+    data.countsByResource,
+    (value) => -value.count,
+  )
 
   return (
     <InfoBox mb="md">
-      <List listStyleType="none">
-        <List.Item key={"total"}>
-          {data.total.toLocaleString()} Treffer
-        </List.Item>
-        {resources.map(({ source, count }) => {
+      <Text size={"sm"} pb={"xs"}>
+        {data.total.toLocaleString()} Treffer
+      </Text>
+      <Group gap={5}>
+        {matchedResources.map(({ source, count }) => {
+          const resource = resources[source]
           return (
-            <List.Item key={source}>
-              <DisplayResource
-                name={source}
+            <Tooltip key={source} label={resource.displayName}>
+              <Badge
                 variant={"filled"}
                 size="md"
                 radius="sm"
-                color="darkgreen"
-                mr="md"
-              />
-              {count.toLocaleString()}
-            </List.Item>
+                color={"lexoterm-primary"}
+              >
+                {resource.key.toUpperCase()}{" "}
+                <span style={{ fontWeight: "normal" }}>
+                  {count.toLocaleString()}
+                </span>
+              </Badge>
+            </Tooltip>
           )
         })}
-      </List>
+      </Group>
     </InfoBox>
   )
 }
@@ -95,6 +103,7 @@ function LemmaListItem({
 }: { lemma: LemmaInfo } & LemmaDispatch) {
   const posMapping: Map<string | null, string> = new Map([
     ["Substantiv", "Subst."],
+    ["Adjektiv", "Adj."],
   ])
 
   return (
@@ -122,7 +131,6 @@ function LemmaListItem({
             <DisplayHeadword headword={lemma.headword} />
           </Text>{" "}
           <Text
-            c="dimmed"
             style={{ fontVariant: "small-caps", textTransform: "lowercase" }}
             span
             size="sm"
@@ -148,30 +156,49 @@ function DisplayResultSummary({
   activeLemmaId,
   setActiveLemmaId,
 }: LemmaDispatch & { data: QuerySummary }) {
+  if (data.items.length === 0) {
+    return <></>
+  }
+  const [searchParams, setSearchParams] = useSearchParams()
+  const totalPages = Math.ceil(
+    data.total / parseInt(searchParams.get("itemsPerPage") || "10"),
+  )
+  const currentPage = parseInt(searchParams.get("page") || "1")
+
+  const handlePageChange = (page: number) => {
+    const newSearchParams = new URLSearchParams(searchParams)
+    newSearchParams.set("page", page.toString())
+    setSearchParams(newSearchParams)
+  }
+
   return (
     <>
-      {data.items.length > 0 && (
-        <>
-          <Title order={3} size="sm" mb="xs">
-            Lemmata
-          </Title>
-          <List listStyleType="none">
-            {data.items.map((lemma) => (
-              <LemmaListItem
-                key={lemma.lexId}
-                lemma={lemma}
-                activeLemmaId={activeLemmaId}
-                setActiveLemmaId={setActiveLemmaId}
-              />
-            ))}
-          </List>
-        </>
-      )}
+      <Title order={3} size="sm" mb="xs">
+        Lemmata
+      </Title>
+      <List listStyleType="none" mb="md">
+        {data.items.map((lemma) => (
+          <LemmaListItem
+            key={lemma.lexId}
+            lemma={lemma}
+            activeLemmaId={activeLemmaId}
+            setActiveLemmaId={setActiveLemmaId}
+          />
+        ))}
+      </List>
+      <Pagination
+        value={currentPage}
+        total={totalPages}
+        onChange={handlePageChange}
+        className={"result-summary-pagination"}
+        size={"xs"}
+        radius={"xs"}
+      />
     </>
   )
 }
 
-function ResultMock() {
+function ResultSkeleton() {
   return (
     <Stack gap="xs">
       <Skeleton height={150} />
@@ -212,7 +239,7 @@ export default function ResultSummary({
   }, [data, setActiveLemmaId, searchParams])
 
   return isFetching ? (
-    <ResultMock />
+    <ResultSkeleton />
   ) : (
     data && (
       <ContentPanel title={"Treffer"}>

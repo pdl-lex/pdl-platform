@@ -3,9 +3,18 @@
 
   &.active, &:hover
     border-left: 2px solid var(--lexoterm-brand-color)
+    background-color: rgba(from var(--lexoterm-brand-color) r g b / 0.1)
 
 .lemma-list-item
   .mantine-List-itemWrapper,
   .mantine-List-itemLabel,
   button
     width: 100% !important
+
+.result-summary-pagination
+  button
+    font-size: var(--mantine-font-size-xs)
+    border-color: var(--lexoterm-primary-color)
+
+    &[data-active=true]
+      background-color: var(--lexoterm-primary-color)
