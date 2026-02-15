@@ -103,6 +103,7 @@ function LemmaListItem({
 }: { lemma: LemmaInfo } & LemmaDispatch) {
   const posMapping: Map<string | null, string> = new Map([
     ["Substantiv", "Subst."],
+    ["Adjektiv", "Adj."],
   ])
 
   return (
