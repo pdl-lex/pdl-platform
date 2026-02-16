@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { IndexLetter, KeywordEntryList } from "../domain/Entry"
 import { useState } from "react"
-import { Button, Group, Stack } from "@mantine/core"
+import { Anchor, Button, Group, List, Stack } from "@mantine/core"
 import "./KeywordList.sass"
 import classNames from "classnames"
 
@@ -33,14 +33,19 @@ function Keywords({ letter, page }: { letter: IndexLetter; page: number }) {
     <>Loading...</>
   ) : (
     data && (
-      <ul>
+      <List listStyleType="none">
         {data.items.map(({ lemma, index }) => (
-          <li key={lemma}>
-            {lemma}
-            {!!index && <sup>{index}</sup>}
-          </li>
+          <List.Item key={lemma}>
+            <Anchor
+              href={`/search?lemma=${encodeURIComponent(lemma)}`}
+              className={"keyword-link"}
+            >
+              {lemma}
+              {!!index && <sup>{index}</sup>}
+            </Anchor>
+          </List.Item>
         ))}
-      </ul>
+      </List>
     )
   )
 }
