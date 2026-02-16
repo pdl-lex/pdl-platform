@@ -21,7 +21,7 @@ import AnnotatedTextData from "../domain/AnnotatedTextData"
 
 const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/lemma-display/${lemmaId}`,
+    `${import.meta.env.VITE_API_URL}/lemma-display/${encodeURIComponent(lemmaId)}`,
   )
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
