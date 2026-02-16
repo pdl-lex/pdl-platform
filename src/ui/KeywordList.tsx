@@ -70,6 +70,7 @@ function Keywords({ letter }: { letter: IndexLetter }) {
               <Anchor
                 href={`/search?lemma=${encodeURIComponent(lemma)}`}
                 className={"keyword-link"}
+                size={"sm"}
               >
                 {lemma}
                 {!!index && <sup>{index}</sup>}
