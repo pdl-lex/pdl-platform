@@ -91,21 +91,13 @@ export interface Sense {
   sense?: Sense[]
 }
 
-export interface DisplayEntryList {
-  items: DisplayEntry[]
+interface PaginatedList<T> {
+  items: T[]
   total: number
   page: number
   itemsPerPage: number
 }
 
-export interface KeywordEntry extends Pick<
-  DisplayEntry,
-  "lexId" | "source" | "headword"
-> {}
+export type DisplayEntryList = PaginatedList<DisplayEntry>
 
-export interface KeywordEntryList extends Pick<
-  DisplayEntryList,
-  "total" | "page" | "itemsPerPage"
-> {
-  items: KeywordEntry[]
-}
+export type KeywordEntryList = PaginatedList<Headword>
