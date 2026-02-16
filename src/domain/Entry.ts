@@ -23,9 +23,11 @@ export default class Entry {
   }
 }
 
+export type IndexLetter = Uppercase<string> | "-" | "#"
+
 export interface Headword {
   lemma: string
-  index: number | null
+  index: number
 }
 
 export interface DisplayEntry {
@@ -33,6 +35,7 @@ export interface DisplayEntry {
   lexId: string
   source: ResourceKey
   headword: Headword
+  indexLetter: IndexLetter
   variants: string[]
   sense?: Sense[]
   gender: string | null
@@ -88,9 +91,13 @@ export interface Sense {
   sense?: Sense[]
 }
 
-export interface DisplayEntryList {
-  items: DisplayEntry[]
+interface PaginatedList<T> {
+  items: T[]
   total: number
   page: number
   itemsPerPage: number
 }
+
+export type DisplayEntryList = PaginatedList<DisplayEntry>
+
+export type KeywordEntryList = PaginatedList<Headword>

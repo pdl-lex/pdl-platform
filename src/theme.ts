@@ -1,8 +1,19 @@
-import { colorsTuple, createTheme } from "@mantine/core"
+import { colorsTuple, createTheme, MantineTheme } from "@mantine/core"
 
 export const theme = createTheme({
   fontFamily: "Noto Sans, sans-serif",
   components: {
+    Anchor: {
+      styles: (theme: MantineTheme) => ({
+        root: {
+          textDecoration: "none",
+          color: theme.colors["lexoterm-primary"][6],
+          "&:hover": {
+            textDecoration: "underline",
+          },
+        },
+      }),
+    },
     Button: {
       defaultProps: {
         size: "sm",

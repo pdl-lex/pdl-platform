@@ -21,7 +21,7 @@ import AnnotatedTextData from "../domain/AnnotatedTextData"
 
 const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/lemma-display/${lemmaId}`,
+    `${import.meta.env.VITE_API_URL}/lemma-display/${encodeURIComponent(lemmaId)}`,
   )
   if (!response.ok) {
     throw new Error(`HTTP error status: ${response.status}`)
@@ -34,7 +34,7 @@ function LemmaHeader({ headword }: { headword: Headword }) {
   return (
     <Title mt={0} mb={"xl"} order={2} c={"lexoterm-brand"}>
       {headword.lemma}
-      {headword.index !== null && <sup>{headword.index}</sup>}
+      {!!headword.index && <sup>{headword.index}</sup>}
     </Title>
   )
 }

@@ -10,7 +10,12 @@ export default function Footer({
   mainMaxWidth: StyleProp<MantineSpacing>
 }) {
   return (
-    <Box maw={"100%"} bg={"lexoterm-footer"} m={outerSpacing}>
+    <Box
+      maw={"100%"}
+      bg={"lexoterm-footer"}
+      m={outerSpacing}
+      component={"footer"}
+    >
       <SimpleGrid
         maw={mainMaxWidth}
         mx={"auto"}
