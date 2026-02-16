@@ -11,11 +11,9 @@ export default function SearchView() {
   return (
     <Grid p={"md"} pt={"md"} mx={"auto"}>
       <Grid.Col visibleFrom="sm" span={{ base: 12, sm: 4 }}>
-        <Box>
-          <ContentPanel title="Suche">
-            <ComplexSearchForm />
-          </ContentPanel>
-        </Box>
+        <ContentPanel title="Suche">
+          <ComplexSearchForm />
+        </ContentPanel>
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 4 }}>
         <ResultSummary
