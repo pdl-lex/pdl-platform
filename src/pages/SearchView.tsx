@@ -1,4 +1,4 @@
-import { Grid } from "@mantine/core"
+import { Grid, Stack } from "@mantine/core"
 import ComplexSearchForm from "../ui/ComplexSearchForm"
 import ContentPanel from "../ui/ContentPanel"
 import ResultSummary from "../ui/ResultSummary"
@@ -12,12 +12,14 @@ export default function SearchView() {
   return (
     <Grid p={"md"} pt={"md"} mx={"auto"} gutter="xs">
       <Grid.Col visibleFrom="sm" span={{ base: 12, sm: 4 }}>
-        <ContentPanel title="Suche">
-          <ComplexSearchForm />
-        </ContentPanel>
-        <ContentPanel title="Stichwortsuche">
-          <KeywordList />
-        </ContentPanel>
+        <Stack gap={"xs"}>
+          <ContentPanel title="Suche">
+            <ComplexSearchForm />
+          </ContentPanel>
+          <ContentPanel title="Stichwortsuche">
+            <KeywordList />
+          </ContentPanel>
+        </Stack>
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 4 }}>
         <ResultSummary
