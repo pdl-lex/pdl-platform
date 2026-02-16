@@ -1,9 +1,18 @@
 import { useQuery } from "@tanstack/react-query"
 import { IndexLetter, KeywordEntryList } from "../domain/Entry"
 import { useState } from "react"
-import { Anchor, Button, Group, List, Pagination, Stack } from "@mantine/core"
+import {
+  Anchor,
+  Button,
+  Group,
+  List,
+  Pagination,
+  Skeleton,
+  Stack,
+} from "@mantine/core"
 import "./KeywordList.sass"
 import classNames from "classnames"
+import _ from "lodash"
 
 const fetchKeywordList = async (
   letter: IndexLetter,
@@ -20,6 +29,21 @@ const fetchKeywordList = async (
   return (await response.json()) as KeywordEntryList
 }
 
+function KeywordSkeleton() {
+  const lineWidths = [
+    38, 48, 50, 60, 38, 68, 51, 27, 33, 47, 52, 46, 56, 57, 46, 47, 64, 70, 58,
+    36,
+  ]
+
+  return (
+    <Stack gap={"xs"}>
+      {lineWidths.map((width, index) => (
+        <Skeleton key={index} h={"1em"} w={`${width}%`} />
+      ))}
+    </Stack>
+  )
+}
+
 function Keywords({ letter }: { letter: IndexLetter }) {
   const itemsPerPage = 20
   const [page, setPage] = useState<number>(1)
@@ -32,13 +56,13 @@ function Keywords({ letter }: { letter: IndexLetter }) {
   })
 
   return isFetching ? (
-    <>Loading...</>
+    <KeywordSkeleton />
   ) : (
     data && (
       <Stack>
         <List listStyleType="none">
           {data.items.map(({ lemma, index }) => (
-            <List.Item key={lemma}>
+            <List.Item key={`${lemma}${index}`}>
               <Anchor
                 href={`/search?lemma=${encodeURIComponent(lemma)}`}
                 className={"keyword-link"}
