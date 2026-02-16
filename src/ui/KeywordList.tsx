@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { IndexLetter, KeywordEntryList } from "../domain/Entry"
 import { useState } from "react"
-import { Anchor, Button, Group, List, Stack } from "@mantine/core"
+import { Anchor, Button, Group, List, Pagination, Stack } from "@mantine/core"
 import "./KeywordList.sass"
 import classNames from "classnames"
 
@@ -20,45 +20,57 @@ const fetchKeywordList = async (
   return (await response.json()) as KeywordEntryList
 }
 
-function Keywords({ letter, page }: { letter: IndexLetter; page: number }) {
+function Keywords({ letter }: { letter: IndexLetter }) {
   const itemsPerPage = 20
+  const [page, setPage] = useState<number>(1)
 
   const { data, isFetching } = useQuery<KeywordEntryList>({
-    queryKey: ["lemma-display", letter],
+    queryKey: ["lemma-display", letter, page],
     queryFn: () => fetchKeywordList(letter, page, itemsPerPage),
     refetchOnWindowFocus: false,
     placeholderData: (previousData) => previousData,
   })
+
   return isFetching ? (
     <>Loading...</>
   ) : (
     data && (
-      <List listStyleType="none">
-        {data.items.map(({ lemma, index }) => (
-          <List.Item key={lemma}>
-            <Anchor
-              href={`/search?lemma=${encodeURIComponent(lemma)}`}
-              className={"keyword-link"}
-            >
-              {lemma}
-              {!!index && <sup>{index}</sup>}
-            </Anchor>
-          </List.Item>
-        ))}
-      </List>
+      <Stack>
+        <List listStyleType="none">
+          {data.items.map(({ lemma, index }) => (
+            <List.Item key={lemma}>
+              <Anchor
+                href={`/search?lemma=${encodeURIComponent(lemma)}`}
+                className={"keyword-link"}
+              >
+                {lemma}
+                {!!index && <sup>{index}</sup>}
+              </Anchor>
+            </List.Item>
+          ))}
+        </List>
+        <Pagination
+          value={page}
+          total={Math.ceil(data.total / itemsPerPage)}
+          onChange={setPage}
+          className={"result-summary-pagination"}
+          size={"xs"}
+          radius={"xs"}
+        />
+      </Stack>
     )
   )
 }
 
 export default function KeywordList() {
   const [activeLetter, setActiveLetter] = useState<IndexLetter>("A")
-  const page = 1
-  const options = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ-#") as IndexLetter[]
+
+  const letters = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ-#") as IndexLetter[]
 
   return (
     <Stack>
       <Group gap={5}>
-        {options.map((letter) => (
+        {letters.map((letter) => (
           <Button
             className={classNames("letter-button", {
               active: letter === activeLetter,
@@ -76,7 +88,7 @@ export default function KeywordList() {
           </Button>
         ))}
       </Group>
-      <Keywords letter={activeLetter} page={page} />
+      <Keywords letter={activeLetter} />
     </Stack>
   )
 }
