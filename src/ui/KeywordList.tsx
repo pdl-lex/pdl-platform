@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { IndexLetter, KeywordEntryList } from "../domain/Entry"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Anchor,
   Button,
@@ -47,6 +47,10 @@ function KeywordSkeleton() {
 function Keywords({ letter }: { letter: IndexLetter }) {
   const itemsPerPage = 20
   const [page, setPage] = useState<number>(1)
+
+  useEffect(() => {
+    setPage(1)
+  }, [letter])
 
   const { data, isFetching } = useQuery<KeywordEntryList>({
     queryKey: ["lemma-display", letter, page],
