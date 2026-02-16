@@ -23,6 +23,8 @@ export default class Entry {
   }
 }
 
+export type IndexLetter = Uppercase<string> | "-" | "#"
+
 export interface Headword {
   lemma: string
   index: number
@@ -33,6 +35,7 @@ export interface DisplayEntry {
   lexId: string
   source: ResourceKey
   headword: Headword
+  indexLetter: IndexLetter
   variants: string[]
   sense?: Sense[]
   gender: string | null
@@ -93,4 +96,16 @@ export interface DisplayEntryList {
   total: number
   page: number
   itemsPerPage: number
+}
+
+export interface KeywordEntry extends Pick<
+  DisplayEntry,
+  "lexId" | "source" | "headword"
+> {}
+
+export interface KeywordEntryList extends Pick<
+  DisplayEntryList,
+  "total" | "page" | "itemsPerPage"
+> {
+  items: KeywordEntry[]
 }
