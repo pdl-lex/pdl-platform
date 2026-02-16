@@ -25,7 +25,7 @@ export default class Entry {
 
 export interface Headword {
   lemma: string
-  index: number | null
+  index: number
 }
 
 export interface DisplayEntry {

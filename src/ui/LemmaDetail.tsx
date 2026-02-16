@@ -34,7 +34,7 @@ function LemmaHeader({ headword }: { headword: Headword }) {
   return (
     <Title mt={0} mb={"xl"} order={2} c={"lexoterm-brand"}>
       {headword.lemma}
-      {headword.index !== null && <sup>{headword.index}</sup>}
+      {!!headword.index && <sup>{headword.index}</sup>}
     </Title>
   )
 }
