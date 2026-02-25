@@ -77,9 +77,8 @@ export interface GrammarGroup {
   gram: GrammaticalFeature[]
 }
 
-export interface Citation {
+export interface Citation extends AnnotatedTextData {
   type: string
-  quote: string
 }
 
 export interface Sense {
