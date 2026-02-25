@@ -10,16 +10,17 @@ import {
 } from "@mantine/core"
 import classNames from "classnames"
 import React, { JSX } from "react"
-import { Sense } from "../domain/Entry"
+import { Citation, Sense } from "../domain/Entry"
 import classes from "./DisplaySense.module.sass"
 import { useDisclosure } from "@mantine/hooks"
 import { IconMessageMinus, IconMessagePlus } from "@tabler/icons-react"
+import DisplayAnnotatedText from "./DisplayAnnotatedText"
 
 function Examples({
   examples,
   opened,
 }: {
-  examples: { quote: string }[]
+  examples: Citation[]
   opened: boolean
 }) {
   return (
@@ -34,9 +35,7 @@ function Examples({
         {examples.map((example, index) => (
           <React.Fragment key={index}>
             {index > 0 && <Divider my={"xs"} />}
-            <Text p="0" m="0" fs="italic" size="sm" key={index}>
-              {example.quote}
-            </Text>
+            <DisplayAnnotatedText data={example} />
           </React.Fragment>
         ))}
       </Blockquote>
@@ -57,7 +56,7 @@ function SenseItem({
 }) {
   const examples =
     sense.cit?.filter(
-      (c) => c.type === "example" && c.quote && c.quote.trim() !== "",
+      (c) => c.type === "example" && c.text && c.text.trim() !== "",
     ) || []
   const [opened, { toggle }] = useDisclosure(showExamples)
   const Icon = opened ? IconMessageMinus : IconMessagePlus
