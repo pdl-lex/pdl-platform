@@ -19,7 +19,6 @@ export type AppRoute = {
 }
 
 const toplevelRoutes: AppRoute[] = [
-  { path: "/", Component: Home, title: "Startseite" },
   { path: "/search", Component: SearchView, title: "Suche" },
   { path: "/tools", Component: Tools, title: "Werkzeuge" },
   { path: "/dictionaries", Component: Dictionaries, title: "Wörterbücher" },
@@ -28,7 +27,10 @@ const toplevelRoutes: AppRoute[] = [
   // { path: "/about", Component: About, title: "Über" },
 ]
 
-const subRoutes: AppRoute[] = []
+// sub-routes do not appear in the main menu
+const subRoutes: AppRoute[] = [
+  { path: "/", Component: Home, title: "Startseite" },
+]
 
 const routes = [...toplevelRoutes, ...subRoutes]
 
