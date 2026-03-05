@@ -66,9 +66,27 @@ function ToolDetailModal({ tool }: { tool: Tool & { details: ToolDetails } }) {
       >
         {details.body && (
           <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            <Typography>
-              <div dangerouslySetInnerHTML={{ __html: details.body }} />
-            </Typography>
+            <Stack>
+              <Typography>
+                <div dangerouslySetInnerHTML={{ __html: details.body }} />
+              </Typography>
+              <Group>
+                <Button
+                  variant="gradient"
+                  component="a"
+                  href={tool.toolUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  gradient={{
+                    deg: 90,
+                    from: "lexoterm-primary",
+                    to: alpha(theme.colors["lexoterm-primary"][0], 0.75),
+                  }}
+                >
+                  Werkzeug starten
+                </Button>
+              </Group>
+            </Stack>
             {details.images && details.images?.length > 0 && (
               <ImageStack images={details.images} />
             )}
