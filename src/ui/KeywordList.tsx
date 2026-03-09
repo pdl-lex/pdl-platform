@@ -53,7 +53,7 @@ function Keywords({ letter }: { letter: IndexLetter }) {
   }, [letter])
 
   const { data, isFetching } = useQuery<KeywordEntryList>({
-    queryKey: ["lemma-display", letter, page],
+    queryKey: ["lemma", letter, page],
     queryFn: () => fetchKeywordList(letter, page, itemsPerPage),
     refetchOnWindowFocus: false,
     placeholderData: (previousData) => previousData,

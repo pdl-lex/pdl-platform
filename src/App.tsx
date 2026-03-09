@@ -8,6 +8,7 @@ import Home from "./pages/Home"
 import Dictionaries from "./pages/Dictionaries"
 import SearchView from "./pages/SearchView"
 import NotFound from "./pages/NotFound"
+import Tools from "./pages/tools"
 
 const queryClient = new QueryClient()
 
@@ -18,15 +19,18 @@ export type AppRoute = {
 }
 
 const toplevelRoutes: AppRoute[] = [
-  { path: "/", Component: Home, title: "Startseite" },
   { path: "/search", Component: SearchView, title: "Suche" },
+  { path: "/tools", Component: Tools, title: "Werkzeuge" },
   { path: "/dictionaries", Component: Dictionaries, title: "Wörterbücher" },
   // { path: "/corpora", Component: Corpora, title: "Korpora" },
   // { path: "/lab", Component: Lab, title: "Lab" },
   // { path: "/about", Component: About, title: "Über" },
 ]
 
-const subRoutes: AppRoute[] = []
+// sub-routes do not appear in the main menu
+const subRoutes: AppRoute[] = [
+  { path: "/", Component: Home, title: "Startseite" },
+]
 
 const routes = [...toplevelRoutes, ...subRoutes]
 
