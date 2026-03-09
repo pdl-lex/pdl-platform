@@ -61,6 +61,7 @@ function ToolDetailModal({ tool }: { tool: Tool & { details: ToolDetails } }) {
             <Title order={3} fw={500} pt={"sm"}>
               {tool.details.title}
             </Title>
+            <Text c={"dimmed"}>{tool.author}</Text>
           </Stack>
         }
       >
@@ -117,9 +118,12 @@ export function ToolCard({ tool }: { tool: Tool }) {
         <Image src={tool.imageUrl} />
       </Card.Section>
       {tool.labels && <LabelBar labels={tool.labels} />}
-      <Title order={2} fw={500} py={"sm"}>
+      <Title order={2} fw={500} pt={"sm"}>
         {tool.title}
       </Title>
+      <Text c={"dimmed"} pb={"md"}>
+        {tool.author}
+      </Text>
       <Text pb={"md"}>{tool.teaser}</Text>
       {hasDetails(tool) && <ToolDetailModal tool={tool} />}
     </Card>

@@ -11,6 +11,7 @@ export interface ToolDetails {
 
 export interface Tool {
   title: string
+  author: string
   teaser: string
   imageUrl?: string
   toolUrl?: string
