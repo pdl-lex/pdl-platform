@@ -9,6 +9,7 @@ import Dictionaries from "./pages/Dictionaries"
 import SearchView from "./pages/SearchView"
 import NotFound from "./pages/NotFound"
 import Tools from "./pages/tools"
+import Imprint from "./pages/Imprint"
 
 const queryClient = new QueryClient()
 
@@ -30,6 +31,7 @@ const toplevelRoutes: AppRoute[] = [
 // sub-routes do not appear in the main menu
 const subRoutes: AppRoute[] = [
   { path: "/", Component: Home, title: "Startseite" },
+  { path: "/impressum", Component: Imprint, title: "Impressum" },
 ]
 
 const routes = [...toplevelRoutes, ...subRoutes]
