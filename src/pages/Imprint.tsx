@@ -1,4 +1,5 @@
-import { Skeleton, Stack } from "@mantine/core"
+import { Alert, Skeleton, Stack } from "@mantine/core"
+import { IconAlertCircle } from "@tabler/icons-react"
 import { RichText } from "@payloadcms/richtext-lexical/react"
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import MainText from "../layout/MainText"
@@ -9,7 +10,7 @@ type LegalGlobal = {
 }
 
 export default function Imprint() {
-  const { data, isLoading } = useCmsGlobal<LegalGlobal>("legal", {
+  const { data, isLoading, error } = useCmsGlobal<LegalGlobal>("legal", {
     fetchOptions: { depth: 2, draft: false },
   })
 
@@ -21,6 +22,10 @@ export default function Imprint() {
           <Skeleton height={16} radius="md" />
           <Skeleton height={16} radius="md" width="70%" />
         </Stack>
+      ) : error ? (
+        <Alert title="Inhalt konnte nicht geladen werden" color="red" icon={<IconAlertCircle size={18} />}>
+          {error.message}
+        </Alert>
       ) : (
         !!data?.imprint && <RichText data={data.imprint} />
       )}

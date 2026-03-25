@@ -25,7 +25,12 @@ export default async function fetchPayloadGlobal<TResponse = unknown>(
 ): Promise<TResponse> {
   const { signal, ...query } = options
 
-  const base = (import.meta.env.VITE_PAYLOAD_URL as string).replace(/\/+$/, "")
+  const payloadUrl = import.meta.env.VITE_PAYLOAD_URL as string | undefined
+  if (!payloadUrl?.trim()) {
+    throw new Error("Missing VITE_PAYLOAD_URL environment variable")
+  }
+
+  const base = payloadUrl.replace(/\/+$/, "")
   const searchParams = buildSearchParams(query as PayloadQueryParams)
   const qs = searchParams.toString()
 
