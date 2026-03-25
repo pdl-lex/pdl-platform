@@ -1,4 +1,4 @@
-import { Title, Skeleton, Stack } from "@mantine/core"
+import { Skeleton, Stack } from "@mantine/core"
 import { RichText } from "@payloadcms/richtext-lexical/react"
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import MainText from "../layout/MainText"
@@ -13,15 +13,6 @@ export default function Imprint() {
     fetchOptions: { depth: 2, draft: false },
   })
 
-  if (!data?.imprint) {
-    return (
-      <MainText>
-        <Title order={2}>Impressum</Title>
-        <p>In Bearbeitung</p>
-      </MainText>
-    )
-  }
-
   return (
     <MainText>
       {isLoading ? (
@@ -31,7 +22,7 @@ export default function Imprint() {
           <Skeleton height={16} radius="md" width="70%" />
         </Stack>
       ) : (
-        <RichText data={data.imprint} />
+        !!data?.imprint && <RichText data={data.imprint} />
       )}
     </MainText>
   )
