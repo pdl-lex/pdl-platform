@@ -86,9 +86,13 @@ export default function Footer({
           <FooterColumn>
             <FooterColumn.Title>Rechtliches</FooterColumn.Title>
             <FooterColumn.Content>
-              <p>Impressum</p>
+              <p>
+                <a href="/impressum">Impressum</a>
+              </p>
               <p>Nutzung/Lizenzen</p>
-              <p>Datenschutzerklärung</p>
+              <p>
+                <a href="/datenschutz">Datenschutzerklärung</a>
+              </p>
             </FooterColumn.Content>
           </FooterColumn>
         </Box>
