@@ -1,5 +1,5 @@
 import "@mantine/core/styles.css"
-import { Alert, MantineProvider } from "@mantine/core"
+import { Alert, MantineProvider, Skeleton, Stack } from "@mantine/core"
 import { theme } from "./theme"
 import MainLayout from "./layout/MainLayout"
 import { Route, Routes } from "react-router-dom"
@@ -57,13 +57,16 @@ function toPathFromSlug(slug: string): string {
 }
 
 function AppContent() {
-  const { data, error } = useCmsCollection<CmsPageCollectionResponse>("pages", {
-    fetchOptions: {
-      limit: 200,
-      depth: 0,
-      draft: false,
+  const { data, error, isLoading } = useCmsCollection<CmsPageCollectionResponse>(
+    "pages",
+    {
+      fetchOptions: {
+        limit: 200,
+        depth: 0,
+        draft: false,
+      },
     },
-  })
+  )
 
   const cmsRoutes = useMemo<CmsRoute[]>(() => {
     const reservedPaths = new Set(staticRoutes.map(({ path }) => path))
@@ -113,7 +116,22 @@ function AppContent() {
           <Route key={path} path={path} element={<CmsPage slug={slug} />} />
         ))}
 
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="*"
+          element={
+            isLoading ? (
+              <MainText>
+                <Stack gap="md">
+                  <Skeleton height={32} radius="md" width="40%" />
+                  <Skeleton height={16} radius="md" />
+                  <Skeleton height={16} radius="md" width="70%" />
+                </Stack>
+              </MainText>
+            ) : (
+              <NotFound />
+            )
+          }
+        />
       </Routes>
     </MainLayout>
   )
