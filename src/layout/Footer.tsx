@@ -1,6 +1,25 @@
 import { Box, MantineSpacing, SimpleGrid, StyleProp } from "@mantine/core"
+import { RichText } from "@payloadcms/richtext-lexical/react"
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import { FooterColumn } from "./FooterColumn"
 import BadwLogo from "../domain/BadwLogo"
+import { useCmsGlobal } from "../hooks/useCms"
+
+type FooterCmsColumn = {
+  id?: string
+  title?: string | null
+  content?: SerializedEditorState | string | null
+}
+
+type FooterGlobalResponse = {
+  footerColumns?: FooterCmsColumn[] | null
+}
+
+function isSerializedEditorState(
+  value: unknown,
+): value is SerializedEditorState {
+  return Boolean(value && typeof value === "object" && "root" in value)
+}
 
 export default function Footer({
   outerSpacing,
@@ -9,6 +28,15 @@ export default function Footer({
   outerSpacing: StyleProp<MantineSpacing>
   mainMaxWidth: StyleProp<MantineSpacing>
 }) {
+  const { data, isLoading, error } = useCmsGlobal<FooterGlobalResponse>(
+    "footer",
+    {
+      fetchOptions: { depth: 2, draft: false },
+    },
+  )
+
+  const cmsColumns = data?.footerColumns ?? []
+
   return (
     <Box
       maw={"100%"}
@@ -27,75 +55,27 @@ export default function Footer({
             <BadwLogo />
           </FooterColumn>
         </Box>
-        <Box>
-          <FooterColumn>
-            <FooterColumn.Title>LexoTerm</FooterColumn.Title>
-            <FooterColumn.Content>
-              <p>
-                Die lexikographische und korpuslinguistische Plattform des
-                Projekts “Neue Potenziale für die Digitale Lexikographie des
-                Deutschen” (PDL).
-              </p>
-              <p>Ein Angebot der Bayerischen Akademie der Wissenschaften.</p>
-              <p>© 2025-2026. Alle Rechte vorbehalten.</p>
-            </FooterColumn.Content>
-          </FooterColumn>
-        </Box>
-        <Box>
-          <FooterColumn>
-            <FooterColumn.Title>Kontakt</FooterColumn.Title>
-            <FooterColumn.Content>
-              <p>
-                Mail:{" "}
-                <a href="mailto:kontakt@pdl.badw.de">kontakt@pdl.badw.de</a>
-                <br />
-                PDL-Webseite:{" "}
-                <a
-                  href="https://pdl.badw.de"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  pdl.badw.de
-                </a>
-                <br />
-                Telefon: <a href="tel:089230311375">089 23031-1375</a>
-              </p>
-              <address style={{ fontStyle: "normal" }}>
-                Bayerische Akademie der Wissenschaften
-                <br />
-                Alfons-Goppel-Straße 11
-                <br />
-                80539 München
-              </address>
-            </FooterColumn.Content>
-          </FooterColumn>
-        </Box>
-        <Box>
-          <FooterColumn>
-            <FooterColumn.Title>Informationen</FooterColumn.Title>
-            <FooterColumn.Content>
-              <p>Team</p>
-              <p>Häufig gestellte Fragen (FAQ)</p>
-              <p>Informationen zum Projekt</p>
-              <p>BAdW</p>
-              <p>Akademienunion</p>
-            </FooterColumn.Content>
-          </FooterColumn>
-        </Box>
-        <Box>
-          <FooterColumn>
-            <FooterColumn.Title>Rechtliches</FooterColumn.Title>
-            <FooterColumn.Content>
-              <p>
-                <a href="/impressum">Impressum</a>
-              </p>
-              <p>Nutzung/Lizenzen</p>
-              <p>
-                <a href="/datenschutz">Datenschutzerklärung</a>
-              </p>
-            </FooterColumn.Content>
-          </FooterColumn>
-        </Box>
+
+        {!isLoading &&
+          !error &&
+          cmsColumns.length > 0 &&
+          cmsColumns.map((column, index) => (
+            <Box key={column.id ?? String(index)}>
+              <FooterColumn>
+                {column.title ? (
+                  <FooterColumn.Title>{column.title}</FooterColumn.Title>
+                ) : null}
+                <FooterColumn.Content>
+                  {isSerializedEditorState(column.content) ? (
+                    <RichText data={column.content} />
+                  ) : typeof column.content === "string" &&
+                    column.content.trim() ? (
+                    <p>{column.content}</p>
+                  ) : null}
+                </FooterColumn.Content>
+              </FooterColumn>
+            </Box>
+          ))}
       </SimpleGrid>
     </Box>
   )
