@@ -109,12 +109,8 @@ function AppContent() {
           <Route key={path} path={path} element={<Component />} />
         ))}
 
-        {cmsRoutes.map(({ path, slug, title }) => (
-          <Route
-            key={path}
-            path={path}
-            element={<CmsPage slug={slug} title={title} />}
-          />
+        {cmsRoutes.map(({ path, slug }) => (
+          <Route key={path} path={path} element={<CmsPage slug={slug} />} />
         ))}
 
         <Route path="*" element={<NotFound />} />

@@ -1,4 +1,4 @@
-import { Alert, Skeleton, Stack, Text, Title } from "@mantine/core"
+import { Alert, Skeleton, Stack, Text } from "@mantine/core"
 import { IconAlertCircle } from "@tabler/icons-react"
 import { RichText } from "@payloadcms/richtext-lexical/react"
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
@@ -7,7 +7,11 @@ import { useCmsCollection } from "../hooks/useCms"
 
 type CmsPageDocument = {
   slug?: string | null
-  title?: string | null
+  layout?: Array<{
+    id?: string
+    blockType?: string | null
+    content?: SerializedEditorState | string | null
+  }> | null
   body?: SerializedEditorState | string | null
   content?: SerializedEditorState | string | null
 }
@@ -18,7 +22,6 @@ type CmsPageCollectionResponse = {
 
 type CmsPageProps = {
   slug: string
-  title: string
 }
 
 function isSerializedEditorState(
@@ -27,7 +30,7 @@ function isSerializedEditorState(
   return Boolean(value && typeof value === "object" && "root" in value)
 }
 
-export default function CmsPage({ slug, title }: CmsPageProps) {
+export default function CmsPage({ slug }: CmsPageProps) {
   const { data, isLoading, error } =
     useCmsCollection<CmsPageCollectionResponse>("pages", {
       fetchOptions: {
@@ -40,7 +43,17 @@ export default function CmsPage({ slug, title }: CmsPageProps) {
     })
 
   const page = data?.docs?.[0]
-  const pageTitle = page?.title?.trim() || title
+  const richTextLayoutBlocks = (page?.layout ?? []).filter(
+    (
+      block,
+    ): block is {
+      id?: string
+      blockType?: string | null
+      content: SerializedEditorState
+    } =>
+      block?.blockType === "richText" && isSerializedEditorState(block.content),
+  )
+
   const richText = isSerializedEditorState(page?.body)
     ? page.body
     : isSerializedEditorState(page?.content)
@@ -73,11 +86,16 @@ export default function CmsPage({ slug, title }: CmsPageProps) {
         </Alert>
       ) : (
         <>
-          <Title order={2} mb="md">
-            {pageTitle}
-          </Title>
-
-          {richText ? (
+          {richTextLayoutBlocks.length > 0 ? (
+            <Stack gap="md">
+              {richTextLayoutBlocks.map((block, index) => (
+                <RichText
+                  key={block.id ?? `${slug}-richtext-${index}`}
+                  data={block.content}
+                />
+              ))}
+            </Stack>
+          ) : richText ? (
             <RichText data={richText} />
           ) : typeof page.body === "string" && page.body.trim() ? (
             <Text>{page.body}</Text>
