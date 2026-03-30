@@ -46,6 +46,7 @@ type CmsPageCollectionResponse = {
 }
 
 type CmsRoute = {
+  slug: string
   path: string
   title: string
 }
@@ -76,6 +77,7 @@ function AppContent() {
         if (reservedPaths.has(path)) return null
 
         return {
+          slug,
           path,
           title: page.title?.trim() || slug,
         }
@@ -107,8 +109,12 @@ function AppContent() {
           <Route key={path} path={path} element={<Component />} />
         ))}
 
-        {cmsRoutes.map(({ path, title }) => (
-          <Route key={path} path={path} element={<CmsPage title={title} />} />
+        {cmsRoutes.map(({ path, slug, title }) => (
+          <Route
+            key={path}
+            path={path}
+            element={<CmsPage slug={slug} title={title} />}
+          />
         ))}
 
         <Route path="*" element={<NotFound />} />
