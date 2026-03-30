@@ -1,9 +1,9 @@
 import { Box, MantineSpacing, SimpleGrid, StyleProp } from "@mantine/core"
-import { RichText } from "@payloadcms/richtext-lexical/react"
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import { FooterColumn } from "./FooterColumn"
 import BadwLogo from "../domain/BadwLogo"
 import { useCmsGlobal } from "../hooks/useCms"
+import CmsRichText from "../ui/CmsRichText"
 
 type FooterCmsColumn = {
   id?: string
@@ -67,7 +67,7 @@ export default function Footer({
                 ) : null}
                 <FooterColumn.Content>
                   {isSerializedEditorState(column.content) ? (
-                    <RichText data={column.content} />
+                    <CmsRichText data={column.content} />
                   ) : typeof column.content === "string" &&
                     column.content.trim() ? (
                     <p>{column.content}</p>

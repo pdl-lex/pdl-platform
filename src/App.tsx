@@ -14,6 +14,7 @@ import MainText from "./layout/MainText"
 import { useCmsCollection } from "./hooks/useCms"
 import { IconAlertCircle } from "@tabler/icons-react"
 import CmsPage from "./pages/CmsPage"
+import toPathFromSlug from "./utils/toPathFromSlug"
 
 const queryClient = new QueryClient()
 
@@ -49,11 +50,6 @@ type CmsRoute = {
   slug: string
   path: string
   title: string
-}
-
-function toPathFromSlug(slug: string): string {
-  const normalized = slug.trim().replace(/^\/+|\/+$/g, "")
-  return normalized ? `/${normalized}` : "/"
 }
 
 function AppContent() {

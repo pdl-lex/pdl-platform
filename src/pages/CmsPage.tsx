@@ -1,9 +1,9 @@
 import { Alert, Skeleton, Stack, Text } from "@mantine/core"
 import { IconAlertCircle } from "@tabler/icons-react"
-import { RichText } from "@payloadcms/richtext-lexical/react"
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import MainText from "../layout/MainText"
 import { useCmsCollection } from "../hooks/useCms"
+import CmsRichText from "../ui/CmsRichText"
 
 type CmsPageDocument = {
   slug?: string | null
@@ -89,14 +89,14 @@ export default function CmsPage({ slug }: CmsPageProps) {
           {richTextLayoutBlocks.length > 0 ? (
             <Stack gap="md">
               {richTextLayoutBlocks.map((block, index) => (
-                <RichText
+                <CmsRichText
                   key={block.id ?? `${slug}-richtext-${index}`}
                   data={block.content}
                 />
               ))}
             </Stack>
           ) : richText ? (
-            <RichText data={richText} />
+            <CmsRichText data={richText} />
           ) : typeof page.body === "string" && page.body.trim() ? (
             <Text>{page.body}</Text>
           ) : typeof page.content === "string" && page.content.trim() ? (
