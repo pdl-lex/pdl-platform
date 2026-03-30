@@ -1,5 +1,5 @@
 import "@mantine/core/styles.css"
-import { Alert, MantineProvider, Title } from "@mantine/core"
+import { Alert, MantineProvider } from "@mantine/core"
 import { theme } from "./theme"
 import MainLayout from "./layout/MainLayout"
 import { Route, Routes } from "react-router-dom"
@@ -13,6 +13,7 @@ import Tools from "./pages/tools"
 import MainText from "./layout/MainText"
 import { useCmsCollection } from "./hooks/useCms"
 import { IconAlertCircle } from "@tabler/icons-react"
+import CmsPage from "./pages/CmsPage"
 
 const queryClient = new QueryClient()
 
@@ -52,14 +53,6 @@ type CmsRoute = {
 function toPathFromSlug(slug: string): string {
   const normalized = slug.trim().replace(/^\/+|\/+$/g, "")
   return normalized ? `/${normalized}` : "/"
-}
-
-function CmsPlaceholderPage({ title }: { title: string }) {
-  return (
-    <MainText>
-      <Title order={2}>{title}</Title>
-    </MainText>
-  )
 }
 
 function AppContent() {
@@ -115,11 +108,7 @@ function AppContent() {
         ))}
 
         {cmsRoutes.map(({ path, title }) => (
-          <Route
-            key={path}
-            path={path}
-            element={<CmsPlaceholderPage title={title} />}
-          />
+          <Route key={path} path={path} element={<CmsPage title={title} />} />
         ))}
 
         <Route path="*" element={<NotFound />} />
