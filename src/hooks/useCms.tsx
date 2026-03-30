@@ -2,6 +2,7 @@ import { useQuery, type UseQueryOptions } from "@tanstack/react-query"
 import fetchPayloadGlobal, {
   type FetchPayloadGlobalOptions,
 } from "../cms/fetchPayloadGlobal"
+import fetchPayloadCollection from "../cms/fetchPayloadCollection"
 
 export type UseCmsResourceOptions<TResponse = unknown> = Omit<
   UseQueryOptions<TResponse, Error, TResponse>,
@@ -33,4 +34,21 @@ export function useCmsGlobal<TResponse = unknown>(
   options: UseCmsResourceOptions<TResponse> = {},
 ) {
   return useCms<TResponse>("globals", slug, options)
+}
+
+export function useCmsCollection<TResponse = unknown>(
+  scope: string,
+  options: UseCmsResourceOptions<TResponse> = {},
+) {
+  const { fetchOptions = {}, ...queryOptions } = options
+
+  return useQuery<TResponse, Error>({
+    queryKey: ["cms", scope, "collection", fetchOptions],
+    queryFn: ({ signal }) =>
+      fetchPayloadCollection<TResponse>(scope, {
+        ...fetchOptions,
+        signal,
+      }),
+    ...queryOptions,
+  })
 }
