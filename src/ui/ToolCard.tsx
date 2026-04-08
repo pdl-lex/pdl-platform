@@ -100,10 +100,15 @@ function ToolDetailModal({ tool }: { tool: Tool }) {
 }
 
 export function ToolCard({ tool }: { tool: Tool }) {
+  const payloadUrl = import.meta.env.VITE_PAYLOAD_URL
+
   return (
     <Card withBorder>
       <Card.Section pb="sm">
-        <Image src={tool.imageUrl} />
+        <Image
+          src={`${payloadUrl.replace(/\/+$/, "")}${tool.cardImage.url}`}
+          alt={tool.cardImage.alt}
+        />
       </Card.Section>
       <ToolHeader tool={tool} />
       <CmsRichText data={tool.teaser} />
