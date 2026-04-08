@@ -4,25 +4,8 @@ import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical
 import MainText from "../layout/MainText"
 import { useCmsCollection } from "../hooks/useCms"
 import CmsRichText, { isSerializedEditorState } from "../ui/CmsRichText"
-import CmsFaqItem from "../ui/CmsFaqItem"
-
-type BaseBlock = {
-  id?: string
-  blockType: string
-}
-
-interface RichTextBlock extends BaseBlock {
-  content?: SerializedEditorState | string | null
-  blockType: "richText"
-}
-
-interface FaqBlock extends BaseBlock {
-  question: string
-  answer?: SerializedEditorState | string | null
-  blockType: "faqItem"
-}
-
-type Block = RichTextBlock | FaqBlock
+import { Block } from "../cms/blocks/Block"
+import CmsFaqList from "../ui/CmsFaqList"
 
 type CmsPageDocument = {
   slug?: string | null
@@ -59,6 +42,8 @@ export default function CmsPage({ slug }: CmsPageProps) {
     : isSerializedEditorState(page?.content)
       ? page.content
       : null
+
+  console.log(page)
 
   return (
     <MainText>
@@ -98,16 +83,11 @@ export default function CmsPage({ slug }: CmsPageProps) {
                       />
                     )
 
-                  case "faqItem":
+                  case "faqList":
                     return (
-                      <CmsFaqItem
-                        key={block.id ?? `${slug}-faq-${index}`}
-                        question={block.question}
-                        answer={
-                          isSerializedEditorState(block.answer)
-                            ? block.answer
-                            : ""
-                        }
+                      <CmsFaqList
+                        key={block.id ?? `${slug}-faqList-${index}`}
+                        items={block.items}
                       />
                     )
                   default:
