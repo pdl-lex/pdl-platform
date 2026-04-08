@@ -43,8 +43,6 @@ export default function CmsPage({ slug }: CmsPageProps) {
       ? page.content
       : null
 
-  console.log(page)
-
   return (
     <MainText>
       {isLoading ? (
