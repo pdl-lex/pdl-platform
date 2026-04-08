@@ -5,7 +5,7 @@ import MainText from "../layout/MainText"
 import { useCmsCollection } from "../hooks/useCms"
 import CmsRichText, { isSerializedEditorState } from "../ui/CmsRichText"
 import { Block } from "../cms/blocks/Block"
-import CmsFaqList from "../ui/CmsFaqList"
+import CmsLayoutBlocks from "../ui/CmsLayoutBlocks"
 
 type CmsPageDocument = {
   slug?: string | null
@@ -71,27 +71,7 @@ export default function CmsPage({ slug }: CmsPageProps) {
         <>
           {layoutBlocks.length > 0 ? (
             <Stack gap="md">
-              {layoutBlocks.map((block, index) => {
-                switch (block.blockType) {
-                  case "richText":
-                    return (
-                      <CmsRichText
-                        key={block.id ?? `${slug}-richtext-${index}`}
-                        data={block.content}
-                      />
-                    )
-
-                  case "faqList":
-                    return (
-                      <CmsFaqList
-                        key={block.id ?? `${slug}-faqList-${index}`}
-                        items={block.items}
-                      />
-                    )
-                  default:
-                    return <></>
-                }
-              })}
+              <CmsLayoutBlocks blocks={layoutBlocks} />
             </Stack>
           ) : richText ? (
             <CmsRichText data={richText} />
