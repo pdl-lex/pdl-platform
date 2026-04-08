@@ -9,7 +9,6 @@ import {
   Button,
   alpha,
   useMantineTheme,
-  SimpleGrid,
   Stack,
   Tooltip,
 } from "@mantine/core"
@@ -60,29 +59,27 @@ function ToolDetailModal({ tool }: { tool: Tool }) {
         title={<ToolHeader tool={tool} />}
       >
         {
-          <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            <Stack>
-              <CmsLayoutBlocks blocks={tool.layout} />
-              {tool.basedata.toolUrl && (
-                <Group>
-                  <Button
-                    variant="gradient"
-                    component="a"
-                    href={tool.basedata.toolUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    gradient={{
-                      deg: 90,
-                      from: "lexoterm-primary",
-                      to: alpha(theme.colors["lexoterm-primary"][0], 0.75),
-                    }}
-                  >
-                    Werkzeug starten
-                  </Button>
-                </Group>
-              )}
-            </Stack>
-          </SimpleGrid>
+          <Stack>
+            <CmsLayoutBlocks blocks={tool.layout} />
+            {tool.basedata.toolUrl && (
+              <Group>
+                <Button
+                  variant="gradient"
+                  component="a"
+                  href={tool.basedata.toolUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  gradient={{
+                    deg: 90,
+                    from: "lexoterm-primary",
+                    to: alpha(theme.colors["lexoterm-primary"][0], 0.75),
+                  }}
+                >
+                  Werkzeug starten
+                </Button>
+              </Group>
+            )}
+          </Stack>
         }
       </Modal>
       <Group>
