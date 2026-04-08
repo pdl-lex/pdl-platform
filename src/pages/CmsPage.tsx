@@ -3,15 +3,30 @@ import { IconAlertCircle } from "@tabler/icons-react"
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import MainText from "../layout/MainText"
 import { useCmsCollection } from "../hooks/useCms"
-import CmsRichText from "../ui/CmsRichText"
+import CmsRichText, { isSerializedEditorState } from "../ui/CmsRichText"
+import CmsFaqItem from "../ui/CmsFaqItem"
+
+type BaseBlock = {
+  id?: string
+  blockType: string
+}
+
+interface RichTextBlock extends BaseBlock {
+  content?: SerializedEditorState | string | null
+  blockType: "richText"
+}
+
+interface FaqBlock extends BaseBlock {
+  question: string
+  answer?: SerializedEditorState | string | null
+  blockType: "faqItem"
+}
+
+type Block = RichTextBlock | FaqBlock
 
 type CmsPageDocument = {
   slug?: string | null
-  layout?: Array<{
-    id?: string
-    blockType?: string | null
-    content?: SerializedEditorState | string | null
-  }> | null
+  layout?: Array<Block> | null
   body?: SerializedEditorState | string | null
   content?: SerializedEditorState | string | null
 }
@@ -22,12 +37,6 @@ type CmsPageCollectionResponse = {
 
 type CmsPageProps = {
   slug: string
-}
-
-function isSerializedEditorState(
-  value: unknown,
-): value is SerializedEditorState {
-  return Boolean(value && typeof value === "object" && "root" in value)
 }
 
 export default function CmsPage({ slug }: CmsPageProps) {
@@ -43,16 +52,7 @@ export default function CmsPage({ slug }: CmsPageProps) {
     })
 
   const page = data?.docs?.[0]
-  const richTextLayoutBlocks = (page?.layout ?? []).filter(
-    (
-      block,
-    ): block is {
-      id?: string
-      blockType?: string | null
-      content: SerializedEditorState
-    } =>
-      block?.blockType === "richText" && isSerializedEditorState(block.content),
-  )
+  const layoutBlocks = page?.layout ?? []
 
   const richText = isSerializedEditorState(page?.body)
     ? page.body
@@ -86,14 +86,34 @@ export default function CmsPage({ slug }: CmsPageProps) {
         </Alert>
       ) : (
         <>
-          {richTextLayoutBlocks.length > 0 ? (
+          {layoutBlocks.length > 0 ? (
             <Stack gap="md">
-              {richTextLayoutBlocks.map((block, index) => (
-                <CmsRichText
-                  key={block.id ?? `${slug}-richtext-${index}`}
-                  data={block.content}
-                />
-              ))}
+              {layoutBlocks.map((block, index) => {
+                switch (block.blockType) {
+                  case "richText":
+                    return (
+                      <CmsRichText
+                        key={block.id ?? `${slug}-richtext-${index}`}
+                        data={block.content}
+                      />
+                    )
+
+                  case "faqItem":
+                    return (
+                      <CmsFaqItem
+                        key={block.id ?? `${slug}-faq-${index}`}
+                        question={block.question}
+                        answer={
+                          isSerializedEditorState(block.answer)
+                            ? block.answer
+                            : ""
+                        }
+                      />
+                    )
+                  default:
+                    return <></>
+                }
+              })}
             </Stack>
           ) : richText ? (
             <CmsRichText data={richText} />
