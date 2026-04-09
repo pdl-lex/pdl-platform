@@ -34,7 +34,7 @@ function TagBar({ tags }: { tags: Tag[] }) {
   return (
     <Group gap="xs" pt={"xs"}>
       {tags.map((tag) => (
-        <Tooltip label={tag.name}>
+        <Tooltip label={tag.name} key={tag.id}>
           <Badge radius="sm" size="xs" color="#8FB257">
             {tag.short}
           </Badge>
