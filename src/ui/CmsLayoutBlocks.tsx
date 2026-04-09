@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@mantine/core"
+import { Box, SimpleGrid } from "@mantine/core"
 import { Block } from "../cms/blocks/Block"
 import CmsFaqList from "./CmsFaqList"
 import CmsRichText from "./CmsRichText"
@@ -27,8 +27,12 @@ export default function CmsLayoutBlocks({ blocks }: { blocks: Block[] }) {
           case "twoColumns":
             return (
               <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                <CmsLayoutBlocks blocks={block.leftColumn} />
-                <CmsLayoutBlocks blocks={block.rightColumn} />
+                <Box>
+                  <CmsLayoutBlocks blocks={block.leftColumn} />
+                </Box>
+                <Box>
+                  <CmsLayoutBlocks blocks={block.rightColumn} />
+                </Box>
               </SimpleGrid>
             )
           case "image":
