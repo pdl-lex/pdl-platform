@@ -105,10 +105,12 @@ export function ToolCard({ tool }: { tool: Tool }) {
   return (
     <Card withBorder>
       <Card.Section pb="sm">
-        <Image
-          src={`${payloadUrl.replace(/\/+$/, "")}${tool.cardImage.url}`}
-          alt={tool.cardImage.alt}
-        />
+        {tool.cardImage && (
+          <Image
+            src={`${payloadUrl.replace(/\/+$/, "")}${tool.cardImage.url}`}
+            alt={tool.cardImage.alt}
+          />
+        )}
       </Card.Section>
       <ToolHeader tool={tool} />
       <CmsRichText data={tool.teaser} />

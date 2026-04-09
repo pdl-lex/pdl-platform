@@ -22,6 +22,6 @@ export interface Tool {
   name: string
   basedata: BaseData
   teaser: SerializedEditorState | string | null
-  cardImage: CmsMedia
+  cardImage?: CmsMedia | null
   layout: Block[]
 }
