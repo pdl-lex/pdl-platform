@@ -91,6 +91,7 @@ export default function ToolSearchForm() {
         <Group>
           <Button
             variant="gradient"
+            type="button"
             onClick={() => form.reset()}
             gradient={{
               deg: 90,

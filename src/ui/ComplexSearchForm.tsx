@@ -179,6 +179,7 @@ export default function ComplexSearchForm({
         <Group>
           <Button
             variant="gradient"
+            type="button"
             onClick={() => form.setValues(defaultValues)}
             gradient={{
               deg: 90,
