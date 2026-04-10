@@ -82,7 +82,7 @@ export default function ToolSearchForm({
         <TextInput
           key={form.key("tool")}
           label={"Werkzeug"}
-          placeholder="Name, Beschreibung"
+          placeholder="Name"
           {...form.getInputProps("tool")}
         />
         <TextInput
