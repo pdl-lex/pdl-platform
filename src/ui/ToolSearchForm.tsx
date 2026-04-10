@@ -19,7 +19,7 @@ interface TagOption {
   value: string
 }
 
-interface ToolSearchFormValues {
+export interface ToolSearchFormValues {
   tags: string[]
   tool: string
   author: string
@@ -64,7 +64,11 @@ function TagSelect({
   )
 }
 
-export default function ToolSearchForm() {
+export default function ToolSearchForm({
+  onSearch,
+}: {
+  onSearch: (filters: ToolSearchFormValues) => void
+}) {
   const theme = useMantineTheme()
 
   const form = useForm<ToolSearchFormValues>({
@@ -73,7 +77,7 @@ export default function ToolSearchForm() {
   })
 
   return (
-    <form>
+    <form onSubmit={form.onSubmit((values) => onSearch(values))}>
       <Stack>
         <TextInput
           key={form.key("tool")}

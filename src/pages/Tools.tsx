@@ -5,7 +5,8 @@ import { ToolCard } from "../ui/ToolCard"
 import { IconAlertCircle } from "@tabler/icons-react"
 import ContentPanel from "../ui/ContentPanel"
 import _ from "lodash"
-import ToolSearchForm from "../ui/ToolSearchForm"
+import ToolSearchForm, { ToolSearchFormValues } from "../ui/ToolSearchForm"
+import { useMemo, useState } from "react"
 
 type ToolsCollectionResponse = {
   docs?: Tool[]
@@ -36,8 +37,32 @@ function ToolPlaceholder() {
 }
 
 export default function Tools() {
-  const { data, isLoading, error } =
-    useCmsCollection<ToolsCollectionResponse>("tools")
+  const [filters, setFilters] = useState<ToolSearchFormValues | null>(null)
+
+  const fetchOptions = useMemo(() => {
+    const params: Record<string, string> = {}
+
+    if (!filters) return {}
+
+    if (filters.tool.trim()) {
+      params["where[name][like]"] = filters.tool.trim()
+    }
+
+    if (filters.author.trim()) {
+      params["where[basedata.author][like]"] = filters.author.trim()
+    }
+
+    if (filters.tags.length > 0) {
+      params["where[basedata.tags][in]"] = filters.tags.join(",")
+    }
+
+    return params
+  }, [filters])
+
+  const { data, isLoading, error } = useCmsCollection<ToolsCollectionResponse>(
+    "tools",
+    { fetchOptions },
+  )
 
   const tools = data?.docs ?? []
 
@@ -45,7 +70,7 @@ export default function Tools() {
     <Grid p={"md"} pt={"md"} mx={"auto"} gutter="xs">
       <Grid.Col span={{ base: 12, sm: 4 }}>
         <ContentPanel title="Suche">
-          <ToolSearchForm />
+          <ToolSearchForm onSearch={setFilters} />
         </ContentPanel>
       </Grid.Col>
       <Grid.Col span={{ base: 12, sm: 8 }}>
