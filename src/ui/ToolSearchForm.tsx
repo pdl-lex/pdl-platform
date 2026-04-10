@@ -78,14 +78,12 @@ export default function ToolSearchForm() {
         <TextInput
           key={form.key("tool")}
           label={"Werkzeug"}
-          autoFocus
           placeholder="Name, Beschreibung"
           {...form.getInputProps("tool")}
         />
         <TextInput
           key={form.key("author")}
           label={"Autor:innen"}
-          autoFocus
           placeholder="Autor:innen, Urheber:innen, Institutionen"
           {...form.getInputProps("author")}
         />
@@ -93,6 +91,7 @@ export default function ToolSearchForm() {
         <Group>
           <Button
             variant="gradient"
+            onClick={() => form.reset()}
             gradient={{
               deg: 90,
               from: "lexoterm-secondary",
