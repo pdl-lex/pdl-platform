@@ -1,4 +1,5 @@
 import { BaseBlock } from "./BaseBlock"
+import { ButtonBlock } from "./ButtonBlock"
 import { FaqList } from "./FaqList"
 import { ImageBlock } from "./ImageBlock"
 import { RichTextBlock } from "./RichTextBlock"
@@ -9,4 +10,9 @@ export interface TwoColumnBlock extends BaseBlock {
   rightColumn: Block[]
 }
 
-export type Block = RichTextBlock | FaqList | TwoColumnBlock | ImageBlock
+export type Block =
+  | RichTextBlock
+  | FaqList
+  | TwoColumnBlock
+  | ImageBlock
+  | ButtonBlock
