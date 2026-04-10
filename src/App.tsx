@@ -9,7 +9,7 @@ import Home from "./pages/Home"
 import Dictionaries from "./pages/Dictionaries"
 import SearchView from "./pages/SearchView"
 import NotFound from "./pages/NotFound"
-import Tools from "./pages/tools"
+import Tools from "./pages/Tools"
 import MainText from "./layout/MainText"
 import { useCmsCollection } from "./hooks/useCms"
 import { IconAlertCircle } from "@tabler/icons-react"
@@ -53,16 +53,14 @@ type CmsRoute = {
 }
 
 function AppContent() {
-  const { data, error, isLoading } = useCmsCollection<CmsPageCollectionResponse>(
-    "pages",
-    {
+  const { data, error, isLoading } =
+    useCmsCollection<CmsPageCollectionResponse>("pages", {
       fetchOptions: {
         limit: 200,
         depth: 0,
         draft: false,
       },
-    },
-  )
+    })
 
   const cmsRoutes = useMemo<CmsRoute[]>(() => {
     const reservedPaths = new Set(staticRoutes.map(({ path }) => path))

@@ -5,8 +5,18 @@ import {
   type JSXConverters,
 } from "@payloadcms/richtext-lexical/react"
 import toPathFromSlug from "../utils/toPathFromSlug"
+import { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 
-type CmsRichTextProps = Omit<React.ComponentProps<typeof RichText>, "converters">
+export function isSerializedEditorState(
+  value: unknown,
+): value is SerializedEditorState {
+  return Boolean(value && typeof value === "object" && "root" in value)
+}
+
+export type CmsRichTextProps = Omit<
+  React.ComponentProps<typeof RichText>,
+  "converters" | "data"
+> & { data?: SerializedEditorState | string | null }
 
 const cmsRichTextConverters: JSXConverters = {
   ...defaultJSXConverters,
@@ -29,6 +39,9 @@ const cmsRichTextConverters: JSXConverters = {
   }),
 }
 
-export default function CmsRichText(props: CmsRichTextProps) {
-  return <RichText {...props} converters={cmsRichTextConverters} />
+export default function CmsRichText({ data, ...props }: CmsRichTextProps) {
+  if (isSerializedEditorState(data))
+    return (
+      <RichText {...props} data={data} converters={cmsRichTextConverters} />
+    )
 }

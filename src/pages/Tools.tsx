@@ -1,15 +1,11 @@
-import { Card, Grid, Group, Skeleton, Stack } from "@mantine/core"
+import { Card, Grid, Group, Skeleton, Stack, Alert } from "@mantine/core"
 import { Tool } from "../domain/Tool"
-import { useQuery } from "@tanstack/react-query"
+import { useCmsCollection } from "../hooks/useCms"
 import { ToolCard } from "../ui/ToolCard"
+import { IconAlertCircle } from "@tabler/icons-react"
 
-const fetchTools = async (): Promise<Tool[]> => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/tools`)
-  if (!response.ok) {
-    throw new Error(`HTTP error status: ${response.status}`)
-  }
-
-  return (await response.json()) as Tool[]
+type ToolsCollectionResponse = {
+  docs?: Tool[]
 }
 
 function ToolPlaceholder() {
@@ -37,23 +33,40 @@ function ToolPlaceholder() {
 }
 
 export default function Tools() {
-  const { data, isFetching } = useQuery<Tool[]>({
-    queryKey: ["tools"],
-    queryFn: () => fetchTools(),
-    refetchOnWindowFocus: false,
-    placeholderData: (previousData) => previousData,
-  })
+  const { data, isLoading, error } =
+    useCmsCollection<ToolsCollectionResponse>("tools")
+
+  const tools = data?.docs ?? []
+
   return (
     <Grid p={"md"} pt={"md"} mx={"auto"} gutter="xs">
-      {isFetching ? (
+      {isLoading ? (
         <>
           <ToolPlaceholder />
           <ToolPlaceholder />
           <ToolPlaceholder />
         </>
+      ) : error ? (
+        <Grid.Col span={12}>
+          <Alert
+            title="Fehler beim Laden der Tools"
+            color="red"
+            icon={<IconAlertCircle size={18} />}
+          >
+            {error.message}
+          </Alert>
+        </Grid.Col>
+      ) : tools.length === 0 ? (
+        <Grid.Col span={12}>
+          <Alert
+            title="Keine Tools gefunden"
+            color="yellow"
+            icon={<IconAlertCircle size={18} />}
+          />
+        </Grid.Col>
       ) : (
-        data?.map((tool) => (
-          <Grid.Col span={{ base: 12, sm: 4 }}>
+        tools.map((tool) => (
+          <Grid.Col span={{ base: 12, sm: 4 }} key={tool.id}>
             <ToolCard tool={tool} />
           </Grid.Col>
         ))

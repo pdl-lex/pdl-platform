@@ -9,43 +9,44 @@ import {
   Button,
   alpha,
   useMantineTheme,
-  SimpleGrid,
-  Typography,
   Stack,
+  Tooltip,
 } from "@mantine/core"
-import { Tool, ToolDetails, ToolImage } from "../domain/Tool"
+import { Tag, Tool } from "../domain/Tool"
 import { useDisclosure } from "@mantine/hooks"
+import CmsRichText from "./CmsRichText"
+import CmsLayoutBlocks from "./CmsLayoutBlocks"
 
-function LabelBar({ labels }: { labels: string[] }) {
+function ToolHeader({ tool }: { tool: Tool }) {
+  const tags = tool.basedata.tags
+  return (
+    <Stack gap={0}>
+      {tags && <TagBar tags={tags} />}
+      <Title order={3} fw={500} pt={"sm"}>
+        {tool.name}
+      </Title>
+      <Text c={"dimmed"}>{tool.basedata.author}</Text>
+    </Stack>
+  )
+}
+
+function TagBar({ tags }: { tags: Tag[] }) {
   return (
     <Group gap="xs" pt={"xs"}>
-      {labels.map((label) => (
-        <Badge radius="sm" size="xs" color="#8FB257">
-          {label}
-        </Badge>
+      {tags.map((tag) => (
+        <Tooltip label={tag.name} key={tag.id}>
+          <Badge radius="sm" size="xs" color="#8FB257">
+            {tag.short}
+          </Badge>
+        </Tooltip>
       ))}
     </Group>
   )
 }
 
-function hasDetails(tool: Tool): tool is Tool & { details: ToolDetails } {
-  return tool.details !== undefined
-}
-
-function ImageStack({ images }: { images: ToolImage[] }) {
-  return (
-    <Stack>
-      {images.map((image) => (
-        <Image src={image.url} alt={image.altText} />
-      ))}
-    </Stack>
-  )
-}
-
-function ToolDetailModal({ tool }: { tool: Tool & { details: ToolDetails } }) {
+function ToolDetailModal({ tool }: { tool: Tool }) {
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
-  const details = tool.details
 
   return (
     <>
@@ -55,44 +56,13 @@ function ToolDetailModal({ tool }: { tool: Tool & { details: ToolDetails } }) {
         onClose={close}
         centered
         closeButtonProps={{ style: { alignSelf: "flex-start" } }}
-        title={
-          <Stack gap={0}>
-            {tool.labels && <LabelBar labels={tool.labels} />}
-            <Title order={3} fw={500} pt={"sm"}>
-              {tool.details.title}
-            </Title>
-            <Text c={"dimmed"}>{tool.author}</Text>
+        title={<ToolHeader tool={tool} />}
+      >
+        {
+          <Stack>
+            <CmsLayoutBlocks blocks={tool.layout} />
           </Stack>
         }
-      >
-        {details.body && (
-          <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            <Stack>
-              <Typography>
-                <div dangerouslySetInnerHTML={{ __html: details.body }} />
-              </Typography>
-              <Group>
-                <Button
-                  variant="gradient"
-                  component="a"
-                  href={tool.toolUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  gradient={{
-                    deg: 90,
-                    from: "lexoterm-primary",
-                    to: alpha(theme.colors["lexoterm-primary"][0], 0.75),
-                  }}
-                >
-                  Werkzeug starten
-                </Button>
-              </Group>
-            </Stack>
-            {details.images && details.images?.length > 0 && (
-              <ImageStack images={details.images} />
-            )}
-          </SimpleGrid>
-        )}
       </Modal>
       <Group>
         <Button
@@ -112,20 +82,21 @@ function ToolDetailModal({ tool }: { tool: Tool & { details: ToolDetails } }) {
 }
 
 export function ToolCard({ tool }: { tool: Tool }) {
+  const payloadUrl = import.meta.env.VITE_PAYLOAD_URL
+
   return (
     <Card withBorder>
       <Card.Section pb="sm">
-        <Image src={tool.imageUrl} />
+        {tool.cardImage && (
+          <Image
+            src={`${payloadUrl.replace(/\/+$/, "")}${tool.cardImage.url}`}
+            alt={tool.cardImage.alt}
+          />
+        )}
       </Card.Section>
-      {tool.labels && <LabelBar labels={tool.labels} />}
-      <Title order={2} fw={500} pt={"sm"}>
-        {tool.title}
-      </Title>
-      <Text c={"dimmed"} pb={"md"}>
-        {tool.author}
-      </Text>
-      <Text pb={"md"}>{tool.teaser}</Text>
-      {hasDetails(tool) && <ToolDetailModal tool={tool} />}
+      <ToolHeader tool={tool} />
+      <CmsRichText data={tool.teaser} />
+      <ToolDetailModal tool={tool} />
     </Card>
   )
 }
