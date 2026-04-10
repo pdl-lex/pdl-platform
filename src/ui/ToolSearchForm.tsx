@@ -1,29 +1,73 @@
 import {
+  Alert,
   alpha,
   Button,
   Group,
   MultiSelect,
+  Skeleton,
   Stack,
   TextInput,
   useMantineTheme,
 } from "@mantine/core"
-import { useForm } from "@mantine/form"
+import { useForm, UseFormReturnType } from "@mantine/form"
+import { useCmsCollection } from "../hooks/useCms"
+import { Tag } from "../domain/Tool"
+import { IconAlertCircle } from "@tabler/icons-react"
 
-const tagOptions = [
-  {
-    label: "VIS | Visualisierung",
-    value: "VIS",
-  },
-  {
-    label: "KLT | Korpuslinguistik und Textanalyse",
-    value: "KLT",
-  },
-]
+interface TagOption {
+  label: string
+  value: string
+}
+
+interface ToolSearchFormValues {
+  tags: TagOption[]
+  tool: string
+  author: string
+}
+
+function TagSelect({
+  form,
+}: {
+  form: UseFormReturnType<
+    ToolSearchFormValues,
+    (values: ToolSearchFormValues) => ToolSearchFormValues
+  >
+}) {
+  const { data, isLoading, error } = useCmsCollection<{
+    docs?: Tag[]
+  }>("tags")
+
+  const options: TagOption[] = data?.docs
+    ? data.docs.map((item) => ({
+        label: `${item.short} | ${item.name}`,
+        value: item.short,
+      }))
+    : []
+
+  return isLoading ? (
+    <Skeleton width={"100%"} height={"2em"} />
+  ) : error ? (
+    <Alert
+      title="Kategorien konnten nicht geladen werden"
+      color="red"
+      icon={<IconAlertCircle size={18} />}
+    />
+  ) : (
+    <MultiSelect
+      key={form.key("tags")}
+      label={"Kategorien"}
+      data={options}
+      placeholder={"Suche"}
+      searchable
+      {...form.getInputProps("tags")}
+    />
+  )
+}
 
 export default function ToolSearchForm() {
   const theme = useMantineTheme()
 
-  const form = useForm({
+  const form = useForm<ToolSearchFormValues>({
     mode: "uncontrolled",
     initialValues: { tags: [], tool: "", author: "" },
   })
@@ -45,14 +89,15 @@ export default function ToolSearchForm() {
           placeholder="Autor:innen, Urheber:innen, Institutionen"
           {...form.getInputProps("author")}
         />
-        <MultiSelect
+        <TagSelect form={form} />
+        {/* <MultiSelect
           key={form.key("tags")}
           label={"Kategorien"}
           data={tagOptions}
           placeholder={"Suche"}
           searchable
           {...form.getInputProps("tags")}
-        />
+        /> */}
         <Group>
           <Button
             variant="gradient"
