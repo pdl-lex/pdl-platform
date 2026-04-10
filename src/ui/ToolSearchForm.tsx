@@ -90,14 +90,6 @@ export default function ToolSearchForm() {
           {...form.getInputProps("author")}
         />
         <TagSelect form={form} />
-        {/* <MultiSelect
-          key={form.key("tags")}
-          label={"Kategorien"}
-          data={tagOptions}
-          placeholder={"Suche"}
-          searchable
-          {...form.getInputProps("tags")}
-        /> */}
         <Group>
           <Button
             variant="gradient"
