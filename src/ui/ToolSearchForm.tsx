@@ -20,7 +20,7 @@ interface TagOption {
 }
 
 interface ToolSearchFormValues {
-  tags: TagOption[]
+  tags: string[]
   tool: string
   author: string
 }
@@ -40,7 +40,7 @@ function TagSelect({
   const options: TagOption[] = data?.docs
     ? data.docs.map((item) => ({
         label: `${item.short} | ${item.name}`,
-        value: item.short,
+        value: item.id,
       }))
     : []
 
