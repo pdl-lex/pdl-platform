@@ -11,11 +11,20 @@ import {
   useMantineTheme,
   Stack,
   Tooltip,
+  Anchor,
 } from "@mantine/core"
-import { Tag, Tool } from "../domain/Tool"
+import { FeatureFlags, Tag, Tool } from "../domain/Tool"
 import { useDisclosure } from "@mantine/hooks"
 import CmsRichText from "./CmsRichText"
 import CmsLayoutBlocks from "./CmsLayoutBlocks"
+import {
+  IconCode,
+  IconDatabase,
+  IconDatabaseImport,
+  IconPlayerPlay,
+} from "@tabler/icons-react"
+import React from "react"
+import _ from "lodash"
 
 function ToolHeader({ tool }: { tool: Tool }) {
   const tags = tool.basedata.tags
@@ -40,6 +49,60 @@ function TagBar({ tags }: { tags: Tag[] }) {
           </Badge>
         </Tooltip>
       ))}
+    </Group>
+  )
+}
+
+function FeatureIconBar({ flags }: { flags?: FeatureFlags }) {
+  const hasFlags = !!flags && _.some(_.values(flags))
+
+  if (!hasFlags) return <></>
+
+  const iconSize = 18
+  const icons: Record<
+    keyof Omit<FeatureFlags, "sourceCodeUrl">,
+    { component: React.ReactNode; label: string }
+  > = {
+    hasDatasets: {
+      component: <IconDatabase size={iconSize} />,
+      label: "Datensätze verfügbar",
+    },
+    hasUserUpload: {
+      component: <IconDatabaseImport size={iconSize} />,
+      label: "Datei-Upload möglich",
+    },
+    sourceCodeAvailable: {
+      component: flags.sourceCodeUrl ? (
+        <Anchor
+          href={flags.sourceCodeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: "inline-flex", lineHeight: 0 }}
+        >
+          <IconCode size={iconSize} />
+        </Anchor>
+      ) : (
+        <IconCode size={iconSize} />
+      ),
+      label: "Quellcode verfügbar",
+    },
+    hasWebDemo: {
+      component: <IconPlayerPlay size={iconSize} />,
+      label: "Web-Demo verfügbar",
+    },
+  }
+
+  return (
+    <Group pb={"sm"}>
+      {[...Object.entries(icons)]
+        .filter(([key]) => flags[key as keyof FeatureFlags])
+        .map(([key, { component, label }]) => {
+          return (
+            <Tooltip label={label} key={key}>
+              {component}
+            </Tooltip>
+          )
+        })}
     </Group>
   )
 }
@@ -96,6 +159,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
       </Card.Section>
       <ToolHeader tool={tool} />
       <CmsRichText data={tool.teaser} />
+      <FeatureIconBar flags={tool.flags} />
       <ToolDetailModal tool={tool} />
     </Card>
   )
