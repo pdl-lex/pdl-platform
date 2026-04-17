@@ -12,6 +12,7 @@ import {
   Stack,
   Tooltip,
   Anchor,
+  type GroupProps,
 } from "@mantine/core"
 import { FeatureFlags, Tag, Tool } from "../domain/Tool"
 import { useDisclosure } from "@mantine/hooks"
@@ -26,7 +27,13 @@ import {
 import React from "react"
 import _ from "lodash"
 
-function ToolHeader({ tool }: { tool: Tool }) {
+function ToolHeader({
+  tool,
+  children,
+}: {
+  tool: Tool
+  children?: React.ReactNode
+}) {
   const tags = tool.basedata.tags
   return (
     <Stack gap={0}>
@@ -35,6 +42,7 @@ function ToolHeader({ tool }: { tool: Tool }) {
         {tool.name}
       </Title>
       <Text c={"dimmed"}>{tool.basedata.author}</Text>
+      {children}
     </Stack>
   )
 }
@@ -53,7 +61,10 @@ function TagBar({ tags }: { tags: Tag[] }) {
   )
 }
 
-function FeatureIconBar({ flags }: { flags?: FeatureFlags }) {
+function FeatureIconBar({
+  flags,
+  ...props
+}: { flags?: FeatureFlags } & Pick<GroupProps, "pt" | "pb">) {
   const hasFlags = !!flags && _.some(_.values(flags))
 
   if (!hasFlags) return <></>
@@ -93,7 +104,7 @@ function FeatureIconBar({ flags }: { flags?: FeatureFlags }) {
   }
 
   return (
-    <Group pb={"sm"}>
+    <Group {...props}>
       {[...Object.entries(icons)]
         .filter(([key]) => flags[key as keyof FeatureFlags])
         .map(([key, { component, label }]) => {
@@ -119,7 +130,11 @@ function ToolDetailModal({ tool }: { tool: Tool }) {
         onClose={close}
         centered
         closeButtonProps={{ style: { alignSelf: "flex-start" } }}
-        title={<ToolHeader tool={tool} />}
+        title={
+          <ToolHeader tool={tool}>
+            <FeatureIconBar flags={tool.flags} pt={"xs"} />
+          </ToolHeader>
+        }
       >
         {
           <Stack>
@@ -159,7 +174,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
       </Card.Section>
       <ToolHeader tool={tool} />
       <CmsRichText data={tool.teaser} />
-      <FeatureIconBar flags={tool.flags} />
+      <FeatureIconBar flags={tool.flags} pb={"sm"} />
       <ToolDetailModal tool={tool} />
     </Card>
   )
