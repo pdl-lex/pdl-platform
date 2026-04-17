@@ -1,5 +1,16 @@
-import { Badge, Card, Grid, Title, Flex, Stack, Skeleton, Alert } from "@mantine/core"
-import { Link } from "react-router-dom"
+import {
+  Badge,
+  Card,
+  Grid,
+  Title,
+  Flex,
+  Stack,
+  Skeleton,
+  Alert,
+  Button,
+  alpha,
+  useMantineTheme,
+} from "@mantine/core"
 import { IconAlertCircle, IconExternalLink } from "@tabler/icons-react"
 import { useCmsCollection } from "../hooks/useCms"
 import { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
@@ -7,6 +18,8 @@ import CmsRichText from "../ui/CmsRichText"
 import _ from "lodash"
 
 function ResourceCard({ resource }: { resource: CmsDictionary }) {
+  const theme = useMantineTheme()
+
   return (
     <Card withBorder shadow="md" h={"100%"}>
       <Badge variant="light" size="xs">
@@ -19,9 +32,21 @@ function ResourceCard({ resource }: { resource: CmsDictionary }) {
         <CmsRichText data={resource.description} />
         {resource.url && (
           <Flex justify="flex-end">
-            <Link to={resource.url} target="_blank" rel="noopener noreferrer">
-              Mehr erfahren <IconExternalLink size={14} />
-            </Link>
+            <Button
+              variant="gradient"
+              component="a"
+              gradient={{
+                deg: 90,
+                from: "lexoterm-primary",
+                to: alpha(theme.colors["lexoterm-primary"][0], 0.75),
+              }}
+              href={resource.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              rightSection={<IconExternalLink size={16} />}
+            >
+              Mehr erfahren
+            </Button>
           </Flex>
         )}
       </Stack>
