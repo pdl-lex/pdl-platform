@@ -1,10 +1,10 @@
-import { Badge, Card, Grid, Title, Flex, Stack, Center } from "@mantine/core"
-import MainText from "../layout/MainText"
+import { Badge, Card, Grid, Title, Flex, Stack, Skeleton, Alert } from "@mantine/core"
 import { Link } from "react-router-dom"
-import { IconExternalLink } from "@tabler/icons-react"
+import { IconAlertCircle, IconExternalLink } from "@tabler/icons-react"
 import { useCmsCollection } from "../hooks/useCms"
 import { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import CmsRichText from "../ui/CmsRichText"
+import _ from "lodash"
 
 function ResourceCard({ resource }: { resource: CmsDictionary }) {
   return (
@@ -48,17 +48,32 @@ export default function Dictionaries() {
     useCmsCollection<CmsPageCollectionResponse>("resources")
 
   return (
-    <MainText>
-      <Center mb="xl">
-        <Title>Wörterbücher im ADL</Title>
-      </Center>
-      <Grid>
-        {data?.docs?.map((resource) => (
-          <Grid.Col span={{ base: 12, xs: 6 }} key={resource.id}>
+    <Grid p={"md"} pt={"md"} mx={"auto"} gutter="xs">
+      {isLoading ? (
+        <>
+          {_.times(4, (index) => (
+            <Grid.Col span={{ base: 12, sm: 4 }}>
+              <Skeleton key={index} height={"20em"} />
+            </Grid.Col>
+          ))}
+        </>
+      ) : error ? (
+        <Grid.Col span={12}>
+          <Alert
+            title="Fehler beim Laden der Wörterbücher"
+            color="red"
+            icon={<IconAlertCircle size={18} />}
+          >
+            {error.message}
+          </Alert>
+        </Grid.Col>
+      ) : (
+        data?.docs?.map((resource) => (
+          <Grid.Col span={{ base: 12, sm: 4 }} key={resource.id}>
             <ResourceCard resource={resource} />
           </Grid.Col>
-        ))}
-      </Grid>
-    </MainText>
+        ))
+      )}
+    </Grid>
   )
 }
