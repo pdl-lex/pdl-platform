@@ -70,7 +70,9 @@ type CmsPageCollectionResponse = {
 
 export default function Dictionaries() {
   const { data, error, isLoading } =
-    useCmsCollection<CmsPageCollectionResponse>("resources")
+    useCmsCollection<CmsPageCollectionResponse>("resources", {
+      fetchOptions: { sort: "name" },
+    })
 
   return (
     <Grid p={"md"} pt={"md"} mx={"auto"} gutter="xs">
