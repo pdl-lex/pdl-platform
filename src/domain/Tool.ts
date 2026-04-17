@@ -23,13 +23,13 @@ interface BaseData {
   category: "external" | "lexoterm" | "partner"
   tags?: Tag[]
   toolUrl?: string
-  flags?: FeatureFlags
 }
 
 export interface Tool {
   id: string
   name: string
   basedata: BaseData
+  flags?: FeatureFlags
   teaser: SerializedEditorState | string | null
   cardImage?: CmsMedia | null
   layout: Block[]
