@@ -5,7 +5,6 @@ import MainLayout from "./layout/MainLayout"
 import { Route, Routes } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { useMemo } from "react"
-import Home from "./pages/Home"
 import Dictionaries from "./pages/Dictionaries"
 import SearchView from "./pages/SearchView"
 import NotFound from "./pages/NotFound"
@@ -24,6 +23,7 @@ export type AppRoute = {
   title: string
 }
 
+
 const toplevelRoutes: AppRoute[] = [
   { path: "/search", Component: SearchView, title: "Suche" },
   { path: "/tools", Component: Tools, title: "Werkzeuge" },
@@ -32,7 +32,7 @@ const toplevelRoutes: AppRoute[] = [
 
 // sub-routes do not appear in the main menu
 const staticSubRoutes: AppRoute[] = [
-  { path: "/", Component: Home, title: "Startseite" },
+  { path: "/", Component: () => <CmsPage slug={"/"} />, title: "Startseite" },
 ]
 
 const staticRoutes = [...toplevelRoutes, ...staticSubRoutes]
