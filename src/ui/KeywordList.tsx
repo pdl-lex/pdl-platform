@@ -13,6 +13,7 @@ import {
 import "./KeywordList.sass"
 import classNames from "classnames"
 import _ from "lodash"
+import { Link } from "react-router-dom"
 
 const fetchKeywordList = async (
   letter: IndexLetter,
@@ -69,7 +70,8 @@ function Keywords({ letter }: { letter: IndexLetter }) {
           {data.items.map(({ lemma, index }) => (
             <List.Item key={`${lemma}${index}`}>
               <Anchor
-                href={`/search?lemma=${encodeURIComponent(lemma)}`}
+                component={Link}
+                to={`/search?lemma=${encodeURIComponent(lemma)}`}
                 className={"keyword-link"}
                 size={"sm"}
               >
