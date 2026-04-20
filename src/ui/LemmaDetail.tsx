@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { useQuery } from "@tanstack/react-query"
-import Entry, { Headword, Sense } from "../domain/Entry"
+import Entry, { Citation, Headword, Sense } from "../domain/Entry"
 import {
   Divider,
   Skeleton,
@@ -10,6 +10,7 @@ import {
   Anchor,
   Stack,
   Space,
+  List,
 } from "@mantine/core"
 import DisplaySense from "./DisplaySense"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
@@ -169,7 +170,23 @@ function CompoundSection({ compounds }: { compounds: AnnotatedTextData[] }) {
   )
 }
 
+function CorpusExampleSection({ examples }: { examples: Citation[] }) {
+  return (
+    <LemmaDetailSection title={"Korpusbelege (maschinell erstellt)"}>
+      <List listStyleType="none" size={"sm"}>
+        {examples.map((example, index) => (
+          <List.Item key={index} pb={"sm"}>
+            <DisplayAnnotatedText data={example} />
+          </List.Item>
+        ))}
+      </List>
+    </LemmaDetailSection>
+  )
+}
+
 function DisplayLemmaDetail({ entry }: { entry: Entry }) {
+  const corpusExamples =
+    entry.cit?.filter((c) => c.type === "corpus_example") || []
   return (
     <>
       <LemmaHeader headword={entry.headword} />
@@ -178,6 +195,9 @@ function DisplayLemmaDetail({ entry }: { entry: Entry }) {
       <EtymologySection etymology={entry.etym} />
       {entry.compounds && entry.compounds.length > 0 && (
         <CompoundSection compounds={entry.compounds} />
+      )}
+      {corpusExamples.length > 0 && (
+        <CorpusExampleSection examples={corpusExamples} />
       )}
     </>
   )
