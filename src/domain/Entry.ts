@@ -8,7 +8,7 @@ export interface Headword {
   index: number
 }
 
-export default interface DisplayEntry {
+export default interface Entry {
   sourceId: string
   lexId: string
   source: ResourceKey
@@ -75,6 +75,6 @@ interface PaginatedList<T> {
   itemsPerPage: number
 }
 
-export type DisplayEntryList = PaginatedList<DisplayEntry>
+export type DisplayEntryList = PaginatedList<Entry>
 
 export type KeywordEntryList = PaginatedList<Headword>
