@@ -22,6 +22,7 @@ export default interface Entry {
   number: string | null
   etym: AnnotatedTextData | null
   compounds?: AnnotatedTextData[]
+  cit?: Citation[]
 }
 
 export interface Form {
