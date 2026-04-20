@@ -1,4 +1,4 @@
-import { DisplayEntry } from "./Entry"
+import DisplayEntry from "./Entry"
 import { ResourceKey } from "./Resource"
 
 interface ResourceCount {

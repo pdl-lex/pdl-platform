@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { useQuery } from "@tanstack/react-query"
-import { DisplayEntry, Headword, Sense } from "../domain/Entry"
+import DisplayEntry, { Headword, Sense } from "../domain/Entry"
 import {
   Divider,
   Skeleton,

@@ -8,7 +8,7 @@ export interface Headword {
   index: number
 }
 
-export interface DisplayEntry {
+export default interface DisplayEntry {
   sourceId: string
   lexId: string
   source: ResourceKey
