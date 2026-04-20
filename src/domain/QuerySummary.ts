@@ -1,4 +1,4 @@
-import { DisplayEntry } from "./Entry"
+import Entry from "./Entry"
 import { ResourceKey } from "./Resource"
 
 interface ResourceCount {
@@ -7,7 +7,7 @@ interface ResourceCount {
 }
 
 export type LemmaInfo = Pick<
-  DisplayEntry,
+  Entry,
   "lexId" | "sourceId" | "headword" | "source" | "gender" | "nPos" | "number"
 > & {
   mainSenses: readonly string[]

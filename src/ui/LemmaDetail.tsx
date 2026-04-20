@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { useQuery } from "@tanstack/react-query"
-import { DisplayEntry, Headword, Sense } from "../domain/Entry"
+import Entry, { Citation, Headword, Sense } from "../domain/Entry"
 import {
   Divider,
   Skeleton,
@@ -10,6 +10,7 @@ import {
   Anchor,
   Stack,
   Space,
+  List,
 } from "@mantine/core"
 import DisplaySense from "./DisplaySense"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
@@ -19,7 +20,7 @@ import { ResourceKey, resources } from "../domain/Resource"
 import { IconExternalLink } from "@tabler/icons-react"
 import AnnotatedTextData from "../domain/AnnotatedTextData"
 
-const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
+const fetchLemma = async (lemmaId: string): Promise<Entry> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}/lemma/${encodeURIComponent(lemmaId)}`,
   )
@@ -27,7 +28,7 @@ const fetchLemma = async (lemmaId: string): Promise<DisplayEntry> => {
     throw new Error(`HTTP error status: ${response.status}`)
   }
 
-  return (await response.json()) as DisplayEntry
+  return (await response.json()) as Entry
 }
 
 function LemmaHeader({ headword }: { headword: Headword }) {
@@ -100,7 +101,7 @@ function Variants({ variants }: { variants: string[] }) {
   )
 }
 
-function Grammar({ entry }: { entry: DisplayEntry }) {
+function Grammar({ entry }: { entry: Entry }) {
   const features = _.compact([entry.nPos, entry.gender, entry.number])
   return (
     features.length > 0 && (
@@ -116,7 +117,7 @@ function Grammar({ entry }: { entry: DisplayEntry }) {
   )
 }
 
-function MetaDataSection({ entry }: { entry: DisplayEntry }) {
+function MetaDataSection({ entry }: { entry: Entry }) {
   return (
     <LemmaDetailSection title={"Stammdaten"}>
       <Table withRowBorders={false} verticalSpacing={0}>
@@ -169,7 +170,23 @@ function CompoundSection({ compounds }: { compounds: AnnotatedTextData[] }) {
   )
 }
 
-function DisplayLemmaDetail({ entry }: { entry: DisplayEntry }) {
+function CorpusExampleSection({ examples }: { examples: Citation[] }) {
+  return (
+    <LemmaDetailSection title={"Korpusbelege (maschinell erstellt)"}>
+      <List listStyleType="none" size={"sm"}>
+        {examples.map((example, index) => (
+          <List.Item key={index} pb={"sm"}>
+            <DisplayAnnotatedText data={example} />
+          </List.Item>
+        ))}
+      </List>
+    </LemmaDetailSection>
+  )
+}
+
+function DisplayLemmaDetail({ entry }: { entry: Entry }) {
+  const corpusExamples =
+    entry.cit?.filter((c) => c.type === "corpus_example") || []
   return (
     <>
       <LemmaHeader headword={entry.headword} />
@@ -178,6 +195,9 @@ function DisplayLemmaDetail({ entry }: { entry: DisplayEntry }) {
       <EtymologySection etymology={entry.etym} />
       {entry.compounds && entry.compounds.length > 0 && (
         <CompoundSection compounds={entry.compounds} />
+      )}
+      {corpusExamples.length > 0 && (
+        <CorpusExampleSection examples={corpusExamples} />
       )}
     </>
   )
@@ -205,7 +225,7 @@ export default function LemmaDetail({
 }: {
   activeLemmaId: string
 }) {
-  const { data, isFetching } = useQuery<DisplayEntry>({
+  const { data, isFetching } = useQuery<Entry>({
     queryKey: ["lemma", activeLemmaId],
     queryFn: () => fetchLemma(activeLemmaId),
     refetchOnWindowFocus: false,
