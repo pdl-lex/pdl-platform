@@ -1,28 +1,6 @@
 import AnnotatedTextData from "./AnnotatedTextData"
 import { ResourceKey } from "./Resource"
 
-export default class Entry {
-  sourceId: string
-  form?: Form[]
-  gramGrp?: GrammarGroup[]
-  sense?: Sense[]
-
-  constructor(data: any) {
-    this.sourceId = data.sourceId || ""
-    this.form = data.form
-    this.gramGrp = data.gramGrp
-    this.sense = data.sense
-  }
-
-  getFeature(type: Feature): string | null {
-    return this.gramGrp?.[0].gram?.find((g) => g.type === type)?.text || null
-  }
-
-  getVariants(): Form[] {
-    return this.form?.[0].form?.filter((f) => f.type === "variant") || []
-  }
-}
-
 export type IndexLetter = Uppercase<string> | "-" | "#"
 
 export interface Headword {
