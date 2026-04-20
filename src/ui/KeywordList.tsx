@@ -30,6 +30,7 @@ const fetchKeywordList = async (
 }
 
 function KeywordSkeleton() {
+  // some random line widths for the loading animation
   const lineWidths = [
     38, 48, 50, 60, 38, 68, 51, 27, 33, 47, 52, 46, 56, 57, 46, 47, 64, 70, 58,
     36,
