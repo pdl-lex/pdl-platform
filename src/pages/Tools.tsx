@@ -1,4 +1,13 @@
-import { Card, Grid, Group, Skeleton, Stack, Alert } from "@mantine/core"
+import {
+  Card,
+  Grid,
+  Group,
+  Skeleton,
+  Stack,
+  Alert,
+  SegmentedControl,
+  Center,
+} from "@mantine/core"
 import { Tool } from "../domain/Tool"
 import { useCmsCollection } from "../hooks/useCms"
 import { ToolCard } from "../ui/ToolCard"
@@ -38,11 +47,14 @@ function ToolPlaceholder() {
 
 export default function Tools() {
   const [filters, setFilters] = useState<ToolSearchFormValues | null>(null)
+  const [toolGroup, setToolGroup] = useState<string>("lexoterm")
 
   const fetchOptions = useMemo(() => {
     const params: Record<string, string> = {}
 
-    if (!filters) return {}
+    params["where[basedata.category][equals]"] = toolGroup
+
+    if (!filters) return params
 
     if (filters.tool.trim()) {
       params["where[name][like]"] = filters.tool.trim()
@@ -56,8 +68,11 @@ export default function Tools() {
       params["where[basedata.tags][in]"] = filters.tags.join(",")
     }
 
+
     return params
-  }, [filters])
+  }, [filters, toolGroup])
+
+  console.log(fetchOptions)
 
   const { data, isLoading, error } = useCmsCollection<ToolsCollectionResponse>(
     "tools",
@@ -68,6 +83,21 @@ export default function Tools() {
 
   return (
     <Grid p={"md"} pt={"md"} mx={"auto"} gutter="xs">
+      <Grid.Col span={12}>
+        <Center>
+          <SegmentedControl
+            value={toolGroup}
+            onChange={setToolGroup}
+            withItemsBorders={false}
+            data={[
+              {label: "LexoTerm", value: "lexoterm"},
+              {label: "Partner", value: "partner"},
+              {label: "Extern", value: "external"},
+            ]}
+          />
+        </Center>
+      </Grid.Col>
+
       <Grid.Col span={{ base: 12, sm: 4 }}>
         <ContentPanel title="Suche">
           <ToolSearchForm onSearch={setFilters} />
