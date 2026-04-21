@@ -78,4 +78,4 @@ interface PaginatedList<T> {
 
 export type EntryList = PaginatedList<Entry>
 
-export type KeywordEntryList = PaginatedList<Headword>
+export type KeywordEntryList = PaginatedList<Pick<Headword, "lemma">>
