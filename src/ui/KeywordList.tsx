@@ -67,8 +67,8 @@ function Keywords({ letter }: { letter: IndexLetter }) {
     data && (
       <Stack>
         <List listStyleType="none">
-          {data.items.map(({ lemma, index }) => (
-            <List.Item key={`${lemma}${index}`}>
+          {data.items.map(({ lemma }) => (
+            <List.Item key={lemma}>
               <Anchor
                 component={Link}
                 to={`/search?lemma=${encodeURIComponent(lemma)}`}
@@ -76,7 +76,6 @@ function Keywords({ letter }: { letter: IndexLetter }) {
                 size={"sm"}
               >
                 {lemma}
-                {!!index && <sup>{index}</sup>}
               </Anchor>
             </List.Item>
           ))}
