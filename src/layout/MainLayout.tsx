@@ -1,5 +1,5 @@
-import { AppShell } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
+import { AppShell, useMantineTheme } from "@mantine/core"
+import { useDisclosure, useMediaQuery } from "@mantine/hooks"
 import PrimaryHeaderMenu from "./PrimaryHeaderMenu"
 import { AppRoute } from "../App"
 import SidebarMenu from "./SidebarMenu"
@@ -7,6 +7,7 @@ import Footer from "./Footer"
 
 export const HEADER_HEIGHT = 70
 const MAIN_MAX_WIDTH = "1440px"
+export const MENU_BREAKPOINT = "sm"
 
 export default function MainLayout({
   routes,
@@ -16,6 +17,10 @@ export default function MainLayout({
   children?: React.ReactNode
 }) {
   const [opened, { toggle }] = useDisclosure()
+  const theme = useMantineTheme()
+  const isDesktop = useMediaQuery(
+    `(min-width: ${theme.breakpoints[MENU_BREAKPOINT]})`,
+  )
 
   const outerSpacing = "md"
 
@@ -26,7 +31,7 @@ export default function MainLayout({
       }}
       navbar={{
         width: 300,
-        breakpoint: "sm",
+        breakpoint: MENU_BREAKPOINT,
         collapsed: { desktop: true, mobile: !opened },
       }}
     >
@@ -34,7 +39,7 @@ export default function MainLayout({
         <PrimaryHeaderMenu routes={routes} opened={opened} toggle={toggle} />
       </AppShell.Header>
 
-      <AppShell.Navbar py="md">
+      <AppShell.Navbar py="md" inert={isDesktop || !opened}>
         <SidebarMenu routes={routes} />
       </AppShell.Navbar>
 

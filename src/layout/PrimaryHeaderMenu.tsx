@@ -19,7 +19,7 @@ import classNames from "classnames"
 import { IconFilter2Search } from "@tabler/icons-react"
 import { useDisclosure } from "@mantine/hooks"
 import ComplexSearchForm from "../ui/ComplexSearchForm"
-import { HEADER_HEIGHT } from "./MainLayout"
+import { HEADER_HEIGHT, MENU_BREAKPOINT } from "./MainLayout"
 
 export default function PrimaryHeaderMenu({
   routes,
@@ -58,12 +58,12 @@ export default function PrimaryHeaderMenu({
         <Burger
           opened={opened}
           onClick={toggle}
-          hiddenFrom="sm"
+          hiddenFrom={MENU_BREAKPOINT}
           size="md"
           color="white"
         />
         <LexoTermLogo />
-        <Group ml="xl" gap={0} visibleFrom="sm">
+        <Group ml="xl" gap={0} visibleFrom={MENU_BREAKPOINT}>
           {routes.map(({ path, title }) => (
             <UnstyledButton
               key={path}
@@ -90,7 +90,7 @@ export default function PrimaryHeaderMenu({
         </Group>
         <ActionIcon
           style={{ color: "inherit" }}
-          hiddenFrom="sm"
+          hiddenFrom={MENU_BREAKPOINT}
           size="lg"
           variant="subtle"
           aria-label="Settings"
