@@ -190,7 +190,7 @@ function CorpusExampleSection({ examples }: { examples: Citation[] }) {
 
 function CreditSection({ resource }: { resource: ResourceKey }) {
   return (
-    <Card radius={"md"} bg="#edf1ef" p={"xs"}>
+    <Card radius={"md"} bg="#edf1ef" p={"xs"} withBorder>
       <LemmaDetailSection title={"Impressum"} pb={0}>
         <ResourceCredits resource={resource} />
       </LemmaDetailSection>
