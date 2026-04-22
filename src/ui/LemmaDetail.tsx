@@ -11,6 +11,7 @@ import {
   Stack,
   Space,
   List,
+  Card,
 } from "@mantine/core"
 import DisplaySense from "./DisplaySense"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
@@ -19,6 +20,7 @@ import "./LemmaDetail.sass"
 import { ResourceKey, resources } from "../domain/Resource"
 import { IconExternalLink } from "@tabler/icons-react"
 import AnnotatedTextData from "../domain/AnnotatedTextData"
+import ResourceCredits from "./ResourceCredits"
 
 const fetchLemma = async (lemmaId: string): Promise<Entry> => {
   const response = await fetch(
@@ -184,6 +186,16 @@ function CorpusExampleSection({ examples }: { examples: Citation[] }) {
   )
 }
 
+function CreditSection({ resource }: { resource: ResourceKey }) {
+  return (
+    <Card radius={"md"} bg="#edf1ef" p={"xs"}>
+      <LemmaDetailSection title={"Impressum"}>
+        <ResourceCredits resource={resource} />
+      </LemmaDetailSection>
+    </Card>
+  )
+}
+
 function DisplayLemmaDetail({ entry }: { entry: Entry }) {
   const corpusExamples =
     entry.cit?.filter((c) => c.type === "corpus_example") || []
@@ -199,6 +211,7 @@ function DisplayLemmaDetail({ entry }: { entry: Entry }) {
       {corpusExamples.length > 0 && (
         <CorpusExampleSection examples={corpusExamples} />
       )}
+      <CreditSection resource={entry.source} />
     </>
   )
 }
