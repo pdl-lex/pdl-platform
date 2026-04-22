@@ -12,6 +12,7 @@ import {
   Space,
   List,
   Card,
+  TextProps,
 } from "@mantine/core"
 import DisplaySense from "./DisplaySense"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
@@ -45,12 +46,13 @@ function LemmaHeader({ headword }: { headword: Headword }) {
 function LemmaDetailSection({
   title,
   children,
+  ...props
 }: {
   title: string
   children?: React.ReactNode
-}) {
+} & TextProps) {
   return (
-    <Text component="section" pb={"xl"}>
+    <Text component="section" pb={"xl"} {...props}>
       <Title order={3} size="sm" mb={5}>
         {title}
       </Title>
@@ -189,7 +191,7 @@ function CorpusExampleSection({ examples }: { examples: Citation[] }) {
 function CreditSection({ resource }: { resource: ResourceKey }) {
   return (
     <Card radius={"md"} bg="#edf1ef" p={"xs"}>
-      <LemmaDetailSection title={"Impressum"}>
+      <LemmaDetailSection title={"Impressum"} pb={0}>
         <ResourceCredits resource={resource} />
       </LemmaDetailSection>
     </Card>
