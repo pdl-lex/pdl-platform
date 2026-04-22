@@ -72,8 +72,6 @@ export default function Tools() {
     return params
   }, [filters, toolGroup])
 
-  console.log(fetchOptions)
-
   const { data, isLoading, error } = useCmsCollection<ToolsCollectionResponse>(
     "tools",
     { fetchOptions },

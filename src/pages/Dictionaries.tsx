@@ -13,9 +13,9 @@ import {
 } from "@mantine/core"
 import { IconAlertCircle, IconExternalLink } from "@tabler/icons-react"
 import { useCmsCollection } from "../hooks/useCms"
-import { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import CmsRichText from "../ui/CmsRichText"
 import _ from "lodash"
+import CmsDictionary from "../domain/CmsDictionary"
 
 function ResourceCard({ resource }: { resource: CmsDictionary }) {
   const theme = useMantineTheme()
@@ -52,16 +52,6 @@ function ResourceCard({ resource }: { resource: CmsDictionary }) {
       </Stack>
     </Card>
   )
-}
-
-interface CmsDictionary {
-  id: string
-  name: string
-  shortName: string
-  description: SerializedEditorState | string | null
-  url?: string
-  credits?: SerializedEditorState | string | null
-  license?: SerializedEditorState | string | null
 }
 
 type CmsPageCollectionResponse = {

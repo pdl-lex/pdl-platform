@@ -11,6 +11,8 @@ import {
   Stack,
   Space,
   List,
+  Card,
+  TextProps,
 } from "@mantine/core"
 import DisplaySense from "./DisplaySense"
 import DisplayAnnotatedText from "./DisplayAnnotatedText"
@@ -19,6 +21,7 @@ import "./LemmaDetail.sass"
 import { ResourceKey, resources } from "../domain/Resource"
 import { IconExternalLink } from "@tabler/icons-react"
 import AnnotatedTextData from "../domain/AnnotatedTextData"
+import ResourceCredits from "./ResourceCredits"
 
 const fetchLemma = async (lemmaId: string): Promise<Entry> => {
   const response = await fetch(
@@ -43,12 +46,13 @@ function LemmaHeader({ headword }: { headword: Headword }) {
 function LemmaDetailSection({
   title,
   children,
+  ...props
 }: {
   title: string
   children?: React.ReactNode
-}) {
+} & TextProps) {
   return (
-    <Text component="section" pb={"xl"}>
+    <Text component="section" pb={"xl"} {...props}>
       <Title order={3} size="sm" mb={5}>
         {title}
       </Title>
@@ -184,6 +188,16 @@ function CorpusExampleSection({ examples }: { examples: Citation[] }) {
   )
 }
 
+function CreditSection({ resource }: { resource: ResourceKey }) {
+  return (
+    <Card radius={"md"} bg="#edf1ef" p={"xs"} withBorder>
+      <LemmaDetailSection title={"Impressum"} pb={0}>
+        <ResourceCredits resource={resource} />
+      </LemmaDetailSection>
+    </Card>
+  )
+}
+
 function DisplayLemmaDetail({ entry }: { entry: Entry }) {
   const corpusExamples =
     entry.cit?.filter((c) => c.type === "corpus_example") || []
@@ -199,6 +213,7 @@ function DisplayLemmaDetail({ entry }: { entry: Entry }) {
       {corpusExamples.length > 0 && (
         <CorpusExampleSection examples={corpusExamples} />
       )}
+      <CreditSection resource={entry.source} />
     </>
   )
 }
