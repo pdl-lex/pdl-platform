@@ -34,6 +34,7 @@ function getResourceByOption(option: string): Resource {
 interface SearchFormValues {
   q: string
   lemma: string
+  senses: string
   resources: string[]
   pos: string
   npos: string
@@ -42,6 +43,7 @@ interface SearchFormValues {
 const defaultValues: SearchFormValues = {
   q: "",
   lemma: "",
+  senses: "",
   resources: resourceOptions,
   pos: "",
   npos: "",
@@ -83,6 +85,7 @@ function getCurrentValues(searchParams: URLSearchParams): SearchFormValues {
   return {
     q: searchParams.get("q") || "",
     lemma: searchParams.get("lemma") || "",
+    senses: searchParams.get("senses") || "",
     resources: getCurrentResources(searchParams),
     pos: searchParams.get("pos") || "",
     npos: searchParams.get("npos") || "",
@@ -150,6 +153,13 @@ export default function ComplexSearchForm({
           placeholder={"Exaktes Lemma oder /regulärer Ausdruck/i"}
           rightSection={createClearButton("lemma")}
           {...form.getInputProps("lemma")}
+        />
+        <TextInput
+          key={form.key("senses")}
+          label={"Bedeutungen"}
+          placeholder={"Bedeutungen"}
+          rightSection={createClearButton("senses")}
+          {...form.getInputProps("senses")}
         />
         <MultiSelect
           key={form.key("resources")}
