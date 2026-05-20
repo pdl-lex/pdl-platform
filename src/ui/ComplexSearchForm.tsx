@@ -35,6 +35,7 @@ interface SearchFormValues {
   q: string
   lemma: string
   senses: string
+  etymology: string
   resources: string[]
   pos: string
   npos: string
@@ -44,6 +45,7 @@ const defaultValues: SearchFormValues = {
   q: "",
   lemma: "",
   senses: "",
+  etymology: "",
   resources: resourceOptions,
   pos: "",
   npos: "",
@@ -86,6 +88,7 @@ function getCurrentValues(searchParams: URLSearchParams): SearchFormValues {
     q: searchParams.get("q") || "",
     lemma: searchParams.get("lemma") || "",
     senses: searchParams.get("senses") || "",
+    etymology: searchParams.get("etymology") || "",
     resources: getCurrentResources(searchParams),
     pos: searchParams.get("pos") || "",
     npos: searchParams.get("npos") || "",
@@ -157,9 +160,16 @@ export default function ComplexSearchForm({
         <TextInput
           key={form.key("senses")}
           label={"Bedeutungen"}
-          placeholder={"Bedeutungen"}
+          placeholder={"Bedeutungen durchsuchen"}
           rightSection={createClearButton("senses")}
           {...form.getInputProps("senses")}
+        />
+        <TextInput
+          key={form.key("etymology")}
+          label={"Etymologie"}
+          placeholder={"Etymologie durchsuchen"}
+          rightSection={createClearButton("etymology")}
+          {...form.getInputProps("etymology")}
         />
         <MultiSelect
           key={form.key("resources")}
