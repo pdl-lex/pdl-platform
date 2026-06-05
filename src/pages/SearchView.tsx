@@ -23,7 +23,7 @@ import { useSearchParams } from "react-router-dom"
 
 export default function SearchView() {
   const [activeLemmaId, setActiveLemmaId] = useState<string | null>(null)
-  const [filtersOpened, { open: openFilters, close: closeFilters }] =
+  const [filtersOpened, { toggle: toggleFilters, close: closeFilters }] =
     useDisclosure(false)
   const [searchParams] = useSearchParams()
   const theme = useMantineTheme()
@@ -80,7 +80,7 @@ export default function SearchView() {
             radius={"xl"}
             p={"lg"}
             aria-label="Settings"
-            onClick={openFilters}
+            onClick={toggleFilters}
           >
             <Indicator
               offset={5}
