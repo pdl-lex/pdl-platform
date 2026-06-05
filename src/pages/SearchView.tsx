@@ -99,7 +99,7 @@ export default function SearchView() {
           </Text>
         }
         radius="md"
-        size="lg"
+        size="xl"
         padding="lg"
         opened={filtersOpened}
         position={"top"}
