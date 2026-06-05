@@ -65,9 +65,11 @@ export default function SearchView() {
         )}
       </Grid.Col>
       {searchParams.size !== 0 && (
-        <Affix position={{ bottom: 50, right: 50 }}>
+        <Affix
+          position={{ bottom: 50, right: 50 }}
+          hiddenFrom={MENU_BREAKPOINT}
+        >
           <ActionIcon
-            hiddenFrom={MENU_BREAKPOINT}
             size="lg"
             variant={"gradient"}
             gradient={{
