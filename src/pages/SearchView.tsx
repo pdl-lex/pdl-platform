@@ -27,6 +27,30 @@ export default function SearchView() {
     useDisclosure(false)
   const [searchParams] = useSearchParams()
   const theme = useMantineTheme()
+
+  const leftColumn = (
+    <>
+      <ContentPanel title="Suche">
+        <ComplexSearchForm />
+      </ContentPanel>
+      <ContentPanel title="Stichwortsuche">
+        <KeywordList />
+      </ContentPanel>
+    </>
+  )
+
+  return (
+    <Grid p={"md"} pt={"md"} mx={"auto"} gutter="xs">
+      {
+        <Grid.Col span={{ base: 12, sm: 4 }}>
+          <Stack gap={"xs"}>
+            <Box visibleFrom={MENU_BREAKPOINT}>{leftColumn}</Box>
+            <Box hiddenFrom={MENU_BREAKPOINT}>
+              {searchParams.size === 0 && leftColumn}
+            </Box>
+          </Stack>
+        </Grid.Col>
+      }
       <Grid.Col span={{ base: 12, sm: 4 }}>
         <ResultSummary
           activeLemmaId={activeLemmaId}
