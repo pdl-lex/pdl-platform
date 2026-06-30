@@ -82,7 +82,7 @@ function SenseItem({
       fz={"sm"}
     >
       <Text span size={"sm"}>
-        {sense.def}
+        {sense.def && <DisplayAnnotatedText data={sense.def} />}
         {examples.length > 0 && ToggleExamplesButton}
       </Text>
       {examples.length > 0 && <Examples examples={examples} opened={opened} />}
@@ -116,15 +116,17 @@ export default function DisplaySense({
         paddingLeft: `calc(1.6em + 0.5em * ${depth})`,
       }}
     >
-      {senses?.map((sense, index) => (
-        <SenseItem
-          key={index}
-          sense={sense}
-          index={index}
-          showExamples={showExamples}
-          depth={depth}
-        />
-      ))}
+      {senses
+        ?.filter((sense) => !!sense)
+        .map((sense, index) => (
+          <SenseItem
+            key={index}
+            sense={sense}
+            index={index}
+            showExamples={showExamples}
+            depth={depth}
+          />
+        ))}
     </List>
   )
 
