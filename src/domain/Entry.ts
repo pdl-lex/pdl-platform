@@ -64,7 +64,7 @@ export interface Sense {
   id: string
   n: string
   gloss: string
-  def: string
+  def?: AnnotatedTextData | null
   cit?: Citation[]
   sense?: Sense[]
 }
