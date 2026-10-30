@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-export type ResourceKey = "bwb" | "dibs" | "wbf" | "dwds"
+export type ResourceKey = "bwb" | "dibs" | "wbf" | "dwds" | "awb"
 export interface Resource {
   key: ResourceKey
   color: string
@@ -32,5 +32,11 @@ export const resources: Record<ResourceKey, Resource> = {
     color: "blue",
     displayName: "Digitales Wörterbuch der deutschen Sprache",
     url: "https://www.dwds.de/",
+  },
+  awb: {
+    key: "awb",
+    color: "orange",
+    displayName: "Althochdeutsches Wörterbuch",
+    url: "https://awb.saw-leipzig.de/",
   },
 }
