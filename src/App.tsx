@@ -14,6 +14,8 @@ import { useCmsCollection } from "./hooks/useCms"
 import { IconAlertCircle } from "@tabler/icons-react"
 import CmsPage from "./pages/CmsPage"
 import toPathFromSlug from "./utils/toPathFromSlug"
+import AuthCallback from "./pages/AuthCallback"
+import RequireAuth from "./auth/RequireAuth"
 
 const queryClient = new QueryClient()
 
@@ -21,11 +23,17 @@ export type AppRoute = {
   path: string
   Component: React.ComponentType
   title: string
+  requiresAuth?: boolean
 }
 
 
 const toplevelRoutes: AppRoute[] = [
-  { path: "/search", Component: SearchView, title: "Suche" },
+  {
+    path: "/search",
+    Component: SearchView,
+    title: "Suche",
+    requiresAuth: true,
+  },
   { path: "/tools", Component: Tools, title: "Werkzeuge" },
   { path: "/dictionaries", Component: Dictionaries, title: "Wörterbücher" },
 ]
@@ -33,6 +41,7 @@ const toplevelRoutes: AppRoute[] = [
 // sub-routes do not appear in the main menu
 const staticSubRoutes: AppRoute[] = [
   { path: "/", Component: () => <CmsPage slug={"/"} />, title: "Startseite" },
+  { path: "/auth/callback", Component: AuthCallback, title: "Anmeldung" },
 ]
 
 const staticRoutes = [...toplevelRoutes, ...staticSubRoutes]
@@ -102,8 +111,20 @@ function AppContent() {
       ) : null}
 
       <Routes>
-        {staticRoutes.map(({ path, Component }) => (
-          <Route key={path} path={path} element={<Component />} />
+        {staticRoutes.map(({ path, Component, requiresAuth }) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              requiresAuth ? (
+                <RequireAuth>
+                  <Component />
+                </RequireAuth>
+              ) : (
+                <Component />
+              )
+            }
+          />
         ))}
 
         {cmsRoutes.map(({ path, slug }) => (
