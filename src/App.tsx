@@ -28,12 +28,7 @@ export type AppRoute = {
 
 
 const toplevelRoutes: AppRoute[] = [
-  {
-    path: "/search",
-    Component: SearchView,
-    title: "Suche",
-    requiresAuth: true,
-  },
+  { path: "/search", Component: SearchView, title: "Suche" },
   { path: "/tools", Component: Tools, title: "Werkzeuge" },
   { path: "/dictionaries", Component: Dictionaries, title: "Wörterbücher" },
 ]
