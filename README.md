@@ -17,6 +17,8 @@ vite.config.ts) and set the following variables.
 VITE_VM_URL   # host of the production server
 VITE_API_URL  # host of the api instance, e.g. http://127.0.0.1:8000
 VITE_PAYLOAD_URL  # host of the Payload CMS instance, e.g. https://cms.example.org
+VITE_OIDC_AUTHORITY  # OIDC issuer URL, e.g. https://auth.lexoterm.de/application/o/lexoterm/
+VITE_OIDC_CLIENT_ID  # client ID of the OIDC application in Authentik
 ```
 
 ## Starting the Development Server
