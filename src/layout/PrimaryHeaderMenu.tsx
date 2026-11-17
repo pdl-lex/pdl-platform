@@ -13,6 +13,7 @@ import { AppRoute } from "../App"
 import LexoTermLogo from "./LexoTermLogo"
 import classNames from "classnames"
 import { HEADER_HEIGHT, MENU_BREAKPOINT } from "./MainLayout"
+import { HeaderAccountControl } from "./AccountControl"
 
 export default function PrimaryHeaderMenu({
   routes,
@@ -76,6 +77,7 @@ export default function PrimaryHeaderMenu({
               {title}
             </UnstyledButton>
           ))}
+          <HeaderAccountControl />
         </Group>
       </Flex>
     </Box>

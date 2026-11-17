@@ -2,6 +2,7 @@ import { UnstyledButton } from "@mantine/core"
 import { AppRoute } from "../App"
 import classes from "./MainLayout.module.css"
 import classNames from "classnames"
+import { SidebarAccountControl } from "./AccountControl"
 
 export default function SidebarMenu({ routes }: { routes: AppRoute[] }) {
   return (
@@ -18,6 +19,7 @@ export default function SidebarMenu({ routes }: { routes: AppRoute[] }) {
           {title}
         </UnstyledButton>
       ))}
+      <SidebarAccountControl />
     </>
   )
 }
